@@ -10,7 +10,31 @@ public class Card_Generator : MonoBehaviour {
 
         difficulty_modifires = incoming_difficulty_modifires;
 
-        Debug.Log(difficulty_modifires.Cart_type);
+        switch (difficulty_modifires.Cart_type) {
+
+            case Difficulty_Modifiers.Cart_Type.Cart_Type12:
+
+                Generate_Card12();
+                break;
+
+            case Difficulty_Modifiers.Cart_Type.Cart_Type70:
+
+                Generate_Card70();
+                break;
+
+            default:
+
+                Debug.Log("Error missing card type ");
+                Debug.Log(difficulty_modifires.Cart_type);
+                break;
+        }
+    }
+
+    private void Generate_Card12() {
+
+    }
+
+    private void Generate_Card70() {
 
     }
 }
