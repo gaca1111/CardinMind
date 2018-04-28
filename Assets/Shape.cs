@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Shape : MonoBehaviour {
 
-    private bool is_occupied = false;
     protected bool is_rotative;
 }
 
