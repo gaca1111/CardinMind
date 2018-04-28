@@ -87,9 +87,7 @@ public class Difficulty_Modifiers : MonoBehaviour {
         foreach (Figures_Colours colour in incoming_colours) {
 
             figures_colours[i] = colour;
-            Debug.Log(figures_colours[i]);
-            i++;
-            
+            i++;  
         }
     }
 }

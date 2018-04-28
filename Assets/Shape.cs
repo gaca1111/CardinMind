@@ -3,7 +3,25 @@ using System.Collections;
 
 public class Shape : MonoBehaviour {
 
+    public enum Rotation { Up, Down, Right, Left };
+
     protected bool is_rotative;
+    protected Rotation rotation;
+
+    public void Set_Rotation(Rotation incoming_rotation) {
+
+        rotation = incoming_rotation;
+    }
+
+    public Rotation Get_Rotation() {
+
+        return rotation;
+    }
+
+    public bool Get_Is_Rotative() {
+
+        return is_rotative;
+    }
 }
 
 public class Shape_1x1 : Shape {
