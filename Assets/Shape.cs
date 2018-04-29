@@ -4,10 +4,12 @@ using System.Collections;
 public class Shape : MonoBehaviour {
 
     public enum Rotation { Up, Down, Right, Left };
+    public enum Figures_Colours { Light_Blue, Dark_Blue, Light_Green, Dark_Green, Violet, Pink, Red, Yellow, Orange };
 
     protected bool is_rotative;
     protected Rotation rotation;
     protected bool is_drawable;
+    protected Figures_Colours colour;
 
     public void Set_Rotation(Rotation incoming_rotation) {
 
@@ -23,6 +25,17 @@ public class Shape : MonoBehaviour {
 
         return is_rotative;
     }
+
+    public void Set_Colour(Figures_Colours incoming_colour) {
+
+        colour = incoming_colour;
+    }
+
+    public Figures_Colours Get_Colour() {
+
+        return colour;
+    }
+
 }
 
 public class Shape_1x1 : Shape {

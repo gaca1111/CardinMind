@@ -11,11 +11,11 @@ public class game_test : MonoBehaviour {
         mod = gameObject.AddComponent<Difficulty_Modifiers>() as Difficulty_Modifiers;
         gen = gameObject.AddComponent<Card_Generator>() as Card_Generator;
 
-        List <Difficulty_Modifiers.Figures_Colours> col = new List<Difficulty_Modifiers.Figures_Colours>();
+        List <Shape.Figures_Colours> col = new List<Shape.Figures_Colours>();
 
-        col.Add(Difficulty_Modifiers.Figures_Colours.Dark_Blue);
-        col.Add(Difficulty_Modifiers.Figures_Colours.Red);
-        col.Add(Difficulty_Modifiers.Figures_Colours.Orange);
+        col.Add(Shape.Figures_Colours.Dark_Blue);
+        col.Add(Shape.Figures_Colours.Red);
+        col.Add(Shape.Figures_Colours.Orange);
 
 
 

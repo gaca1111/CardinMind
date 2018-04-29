@@ -8,6 +8,8 @@ public class Card_Generator : MonoBehaviour {
     public enum Shapes_1x1 { Square, Triangle, Circle };
     public enum Shapes_2x1 { Rectangle };
 
+    private Difficulty_Modifiers difficulty_modifires;
+
     private Shape[,] card_pattern;
     private ArrayList empty_space;
     private int width_12 = 3;
@@ -15,12 +17,11 @@ public class Card_Generator : MonoBehaviour {
     private int width_70 = 7;
     private int height_70 = 10;
 
-    private Difficulty_Modifiers difficulty_modifires;
-
     private Shape_Sizes[] shape_sizes_array = new Shape_Sizes[2] { Shape_Sizes.Size1x1, Shape_Sizes.Size2x1 };
     private Shapes_1x1[] shapes_1x1_array = new Shapes_1x1[3] { Shapes_1x1.Square, Shapes_1x1.Triangle, Shapes_1x1.Circle };
     private Shapes_2x1[] shapes_2x1_array = new Shapes_2x1[1] { Shapes_2x1.Rectangle };
     private Shape.Rotation[] rotation_array = new Shape.Rotation[4] { Shape.Rotation.Up, Shape.Rotation.Down, Shape.Rotation.Right, Shape.Rotation.Left };
+    private Shape.Figures_Colours[] colours_array;
 
     public void Generate_Card(Difficulty_Modifiers incoming_difficulty_modifires) {
 
@@ -50,7 +51,7 @@ public class Card_Generator : MonoBehaviour {
 
         card_pattern = new Shape[width_12, height_12];
         empty_space = new ArrayList();
-        Setup_Empty_Space(width_12, height_12);
+        Setup_Generation(width_12, height_12);
 
         int current_place;
         Shape_Sizes current_shape_size;
@@ -72,8 +73,9 @@ public class Card_Generator : MonoBehaviour {
 
                     current_place = Find_Empty_Space_12_1x1();               
                     current_shape = Roll_Shape_1x1();
+                    current_shape.Set_Colour(Roll_Colour());
                     Save_Shape(current_place, current_shape, width_12, height_12);
-                    Debug.Log("place " + current_place + " shape " + current_shape);
+                    Debug.Log("place " + current_place + " shape " + current_shape + "colour" + current_shape.Get_Colour());
                     break;
 
                 case Shape_Sizes.Size2x1:
@@ -95,14 +97,14 @@ public class Card_Generator : MonoBehaviour {
         card_pattern = new Shape[width_70, height_70];
     }
 
-    private void Setup_Empty_Space(int width, int height) {
+    private void Setup_Generation(int width, int height) {
 
-  
         for (int i = 0; i < width*height; i++) {
 
             empty_space.Add(i);
-            
         }
+
+        colours_array = difficulty_modifires.Get_Figures_Colours();
     }
 
     private Shape_Sizes Roll_Shape_Sizes() {
@@ -153,6 +155,11 @@ public class Card_Generator : MonoBehaviour {
         }
 
         return shape;
+    }
+
+    private Shape.Figures_Colours Roll_Colour() {
+
+        return colours_array[Random.Range(0, colours_array.Length)];
     }
 
     private void Save_Shape(int place, Shape shape, int width, int height) {
