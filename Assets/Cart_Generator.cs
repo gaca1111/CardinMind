@@ -54,6 +54,7 @@ public class Card_Generator : MonoBehaviour {
 
         int current_place;
         Shape_Sizes current_shape_size;
+        Shape current_shape;
 
         for (int i = 0; i < difficulty_modifires.Number_of_figures; i++) {
 
@@ -69,9 +70,10 @@ public class Card_Generator : MonoBehaviour {
 
                 case Shape_Sizes.Size1x1:
 
-                    current_place = Find_Empty_Space_12_1x1();
-                    Debug.Log(current_place);
-                    Roll_Shape_1x1();
+                    current_place = Find_Empty_Space_12_1x1();               
+                    current_shape = Roll_Shape_1x1();
+                    Save_Shape(current_place, current_shape, width_12, height_12);
+                    Debug.Log("place " + current_place + " shape " + current_shape);
                     break;
 
                 case Shape_Sizes.Size2x1:
@@ -95,11 +97,11 @@ public class Card_Generator : MonoBehaviour {
 
     private void Setup_Empty_Space(int width, int height) {
 
-        int counter = 1;
+  
         for (int i = 0; i < width*height; i++) {
 
-            empty_space.Add(counter);
-            counter++;
+            empty_space.Add(i);
+            
         }
     }
 
@@ -110,8 +112,9 @@ public class Card_Generator : MonoBehaviour {
 
     private int Find_Empty_Space_12_1x1() {
 
-        int place = Random.Range(0, empty_space.Count);
-        empty_space.RemoveAt(place);  
+        int rnd = Random.Range(0, empty_space.Count);
+        int place = (int)empty_space[rnd];
+        empty_space.RemoveAt(rnd);  
         return place;
     }
 
@@ -149,7 +152,23 @@ public class Card_Generator : MonoBehaviour {
             shape.Set_Rotation(rotation_array[Random.Range(0, rotation_array.Length)]);
         }
 
-        Debug.Log(shape);
         return shape;
+    }
+
+    private void Save_Shape(int place, Shape shape, int width, int height) {
+         
+        for (int i = 0; i < height; i++) {
+
+            for (int j = 0; j < width; j++) {
+
+                if (place == 0) {
+
+                    card_pattern[j, i] = shape;                   
+                    return;
+                }
+
+                place--;
+            }
+        }   
     }
 }

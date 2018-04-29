@@ -7,6 +7,7 @@ public class Shape : MonoBehaviour {
 
     protected bool is_rotative;
     protected Rotation rotation;
+    protected bool is_drawable;
 
     public void Set_Rotation(Rotation incoming_rotation) {
 
@@ -37,6 +38,7 @@ public class Square : Shape_1x1 {
     public Square() {
 
         this.is_rotative = false;
+        this.is_drawable = true;
     }
 }
 
@@ -45,6 +47,7 @@ public class Triangle : Shape_1x1 {
     public Triangle() {
 
         this.is_rotative = true;
+        this.is_drawable = true;
     }
 }
 
@@ -53,6 +56,16 @@ public class Circle : Shape_1x1 {
     public Circle() {
 
         this.is_rotative = false;
+        this.is_drawable = true;
+    }
+}
+
+public class Empty : Shape_1x1 {
+
+    public Empty() {
+
+        this.is_rotative = false;
+        this.is_drawable = false;
     }
 }
 
@@ -61,6 +74,7 @@ public class Rectangle : Shape_2x1 {
     public Rectangle() {
 
         this.is_rotative = false;
+        this.is_drawable = true;
     }
 }
 
