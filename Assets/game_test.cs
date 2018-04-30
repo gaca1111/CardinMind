@@ -22,7 +22,7 @@ public class game_test : MonoBehaviour {
         mod.Set_Figures_Colours(col);
 
         mod.Cart_type = Difficulty_Modifiers.Cart_Type.Cart_Type12;
-        mod.Number_of_figures = 10;
+        mod.Number_of_figures = 14;
 
         gen.Generate_Card(mod);
        

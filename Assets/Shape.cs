@@ -86,7 +86,7 @@ public class Rectangle : Shape_2x1 {
 
     public Rectangle() {
 
-        this.is_rotative = false;
+        this.is_rotative = true;
         this.is_drawable = true;
     }
 }
