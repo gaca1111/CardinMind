@@ -215,11 +215,16 @@ public class Card_Generator : MonoBehaviour {
 
                 empty_space.RemoveAt(rnd);
 
+                foreach (int removed_place in current_removed_places_array) {
+
+                    empty_space.Add(removed_place); 
+                }
+
                 switch (rolled_data.rotation) {
 
                     case Shape.Rotation.Up:
 
-                        card_pattern[x , y - 1] = gameObject.AddComponent<Empty>() as Empty;
+                        card_pattern[x, y - 1] = gameObject.AddComponent<Empty>() as Empty;
                         empty_space.Remove(place - 3);
                         break;
 
@@ -248,10 +253,6 @@ public class Card_Generator : MonoBehaviour {
                         break;
                 }
 
-                foreach (int removed_place in current_removed_places_array) {
-
-                    empty_space.Add(removed_place); 
-                }
                 return rolled_data;
             }
 
@@ -281,12 +282,12 @@ public class Card_Generator : MonoBehaviour {
 
     private bool Check_Right(int x, int width, int place) {
 
-        if (x + 1 > width) {
+        if (x + 1 >= width) {
 
             return false;
         }
 
-        return Check_Empty_Array_Contains(place - 1);
+        return Check_Empty_Array_Contains(place + 1);
     }
 
     private bool Check_Up(Difficulty_Modifiers.Cart_Type type, int y, int place) {
@@ -308,7 +309,7 @@ public class Card_Generator : MonoBehaviour {
 
     private bool Check_Down(Difficulty_Modifiers.Cart_Type type, int y, int height, int place) {
 
-        if (y + 1 > height) {
+        if (y + 1 >= height) {
 
             return false;
         }
