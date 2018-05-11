@@ -21,8 +21,8 @@ public class Card_Generator : MonoBehaviour {
     private ArrayList empty_space;
     private int width_12 = 3;
     private int height_12 = 4;
-    private int width_70 = 7;
-    private int height_70 = 10;
+    private int width_70 = 9;
+    private int height_70 = 12;
 
     private Shape_Sizes[] shape_sizes_array = new Shape_Sizes[2] { Shape_Sizes.Size1x1, Shape_Sizes.Size2x1 };
     private Shapes_1x1[] shapes_1x1_array = new Shapes_1x1[3] { Shapes_1x1.Square, Shapes_1x1.Triangle, Shapes_1x1.Circle };
@@ -127,8 +127,10 @@ public class Card_Generator : MonoBehaviour {
                     break;
             }
 
-            current_can_roll_2x1 = true;
+           
         }
+
+        current_can_roll_2x1 = true;
     }
 
     private void Generate_Card70() {
@@ -136,12 +138,19 @@ public class Card_Generator : MonoBehaviour {
         card_pattern = new Shape[width_70, height_70];
         empty_space = new ArrayList();
         Setup_Generation(width_70, height_70);
+        current_can_roll_2x1 = false;
 
         for (int i = 0; i < difficulty_modifires.Number_of_figures; i++) {
 
             if (empty_space.Count == 0) {
 
                 Debug.Log("Error not enought space on card");
+                break;
+            }
+
+            if (current_can_roll_1x1 == false) {
+
+                Debug.Log("Error no more correct place on card");
                 break;
             }
 
@@ -158,16 +167,19 @@ public class Card_Generator : MonoBehaviour {
 
                 case Shape_Sizes.Size1x1:
 
-                    current_place = Find_Empty_Space_12_1x1();
-                    current_shape = Roll_Shape_1x1();
-                    current_shape.Set_Colour(Roll_Colour());
-                    Save_Shape(current_place, current_shape, width_12, height_12);
-                    Debug.Log("place " + current_place + " shape " + current_shape + "colour" + current_shape.Get_Colour() + "rotation " + current_shape.Get_Rotation());
+                    current_place = Find_Empty_Space_70_1x1(width_70, height_70);
+                    if (current_place != -1) {
+
+                        current_shape = Roll_Shape_1x1();
+                        current_shape.Set_Colour(Roll_Colour());
+                        Save_Shape(current_place, current_shape, width_12, height_12);
+                        Debug.Log("place " + current_place + " shape " + current_shape + "colour" + current_shape.Get_Colour() + "rotation " + current_shape.Get_Rotation());
+                    }
                     break;
 
                 case Shape_Sizes.Size2x1:
 
-
+                    Debug.Log("2x1");
 
                     break;
 
@@ -177,9 +189,10 @@ public class Card_Generator : MonoBehaviour {
                     Debug.Log(current_shape_size);
                     break;
             }
-
-            current_can_roll_2x1 = true;
         }
+
+        current_can_roll_2x1 = true;
+        current_can_roll_1x1 = true;
     }
 
     private void Setup_Generation(int width, int height) {
@@ -320,7 +333,105 @@ public class Card_Generator : MonoBehaviour {
         }
     }
 
-   
+    private int Find_Empty_Space_70_1x1(int width, int height) {
+
+        current_removed_places_array = new ArrayList();
+
+        while (true) {
+
+            current_place_status_array = new ArrayList();
+
+            int rnd = Random.Range(0, empty_space.Count);
+            int place = (int)empty_space[rnd];
+            int counter = place;
+
+            int x = 0;
+            int y = 0;
+
+            for (int i = 0; i < height; i++) {
+
+                for (int j = 0; j < width; j++) {
+
+                    if (counter == 0) {
+
+                        x = j;
+                        y = i;
+                    }
+
+                    counter--;
+                }
+            }
+
+            current_place_status_array.Add(Check_Left(x, place, 1));
+           
+            current_place_status_array.Add(Check_Up(difficulty_modifires.Cart_type, y, place, 1));
+          
+            current_place_status_array.Add(Check_Right(x, width_70, place, 1));
+          
+            current_place_status_array.Add(Check_Down(difficulty_modifires.Cart_type, y, height_70, place, 1));
+        
+            current_place_status_array.Add(Check_Diagonal_Up_Left(difficulty_modifires.Cart_type, x, y, place, 1, 1));
+       
+            current_place_status_array.Add(Check_Diagonal_Up_Right(difficulty_modifires.Cart_type, x, y, width_70, place, 1, 1));
+        
+            current_place_status_array.Add(Check_Diagonal_Down_Left(difficulty_modifires.Cart_type, x, y, height_70, place, 1, 1));
+          
+            current_place_status_array.Add(Check_Diagonal_Down_Right(difficulty_modifires.Cart_type, x, y, width_70, height_70, place, 1, 1));
+
+            if (current_place_status_array.Contains(false)) {
+
+                current_removed_places_array.Add(place);
+                empty_space.RemoveAt(rnd);
+            }
+            else {
+
+                empty_space.RemoveAt(rnd);
+
+                foreach (int removed_place in current_removed_places_array) {
+
+                    empty_space.Add(removed_place);
+                }
+
+                card_pattern[x, y - 1] = gameObject.AddComponent<Empty>() as Empty; //up
+                empty_space.Remove(place - 9);
+
+                card_pattern[x, y + 1] = gameObject.AddComponent<Empty>() as Empty; // down
+                empty_space.Remove(place + 9);
+
+                card_pattern[x + 1, y] = gameObject.AddComponent<Empty>() as Empty; // r
+                empty_space.Remove(place + 1);
+
+                card_pattern[x - 1, y] = gameObject.AddComponent<Empty>() as Empty; // l
+                empty_space.Remove(place - 1);
+
+                card_pattern[x - 1, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ul
+                empty_space.Remove(place - 10);
+
+                card_pattern[x + 1, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ur
+                empty_space.Remove(place - 8);
+
+                card_pattern[x - 1, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dl
+                empty_space.Remove(place + 8);
+
+                card_pattern[x + 1, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dr
+                empty_space.Remove(place + 10);
+
+                return place;
+            }
+
+            if (empty_space.Count == 0) {
+
+                foreach (int removed_place in current_removed_places_array) {
+
+                    empty_space.Add(removed_place);
+                    
+                }
+
+                current_can_roll_1x1 = false;
+                return -1;
+            }
+        }
+    }
 
     private bool Check_Diagonal_Up_Left(Difficulty_Modifiers.Cart_Type type, int x, int y, int place, int left, int up) {
 
@@ -341,7 +452,7 @@ public class Card_Generator : MonoBehaviour {
         }
         else {
 
-            int res = (place - left) - (up * 7);
+            int res = (place - left) - (up * 9);
             return Check_Empty_Array_Contains(res);
         }
     }
@@ -365,7 +476,7 @@ public class Card_Generator : MonoBehaviour {
         }
         else {
 
-            int res = (place + right) - (up * 7);
+            int res = (place + right) - (up * 9);
             return Check_Empty_Array_Contains(res);
         }
     }
@@ -389,7 +500,7 @@ public class Card_Generator : MonoBehaviour {
         }
         else {
 
-            int res = (place - left) + (down * 7);
+            int res = (place - left) + (down * 9);
             return Check_Empty_Array_Contains(res);
         }
     }
@@ -413,7 +524,7 @@ public class Card_Generator : MonoBehaviour {
         }
         else {
 
-            int res = (place + right) + (down * 7);
+            int res = (place + right) + (down * 9);
             return Check_Empty_Array_Contains(res);
         }
     }
@@ -454,7 +565,7 @@ public class Card_Generator : MonoBehaviour {
         }
         else {
 
-            int res = place - (up * 7);
+            int res = place - (up * 9);
             return Check_Empty_Array_Contains(res);
         }
     }
@@ -473,14 +584,14 @@ public class Card_Generator : MonoBehaviour {
         }
         else {
 
-            int res = place + (down * 3);
-            return Check_Empty_Array_Contains(place + 7);
+            int res = place + (down * 9);
+            return Check_Empty_Array_Contains(res);
         }
     }
 
     private bool Check_Empty_Array_Contains(int check) {
 
-        if (empty_space.Contains(check)) {
+        if (empty_space.Contains(check) || current_removed_places_array.Contains(check)) {
 
             return true;
         }
