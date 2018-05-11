@@ -29,9 +29,15 @@ public class Card_Generator : MonoBehaviour {
     private Shapes_2x1[] shapes_2x1_array = new Shapes_2x1[1] { Shapes_2x1.Rectangle };
     private Shape.Rotation[] rotation_array = new Shape.Rotation[4] { Shape.Rotation.Up, Shape.Rotation.Down, Shape.Rotation.Right, Shape.Rotation.Left };
     private Shape.Figures_Colours[] colours_array;
+
     private ArrayList current_rotation_array;
+    private ArrayList current_place_status_array;
     private ArrayList current_removed_places_array;
     private bool current_can_roll_2x1 = true;
+    private bool current_can_roll_1x1 = true;
+    private int current_place;
+    private Shape_Sizes current_shape_size;
+    private Shape current_shape;
 
     public void Generate_Card(Difficulty_Modifiers incoming_difficulty_modifires) {
 
@@ -63,10 +69,6 @@ public class Card_Generator : MonoBehaviour {
         empty_space = new ArrayList();
         Setup_Generation(width_12, height_12);
 
-        int current_place;
-        Shape_Sizes current_shape_size;
-        Shape current_shape;
-       
         for (int i = 0; i < difficulty_modifires.Number_of_figures; i++) {
 
             if (empty_space.Count == 0) {
@@ -124,12 +126,60 @@ public class Card_Generator : MonoBehaviour {
                     Debug.Log(current_shape_size);
                     break;
             }
+
+            current_can_roll_2x1 = true;
         }
     }
 
     private void Generate_Card70() {
 
         card_pattern = new Shape[width_70, height_70];
+        empty_space = new ArrayList();
+        Setup_Generation(width_70, height_70);
+
+        for (int i = 0; i < difficulty_modifires.Number_of_figures; i++) {
+
+            if (empty_space.Count == 0) {
+
+                Debug.Log("Error not enought space on card");
+                break;
+            }
+
+            if (current_can_roll_2x1) {
+
+                current_shape_size = Roll_Shape_Sizes();
+            }
+            else {
+
+                current_shape_size = Shape_Sizes.Size1x1;
+            }
+
+            switch (current_shape_size) {
+
+                case Shape_Sizes.Size1x1:
+
+                    current_place = Find_Empty_Space_12_1x1();
+                    current_shape = Roll_Shape_1x1();
+                    current_shape.Set_Colour(Roll_Colour());
+                    Save_Shape(current_place, current_shape, width_12, height_12);
+                    Debug.Log("place " + current_place + " shape " + current_shape + "colour" + current_shape.Get_Colour() + "rotation " + current_shape.Get_Rotation());
+                    break;
+
+                case Shape_Sizes.Size2x1:
+
+
+
+                    break;
+
+                default:
+
+                    Debug.Log("Error missing rolled shape size");
+                    Debug.Log(current_shape_size);
+                    break;
+            }
+
+            current_can_roll_2x1 = true;
+        }
     }
 
     private void Setup_Generation(int width, int height) {
@@ -185,19 +235,19 @@ public class Card_Generator : MonoBehaviour {
                 }
             }
 
-            if (Check_Left(x, place)) {
+            if (Check_Left(x, place, 1)) {
 
                 current_rotation_array.Add(Shape.Rotation.Left);
             }
-            if (Check_Up(difficulty_modifires.Cart_type, y, place)) {
+            if (Check_Up(difficulty_modifires.Cart_type, y, place, 1)) {
 
                 current_rotation_array.Add(Shape.Rotation.Up);
             }
-            if (Check_Right(x, width_12, place)) {
+            if (Check_Right(x, width_12, place, 1)) {
 
                 current_rotation_array.Add(Shape.Rotation.Right);
             }
-            if (Check_Down(difficulty_modifires.Cart_type, y, height_12, place)) {
+            if (Check_Down(difficulty_modifires.Cart_type, y, height_12, place, 1)) {
 
                 current_rotation_array.Add(Shape.Rotation.Down);
             }
@@ -270,27 +320,14 @@ public class Card_Generator : MonoBehaviour {
         }
     }
 
-    private bool Check_Left(int x, int place) {
+   
+
+    private bool Check_Diagonal_Up_Left(Difficulty_Modifiers.Cart_Type type, int x, int y, int place, int left, int up) {
 
         if (x - 1 < 0) {
 
             return false;
         }
-
-        return Check_Empty_Array_Contains(place - 1);
-    }
-
-    private bool Check_Right(int x, int width, int place) {
-
-        if (x + 1 >= width) {
-
-            return false;
-        }
-
-        return Check_Empty_Array_Contains(place + 1);
-    }
-
-    private bool Check_Up(Difficulty_Modifiers.Cart_Type type, int y, int place) {
 
         if (y - 1 < 0) {
 
@@ -299,15 +336,46 @@ public class Card_Generator : MonoBehaviour {
 
         if (type == Difficulty_Modifiers.Cart_Type.Cart_Type12) {
 
-            return Check_Empty_Array_Contains(place - 3);
+            int res = (place - left) - (up * 3);
+            return Check_Empty_Array_Contains(res);
         }
         else {
 
-            return Check_Empty_Array_Contains(place - 7);
+            int res = (place - left) - (up * 7);
+            return Check_Empty_Array_Contains(res);
         }
     }
 
-    private bool Check_Down(Difficulty_Modifiers.Cart_Type type, int y, int height, int place) {
+    private bool Check_Diagonal_Up_Right(Difficulty_Modifiers.Cart_Type type, int x, int y, int width, int place, int right, int up) {
+
+        if (x + 1 >= width) {
+
+            return false;
+        }
+
+        if (y - 1 < 0) {
+
+            return false;
+        }
+
+        if (type == Difficulty_Modifiers.Cart_Type.Cart_Type12) {
+
+            int res = (place + right) - (up * 3);
+            return Check_Empty_Array_Contains(res);
+        }
+        else {
+
+            int res = (place + right) - (up * 7);
+            return Check_Empty_Array_Contains(res);
+        }
+    }
+
+    private bool Check_Diagonal_Down_Left(Difficulty_Modifiers.Cart_Type type, int x, int y, int height, int place, int left, int down) {
+
+        if (x - 1 < 0) {
+
+            return false;
+        }
 
         if (y + 1 >= height) {
 
@@ -316,10 +384,96 @@ public class Card_Generator : MonoBehaviour {
 
         if (type == Difficulty_Modifiers.Cart_Type.Cart_Type12) {
 
+            int res = (place - left) + (down * 3);
+            return Check_Empty_Array_Contains(res);
+        }
+        else {
+
+            int res = (place - left) + (down * 7);
+            return Check_Empty_Array_Contains(res);
+        }
+    }
+
+    private bool Check_Diagonal_Down_Right(Difficulty_Modifiers.Cart_Type type, int x, int y, int width, int height, int place, int right, int down) {
+
+        if (x + 1 >= width) {
+
+            return false;
+        }
+
+        if (y + 1 >= height) {
+
+            return false;
+        }
+
+        if (type == Difficulty_Modifiers.Cart_Type.Cart_Type12) {
+
+            int res = (place + right) + (down * 3);
+            return Check_Empty_Array_Contains(res);
+        }
+        else {
+
+            int res = (place + right) + (down * 7);
+            return Check_Empty_Array_Contains(res);
+        }
+    }
+
+    private bool Check_Left(int x, int place, int left) {
+
+        if (x - 1 < 0) {
+
+            return false;
+        }
+
+        int res = place - left;
+        return Check_Empty_Array_Contains(res);
+    }
+
+    private bool Check_Right(int x, int width, int place, int right) {
+
+        if (x + 1 >= width) {
+
+            return false;
+        }
+
+        int res = place + right;
+        return Check_Empty_Array_Contains(res);
+    }
+
+    private bool Check_Up(Difficulty_Modifiers.Cart_Type type, int y, int place, int up) {
+
+        if (y - 1 < 0) {
+
+            return false;
+        }
+
+        if (type == Difficulty_Modifiers.Cart_Type.Cart_Type12) {
+
+            int res = place - (up * 3);
+            return Check_Empty_Array_Contains(res);
+        }
+        else {
+
+            int res = place - (up * 7);
+            return Check_Empty_Array_Contains(res);
+        }
+    }
+
+    private bool Check_Down(Difficulty_Modifiers.Cart_Type type, int y, int height, int place, int down) {
+
+        if (y + 1 >= height) {
+
+            return false;
+        }
+
+        if (type == Difficulty_Modifiers.Cart_Type.Cart_Type12) {
+
+            int res = place + (down * 3);
             return Check_Empty_Array_Contains(place + 3);
         }
         else {
 
+            int res = place + (down * 3);
             return Check_Empty_Array_Contains(place + 7);
         }
     }
