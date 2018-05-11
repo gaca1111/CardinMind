@@ -447,12 +447,12 @@ public class Card_Generator : MonoBehaviour {
 
         if (type == Difficulty_Modifiers.Cart_Type.Cart_Type12) {
 
-            int res = (place - left) - (up * 3);
+            int res = (place - left) - (up * width_12);
             return Check_Empty_Array_Contains(res);
         }
         else {
 
-            int res = (place - left) - (up * 9);
+            int res = (place - left) - (up * width_70);
             return Check_Empty_Array_Contains(res);
         }
     }
@@ -471,12 +471,12 @@ public class Card_Generator : MonoBehaviour {
 
         if (type == Difficulty_Modifiers.Cart_Type.Cart_Type12) {
 
-            int res = (place + right) - (up * 3);
+            int res = (place + right) - (up * width_12);
             return Check_Empty_Array_Contains(res);
         }
         else {
 
-            int res = (place + right) - (up * 9);
+            int res = (place + right) - (up * width_70);
             return Check_Empty_Array_Contains(res);
         }
     }
@@ -495,12 +495,12 @@ public class Card_Generator : MonoBehaviour {
 
         if (type == Difficulty_Modifiers.Cart_Type.Cart_Type12) {
 
-            int res = (place - left) + (down * 3);
+            int res = (place - left) + (down * width_12);
             return Check_Empty_Array_Contains(res);
         }
         else {
 
-            int res = (place - left) + (down * 9);
+            int res = (place - left) + (down * width_70);
             return Check_Empty_Array_Contains(res);
         }
     }
@@ -519,12 +519,12 @@ public class Card_Generator : MonoBehaviour {
 
         if (type == Difficulty_Modifiers.Cart_Type.Cart_Type12) {
 
-            int res = (place + right) + (down * 3);
+            int res = (place + right) + (down * width_12);
             return Check_Empty_Array_Contains(res);
         }
         else {
 
-            int res = (place + right) + (down * 9);
+            int res = (place + right) + (down * width_70);
             return Check_Empty_Array_Contains(res);
         }
     }
@@ -560,12 +560,12 @@ public class Card_Generator : MonoBehaviour {
 
         if (type == Difficulty_Modifiers.Cart_Type.Cart_Type12) {
 
-            int res = place - (up * 3);
+            int res = place - (up * width_12);
             return Check_Empty_Array_Contains(res);
         }
         else {
 
-            int res = place - (up * 9);
+            int res = place - (up * width_70);
             return Check_Empty_Array_Contains(res);
         }
     }
@@ -579,12 +579,12 @@ public class Card_Generator : MonoBehaviour {
 
         if (type == Difficulty_Modifiers.Cart_Type.Cart_Type12) {
 
-            int res = place + (down * 3);
-            return Check_Empty_Array_Contains(place + 3);
+            int res = place + (down * width_12);
+            return Check_Empty_Array_Contains(res);
         }
         else {
 
-            int res = place + (down * 9);
+            int res = place + (down * width_70);
             return Check_Empty_Array_Contains(res);
         }
     }
