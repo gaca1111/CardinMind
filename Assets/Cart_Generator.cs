@@ -126,8 +126,6 @@ public class Card_Generator : MonoBehaviour {
                     Debug.Log(current_shape_size);
                     break;
             }
-
-           
         }
 
         current_can_roll_2x1 = true;
@@ -138,7 +136,6 @@ public class Card_Generator : MonoBehaviour {
         card_pattern = new Shape[width_70, height_70];
         empty_space = new ArrayList();
         Setup_Generation(width_70, height_70);
-        current_can_roll_2x1 = false;
 
         for (int i = 0; i < difficulty_modifires.Number_of_figures; i++) {
 
@@ -179,7 +176,27 @@ public class Card_Generator : MonoBehaviour {
 
                 case Shape_Sizes.Size2x1:
 
-                    Debug.Log("2x1");
+                    Roll_Struct2x1 roled_struct = Find_Empty_Space_70_2x1(width_70, height_70);
+
+                    if (roled_struct.is_2x1) {
+
+                        current_place = roled_struct.place;
+                        current_shape = Roll_Shape_2x1(roled_struct.rotation);
+                        current_shape.Set_Colour(Roll_Colour());
+                        Save_Shape(current_place, current_shape, width_12, height_12);
+                        Debug.Log("place " + current_place + " shape " + current_shape + "colour" + current_shape.Get_Colour() + "rotation " + current_shape.Get_Rotation());
+                    }
+                    else {
+
+                        current_place = Find_Empty_Space_70_1x1(width_70, height_70);
+                        if (current_place != -1) {
+
+                            current_shape = Roll_Shape_1x1();
+                            current_shape.Set_Colour(Roll_Colour());
+                            Save_Shape(current_place, current_shape, width_12, height_12);
+                            Debug.Log("place " + current_place + " shape " + current_shape + "colour" + current_shape.Get_Colour() + "rotation " + current_shape.Get_Rotation());
+                        }
+                    }
 
                     break;
 
@@ -433,14 +450,354 @@ public class Card_Generator : MonoBehaviour {
         }
     }
 
+    private Roll_Struct2x1 Find_Empty_Space_70_2x1(int width, int height) {
+
+        Roll_Struct2x1 rolled_data = new Roll_Struct2x1();
+        current_removed_places_array = new ArrayList();
+
+        while (true) {
+
+            current_rotation_array = new ArrayList();
+
+            int rnd = Random.Range(0, empty_space.Count);
+            int place = (int)empty_space[rnd];
+            int counter = place;
+
+            Debug.Log(place);
+
+            int x = 0;
+            int y = 0;
+
+            for (int i = 0; i < height; i++) {
+
+                for (int j = 0; j < width; j++) {
+
+                    if (counter == 0) {
+
+                        x = j;
+                        y = i;
+                    }
+
+                    counter--;
+                }
+            }
+
+
+
+
+            current_place_status_array = new ArrayList();
+
+            current_place_status_array.Add(Check_Left(x, place, 1));
+
+            current_place_status_array.Add(Check_Up(difficulty_modifires.Cart_type, y, place, 1));
+
+            current_place_status_array.Add(Check_Right(x, width_70, place, 1));
+
+            current_place_status_array.Add(Check_Down(difficulty_modifires.Cart_type, y, height_70, place, 1));
+
+            current_place_status_array.Add(Check_Diagonal_Up_Left(difficulty_modifires.Cart_type, x, y, place, 1, 1));
+
+            current_place_status_array.Add(Check_Diagonal_Up_Right(difficulty_modifires.Cart_type, x, y, width_70, place, 1, 1));
+
+            current_place_status_array.Add(Check_Diagonal_Down_Left(difficulty_modifires.Cart_type, x, y, height_70, place, 1, 1));
+
+            current_place_status_array.Add(Check_Diagonal_Down_Right(difficulty_modifires.Cart_type, x, y, width_70, height_70, place, 1, 1));
+
+            if (!current_place_status_array.Contains(false)) {
+
+                current_place_status_array = new ArrayList();
+          
+                current_place_status_array.Add(Check_Diagonal_Up_Right(difficulty_modifires.Cart_type, x, y, width_70, place, 2, 1));
+
+                current_place_status_array.Add(Check_Diagonal_Up_Right(difficulty_modifires.Cart_type, x, y, width_70, place, 3, 1));
+
+                current_place_status_array.Add(Check_Diagonal_Up_Right(difficulty_modifires.Cart_type, x, y, width_70, place, 4, 1));
+
+                current_place_status_array.Add(Check_Right(x, width_70, place, 2));
+
+                current_place_status_array.Add(Check_Right(x, width_70, place, 3));
+
+                current_place_status_array.Add(Check_Right(x, width_70, place, 4));
+
+                current_place_status_array.Add(Check_Diagonal_Down_Right(difficulty_modifires.Cart_type, x, y, width_70, height_70, place, 2, 1));
+
+                current_place_status_array.Add(Check_Diagonal_Down_Right(difficulty_modifires.Cart_type, x, y, width_70, height_70, place, 3, 1));
+
+                current_place_status_array.Add(Check_Diagonal_Down_Right(difficulty_modifires.Cart_type, x, y, width_70, height_70, place, 4, 1));
+
+                if (current_place_status_array.Contains(false)) {
+
+                    current_place_status_array = new ArrayList();
+                }
+                else {
+
+                    current_place_status_array = new ArrayList();
+                    current_rotation_array.Add(Shape.Rotation.Right);
+                }
+
+                current_place_status_array.Add(Check_Diagonal_Up_Left(difficulty_modifires.Cart_type, x, y, place, 2, 1));
+
+                current_place_status_array.Add(Check_Diagonal_Up_Left(difficulty_modifires.Cart_type, x, y, place, 3, 1));
+
+                current_place_status_array.Add(Check_Diagonal_Up_Left(difficulty_modifires.Cart_type, x, y, place, 4, 1));
+
+                current_place_status_array.Add(Check_Left(x, place, 2));
+
+                current_place_status_array.Add(Check_Left(x, place, 3));
+
+                current_place_status_array.Add(Check_Left(x, place, 4));
+
+                current_place_status_array.Add(Check_Diagonal_Down_Left(difficulty_modifires.Cart_type, x, y, height_70, place, 2, 1));
+
+                current_place_status_array.Add(Check_Diagonal_Down_Left(difficulty_modifires.Cart_type, x, y, height_70, place, 3, 1));
+
+                current_place_status_array.Add(Check_Diagonal_Down_Left(difficulty_modifires.Cart_type, x, y, height_70, place, 4, 1));
+
+                if (current_place_status_array.Contains(false)) {
+
+                    current_place_status_array = new ArrayList();
+                }
+                else {
+
+                    current_place_status_array = new ArrayList();
+                    current_rotation_array.Add(Shape.Rotation.Left);
+                }
+
+                current_place_status_array.Add(Check_Diagonal_Down_Left(difficulty_modifires.Cart_type, x, y, height_70, place, 1, 2));
+
+                current_place_status_array.Add(Check_Diagonal_Down_Left(difficulty_modifires.Cart_type, x, y, height_70, place, 1, 3));
+
+                current_place_status_array.Add(Check_Diagonal_Down_Left(difficulty_modifires.Cart_type, x, y, height_70, place, 1, 4));
+
+                current_place_status_array.Add(Check_Down(difficulty_modifires.Cart_type, y, height_70, place, 2));
+
+                current_place_status_array.Add(Check_Down(difficulty_modifires.Cart_type, y, height_70, place, 3));
+
+                current_place_status_array.Add(Check_Down(difficulty_modifires.Cart_type, y, height_70, place, 4));
+
+                current_place_status_array.Add(Check_Diagonal_Down_Right(difficulty_modifires.Cart_type, x, y, width_70, height_70, place, 1, 2));
+
+                current_place_status_array.Add(Check_Diagonal_Down_Right(difficulty_modifires.Cart_type, x, y, width_70, height_70, place, 1, 3));
+
+                current_place_status_array.Add(Check_Diagonal_Down_Right(difficulty_modifires.Cart_type, x, y, width_70, height_70, place, 1, 4));
+
+                if (current_place_status_array.Contains(false)) {
+
+                    current_place_status_array = new ArrayList();
+                }
+                else {
+
+                    current_place_status_array = new ArrayList();
+                    current_rotation_array.Add(Shape.Rotation.Down);
+                }
+           
+                current_place_status_array.Add(Check_Diagonal_Up_Left(difficulty_modifires.Cart_type, x, y, place, 1, 2));
+
+                current_place_status_array.Add(Check_Diagonal_Up_Left(difficulty_modifires.Cart_type, x, y, place, 1, 3));
+
+                current_place_status_array.Add(Check_Diagonal_Up_Left(difficulty_modifires.Cart_type, x, y, place, 1, 4));
+
+                current_place_status_array.Add(Check_Up(difficulty_modifires.Cart_type, y, place, 2));
+
+                current_place_status_array.Add(Check_Up(difficulty_modifires.Cart_type, y, place, 3));
+
+                current_place_status_array.Add(Check_Up(difficulty_modifires.Cart_type, y, place, 4));
+
+                current_place_status_array.Add(Check_Diagonal_Up_Right(difficulty_modifires.Cart_type, x, y, width_70, place, 1, 2));
+
+                current_place_status_array.Add(Check_Diagonal_Up_Right(difficulty_modifires.Cart_type, x, y, width_70, place, 1, 3));
+
+                current_place_status_array.Add(Check_Diagonal_Up_Right(difficulty_modifires.Cart_type, x, y, width_70, place, 1, 4));
+
+                if (current_place_status_array.Contains(false)) {
+
+                    current_place_status_array = new ArrayList();
+                }
+                else {
+
+                    current_place_status_array = new ArrayList();
+                    current_rotation_array.Add(Shape.Rotation.Up);
+                }
+            }
+
+            if (current_rotation_array.Count == 0) {
+
+                current_removed_places_array.Add(place);
+                empty_space.RemoveAt(rnd);
+            }
+            else {
+
+                rolled_data.rotation = (Shape.Rotation)current_rotation_array[Random.Range(0, current_rotation_array.Count)];
+                rolled_data.place = place;
+                rolled_data.is_2x1 = true;
+
+                empty_space.RemoveAt(rnd);
+
+                foreach (int removed_place in current_removed_places_array) {
+
+                    empty_space.Add(removed_place);
+                }
+
+                card_pattern[x, y - 1] = gameObject.AddComponent<Empty>() as Empty; //up
+                empty_space.Remove(place - 9);
+
+                card_pattern[x, y + 1] = gameObject.AddComponent<Empty>() as Empty; // down
+                empty_space.Remove(place + 9);
+
+                card_pattern[x + 1, y] = gameObject.AddComponent<Empty>() as Empty; // r
+                empty_space.Remove(place + 1);
+
+                card_pattern[x - 1, y] = gameObject.AddComponent<Empty>() as Empty; // l
+                empty_space.Remove(place - 1);
+
+                card_pattern[x - 1, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ul
+                empty_space.Remove(place - 10);
+
+                card_pattern[x + 1, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ur
+                empty_space.Remove(place - 8);
+
+                card_pattern[x - 1, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dl
+                empty_space.Remove(place + 8);
+
+                card_pattern[x + 1, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dr
+                empty_space.Remove(place + 10);
+
+                switch (rolled_data.rotation) {
+
+                    case Shape.Rotation.Up:
+
+                        card_pattern[x, y - 2] = gameObject.AddComponent<Empty>() as Empty; //up
+                        empty_space.Remove(place - 18);
+                        card_pattern[x, y - 3] = gameObject.AddComponent<Empty>() as Empty; //up
+                        empty_space.Remove(place - 27);
+                        card_pattern[x, y - 4] = gameObject.AddComponent<Empty>() as Empty; //up
+                        empty_space.Remove(place - 36);
+
+                        card_pattern[x - 1, y - 2] = gameObject.AddComponent<Empty>() as Empty; /// ul
+                        empty_space.Remove(place - 19);
+                        card_pattern[x - 1, y - 3] = gameObject.AddComponent<Empty>() as Empty; /// ul
+                        empty_space.Remove(place - 28);
+                        card_pattern[x - 1, y - 4] = gameObject.AddComponent<Empty>() as Empty; /// ul
+                        empty_space.Remove(place - 37);
+
+                        card_pattern[x + 1, y - 2] = gameObject.AddComponent<Empty>() as Empty; /// ur
+                        empty_space.Remove(place - 17);
+                        card_pattern[x + 1, y - 3] = gameObject.AddComponent<Empty>() as Empty; /// ur
+                        empty_space.Remove(place - 26);
+                        card_pattern[x + 1, y - 4] = gameObject.AddComponent<Empty>() as Empty; /// ur
+                        empty_space.Remove(place - 35);
+
+                        break;
+
+                    case Shape.Rotation.Down:
+
+                        card_pattern[x, y + 2] = gameObject.AddComponent<Empty>() as Empty; // down
+                        empty_space.Remove(place + 18);
+                        card_pattern[x, y + 3] = gameObject.AddComponent<Empty>() as Empty; // down
+                        empty_space.Remove(place + 27);
+                        card_pattern[x, y + 4] = gameObject.AddComponent<Empty>() as Empty; // down
+                        empty_space.Remove(place + 36);
+
+                        card_pattern[x - 1, y + 2] = gameObject.AddComponent<Empty>() as Empty; /// dl
+                        empty_space.Remove(place + 17);
+                        card_pattern[x - 1, y + 3] = gameObject.AddComponent<Empty>() as Empty; /// dl
+                        empty_space.Remove(place + 26);
+                        card_pattern[x - 1, y + 4] = gameObject.AddComponent<Empty>() as Empty; /// dl
+                        empty_space.Remove(place + 35);
+
+                        card_pattern[x + 1, y + 2] = gameObject.AddComponent<Empty>() as Empty; /// dr
+                        empty_space.Remove(place + 19);
+                        card_pattern[x + 1, y + 3] = gameObject.AddComponent<Empty>() as Empty; /// dr
+                        empty_space.Remove(place + 28);
+                        card_pattern[x + 1, y + 4] = gameObject.AddComponent<Empty>() as Empty; /// dr
+                        empty_space.Remove(place + 37);
+
+                        break;
+
+                    case Shape.Rotation.Right:
+
+                        card_pattern[x + 2, y] = gameObject.AddComponent<Empty>() as Empty; // r
+                        empty_space.Remove(place + 2);
+                        card_pattern[x + 3, y] = gameObject.AddComponent<Empty>() as Empty; // r
+                        empty_space.Remove(place + 3);
+                        card_pattern[x + 4, y] = gameObject.AddComponent<Empty>() as Empty; // r
+                        empty_space.Remove(place + 4);
+
+                        card_pattern[x + 2, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ur
+                        empty_space.Remove(place - 8);
+                        card_pattern[x + 3, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ur
+                        empty_space.Remove(place - 7);
+                        card_pattern[x + 4, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ur
+                        empty_space.Remove(place - 6);
+
+                        card_pattern[x + 2, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dr
+                        empty_space.Remove(place + 11);
+                        card_pattern[x + 3, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dr
+                        empty_space.Remove(place + 12);
+                        card_pattern[x + 4, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dr
+                        empty_space.Remove(place + 13);
+
+                        break;
+
+                    case Shape.Rotation.Left:
+
+                        card_pattern[x - 2, y] = gameObject.AddComponent<Empty>() as Empty; // l
+                        empty_space.Remove(place - 2);
+                        card_pattern[x - 3, y] = gameObject.AddComponent<Empty>() as Empty; // l
+                        empty_space.Remove(place - 3);
+                        card_pattern[x - 4, y] = gameObject.AddComponent<Empty>() as Empty; // l
+                        empty_space.Remove(place - 4);
+
+                        card_pattern[x - 2, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ul
+                        empty_space.Remove(place - 11);
+                        card_pattern[x - 3, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ul
+                        empty_space.Remove(place - 12);
+                        card_pattern[x - 4, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ul
+                        empty_space.Remove(place - 13);
+
+                        card_pattern[x - 2, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dl
+                        empty_space.Remove(place + 7);
+                        card_pattern[x - 3, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dl
+                        empty_space.Remove(place + 6);
+                        card_pattern[x - 4, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dl
+                        empty_space.Remove(place + 5);
+
+                        break;
+
+                    default:
+
+                        Debug.Log("Error missing rolled rotation");
+                        Debug.Log(rolled_data.rotation);
+                        break;
+                }
+
+                return rolled_data;
+            }
+
+            if (empty_space.Count == 0) {
+
+                foreach (int removed_place in current_removed_places_array) {
+
+                    empty_space.Add(removed_place);
+                }
+
+                current_can_roll_2x1 = false;
+                rolled_data.is_2x1 = false;
+
+                Debug.Log("k");
+                return rolled_data;
+            }
+        }
+    }
+
     private bool Check_Diagonal_Up_Left(Difficulty_Modifiers.Cart_Type type, int x, int y, int place, int left, int up) {
 
-        if (x - 1 < 0) {
+        if (x - left < 0) {
 
             return false;
         }
 
-        if (y - 1 < 0) {
+        if (y - up < 0) {
 
             return false;
         }
@@ -459,12 +816,12 @@ public class Card_Generator : MonoBehaviour {
 
     private bool Check_Diagonal_Up_Right(Difficulty_Modifiers.Cart_Type type, int x, int y, int width, int place, int right, int up) {
 
-        if (x + 1 >= width) {
+        if (x + right >= width) {
 
             return false;
         }
 
-        if (y - 1 < 0) {
+        if (y - up < 0) {
 
             return false;
         }
@@ -483,12 +840,12 @@ public class Card_Generator : MonoBehaviour {
 
     private bool Check_Diagonal_Down_Left(Difficulty_Modifiers.Cart_Type type, int x, int y, int height, int place, int left, int down) {
 
-        if (x - 1 < 0) {
+        if (x - left < 0) {
 
             return false;
         }
 
-        if (y + 1 >= height) {
+        if (y + down >= height) {
 
             return false;
         }
@@ -507,12 +864,12 @@ public class Card_Generator : MonoBehaviour {
 
     private bool Check_Diagonal_Down_Right(Difficulty_Modifiers.Cart_Type type, int x, int y, int width, int height, int place, int right, int down) {
 
-        if (x + 1 >= width) {
+        if (x + right >= width) {
 
             return false;
         }
 
-        if (y + 1 >= height) {
+        if (y + down >= height) {
 
             return false;
         }
@@ -531,7 +888,7 @@ public class Card_Generator : MonoBehaviour {
 
     private bool Check_Left(int x, int place, int left) {
 
-        if (x - 1 < 0) {
+        if (x - left < 0) {
 
             return false;
         }
@@ -542,7 +899,7 @@ public class Card_Generator : MonoBehaviour {
 
     private bool Check_Right(int x, int width, int place, int right) {
 
-        if (x + 1 >= width) {
+        if (x + right >= width) {
 
             return false;
         }
@@ -553,7 +910,7 @@ public class Card_Generator : MonoBehaviour {
 
     private bool Check_Up(Difficulty_Modifiers.Cart_Type type, int y, int place, int up) {
 
-        if (y - 1 < 0) {
+        if (y - up < 0) {
 
             return false;
         }
@@ -572,7 +929,7 @@ public class Card_Generator : MonoBehaviour {
 
     private bool Check_Down(Difficulty_Modifiers.Cart_Type type, int y, int height, int place, int down) {
 
-        if (y + 1 >= height) {
+        if (y + down >= height) {
 
             return false;
         }
