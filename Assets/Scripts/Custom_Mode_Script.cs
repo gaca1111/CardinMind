@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Custom_Mode_Script : MonoBehaviour
 {
-    public Button PlayButton, ReturnButton;
+    public Button PlayButton, ColorChoosingButton;
     public Slider AllowedMistakesSlider;
     public InputField NumberOfFiguresInputField, TimeRestrictionInputField;
     public Dropdown CardSizeDropdown, CardChoosingDropdown, GameModeDropdown, ColorFilingDropdown;
@@ -16,40 +17,42 @@ public class Custom_Mode_Script : MonoBehaviour
 	void Start ()
 	{
 	    var playButton = PlayButton.GetComponent<Button>();
-	    var returnButton = ReturnButton.GetComponent<Button>();
+	    var colorChoosingButton = ColorChoosingButton.GetComponent<Button>();
         SetInitialValue();
         AllowedMistakesSlider.onValueChanged.AddListener(AllowedMistakesSliderOnValueChange);
         playButton.onClick.AddListener(PlayOnClick);
-        returnButton.onClick.AddListener(ReturnOnClick);
-
-
-
+        colorChoosingButton.onClick.AddListener(ShowPopUp);
 	}
 
-    
+    //ColorChoosingButton.transform.position.y
+    private Rect buttonRect;
+    void ShowPopUp()
+    {
+        buttonRect= new Rect(0, 0, 200, 250);
+        PopupWindow.Show(buttonRect, new PopUpMenu());
+    }
 
     void PlayOnClick()
     {
         var difficultyModifiers = SettingDificulty();
-        var cardGenerator = gameObject.AddComponent<Card_Generator>() as Card_Generator;
+        var cardGenerator = gameObject.AddComponent<Card_Generator>();
+        var col = new List<Shape.Figures_Colours>();
 
-        var col = new List<Shape.Figures_Colours>
-        {
-            Shape.Figures_Colours.Dark_Blue,
-            Shape.Figures_Colours.Red,
-            Shape.Figures_Colours.Orange
-        };
+        if(PlayerPrefs.GetInt("Light_Blue") == 1) col.Add(Shape.Figures_Colours.Light_Blue);
+        if(PlayerPrefs.GetInt("Dark_Blue") == 1) col.Add(Shape.Figures_Colours.Dark_Blue);
+        if(PlayerPrefs.GetInt("Light_Green") == 1) col.Add(Shape.Figures_Colours.Light_Green);
+        if(PlayerPrefs.GetInt("Dark_Green") == 1) col.Add(Shape.Figures_Colours.Dark_Green);
+        if(PlayerPrefs.GetInt("Violet") == 1) col.Add(Shape.Figures_Colours.Violet);
+        if(PlayerPrefs.GetInt("Pink") == 1) col.Add(Shape.Figures_Colours.Pink);
+        if(PlayerPrefs.GetInt("Red") == 1) col.Add(Shape.Figures_Colours.Red);
+        if(PlayerPrefs.GetInt("Yellow") == 1) col.Add(Shape.Figures_Colours.Yellow);
+        if(PlayerPrefs.GetInt("Orange") == 1) col.Add(Shape.Figures_Colours.Orange);
 
         difficultyModifiers.Set_Figures_Colours(col);
 
         cardGenerator.Generate_Card(difficultyModifiers);
     }
-
-    void ReturnOnClick()
-    {
-
-    }
-
+    
     void AllowedMistakesSliderOnValueChange(float arg)
     {
         AllowedMistakesText.text = AllowedMistakesSlider.value.ToString();
@@ -69,7 +72,7 @@ public class Custom_Mode_Script : MonoBehaviour
     {
         var difficultyModifiers = gameObject.AddComponent<Difficulty_Modifiers>() as Difficulty_Modifiers;
 
-        difficultyModifiers.cardType = CardSizeDropdown.value == 12
+        difficultyModifiers.cardType = CardSizeDropdown.value == 0
             ? Difficulty_Modifiers.CardType.Cart_Type12
             : Difficulty_Modifiers.CardType.Cart_Type70;
         difficultyModifiers.Number_of_figures = NumberOfFiguresInputField.text != "" ? int.Parse(NumberOfFiguresInputField.text) : 12;
@@ -98,7 +101,7 @@ public class Custom_Mode_Script : MonoBehaviour
         PlayerPrefs.SetInt("ColoursOnlyMechanic", difficultyModifiers.Colours_only_mechanic.ToString() == "TRUE" ? 1 : 0);
         return difficultyModifiers;
     }
-
+    
     // Update is called once per frame
     void Update () {
 		
