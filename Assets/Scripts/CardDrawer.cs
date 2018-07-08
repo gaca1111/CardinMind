@@ -3,11 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.AccessControl;
 using UnityEngine;
+using Object = System.Object;
 
 public class CardDrawer : MonoBehaviour
 {
     public GameObject card;
     private SpriteRenderer[] _spriteRenderers;
+
+    public Sprite CircleSprite;
+    public Sprite SquereSprite;
+    public Sprite RectangleSprite;
+    public Sprite TriangleSprite;
 
     private Difficulty_Modifiers.CardType _cardType;
     private int number_of_figures;
@@ -40,16 +46,90 @@ public class CardDrawer : MonoBehaviour
         _difficultyModifiers.cardType = Difficulty_Modifiers.CardType.Cart_Type12;
         _difficultyModifiers.Number_of_figures = 5;
 
-        var cardPattern = _cardGenerator.Generate_Card(_difficultyModifiers);
-        var shapes = new List<Shape>();
-        foreach (var shape in cardPattern)
-        {
-            shapes.Add(shape);
-        }
+        _cardGenerator.Generate_Card(_difficultyModifiers);
+        var listOfShapes = _cardGenerator.Get_List_Of_Shape();
+
 
 
         card = GameObject.Find("CardToRemember");
         _spriteRenderers = card.GetComponentsInChildren<SpriteRenderer>();
+
+        foreach (var shapeWithPlace in listOfShapes)
+        {
+            int idPlace = shapeWithPlace.id_place+1;
+            if (shapeWithPlace.shape is Rectangle)
+            {
+                _spriteRenderers[idPlace].sprite = RectangleSprite;
+            }
+            else if (shapeWithPlace.shape is Circle)
+            {
+                _spriteRenderers[idPlace].sprite = CircleSprite;
+            }
+            else if (shapeWithPlace.shape is Square)
+            {
+                _spriteRenderers[idPlace].sprite = SquereSprite;
+            }
+            else if (shapeWithPlace.shape is Triangle)
+            {
+                _spriteRenderers[idPlace].sprite = TriangleSprite;
+            }
+
+            if (shapeWithPlace.shape.Get_Is_Rotative())
+            {
+                switch (shapeWithPlace.shape.Get_Rotation())
+                {
+                    case Shape.Rotation.Up:
+                        _spriteRenderers[idPlace].GetComponentInParent<Transform>().rotation = Quaternion.Euler(0,0,90);
+                        break;
+                    case Shape.Rotation.Down:
+                        _spriteRenderers[idPlace].GetComponentInParent<Transform>().rotation = Quaternion.Euler(0,0,-90);
+                        break;
+                    case Shape.Rotation.Left:
+                        _spriteRenderers[idPlace].GetComponentInParent<Transform>().Rotate(0, 0, 180);
+                        break;
+                    case Shape.Rotation.Right:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            Color color;
+            switch (shapeWithPlace.shape.Get_Colour())
+            {
+                case Shape.Figures_Colours.Light_Blue:
+                    color = Color.blue;
+                    break;
+                case Shape.Figures_Colours.Dark_Blue:
+                    color = new Color(0f, 0f, 0.625f);
+                    break;
+                case Shape.Figures_Colours.Light_Green:
+                    color = Color.green;
+                    break;
+                case Shape.Figures_Colours.Dark_Green:
+                    color = new Color(0.07f, 0.371f, 0.157f);
+                    break;
+                case Shape.Figures_Colours.Violet:
+                    color = new Color(0.64f, 0.285f, 0.64f);
+                    break;
+                case Shape.Figures_Colours.Pink:
+                    color = new Color(1f, 0.5f, 0.75f);
+                    break;
+                case Shape.Figures_Colours.Red:
+                    color = Color.red;
+                    break;
+                case Shape.Figures_Colours.Yellow:
+                    color = Color.yellow;
+                    break;
+                case Shape.Figures_Colours.Orange:
+                    color = new Color(1f,0.788f,0.055f);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+
+                    
+            }
+            _spriteRenderers[idPlace].color = color;
+        }
 
 
     }
