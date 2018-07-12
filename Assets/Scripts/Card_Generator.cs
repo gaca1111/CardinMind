@@ -1,7 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Text;
+using Boo.Lang;
 
+public struct Shape_With_Place
+{
+    public Shape shape;
+    public int id_place;
+}
 public struct Roll_Struct2x1 {
 
     public bool is_2x1;
@@ -38,10 +44,12 @@ public class Card_Generator : MonoBehaviour {
     private int current_place;
     private Shape_Sizes current_shape_size;
     private Shape current_shape;
+    private List<Shape_With_Place> list_of_shapes = new List<Shape_With_Place>();
 
-    public Shape[,] Generate_Card(Difficulty_Modifiers incoming_difficulty_modifires) {
+    public void Generate_Card(Difficulty_Modifiers incoming_difficulty_modifires) {
 
         difficulty_modifires = incoming_difficulty_modifires;
+
 
         switch (difficulty_modifires.cardType) {
 
@@ -61,8 +69,7 @@ public class Card_Generator : MonoBehaviour {
                 Debug.Log(difficulty_modifires.cardType);
                 break;
         }
-
-        return card_pattern;
+        
     }
 
     private void Generate_Card12() {
@@ -97,6 +104,12 @@ public class Card_Generator : MonoBehaviour {
                     current_shape.Set_Colour(Roll_Colour());
                     Save_Shape(current_place, current_shape, width_12, height_12);
                     Debug.Log("place " + current_place + " shape " + current_shape + "colour" + current_shape.Get_Colour() + "rotation " + current_shape.Get_Rotation());
+                    var shapeWithPlace = new Shape_With_Place
+                    {
+                        shape = current_shape,
+                        id_place = current_place
+                    };
+                    list_of_shapes.Add(shapeWithPlace);
                     break;
 
                 case Shape_Sizes.Size2x1:
@@ -110,6 +123,12 @@ public class Card_Generator : MonoBehaviour {
                         current_shape.Set_Colour(Roll_Colour());
                         Save_Shape(current_place, current_shape, width_12, height_12);
                         Debug.Log("place " + current_place + " shape " + current_shape + "colour" + current_shape.Get_Colour() + "rotation " + current_shape.Get_Rotation());
+                        shapeWithPlace = new Shape_With_Place
+                        {
+                            shape = current_shape,
+                            id_place = current_place
+                        };
+                        list_of_shapes.Add(shapeWithPlace);
                     }
                     else {
 
@@ -117,7 +136,13 @@ public class Card_Generator : MonoBehaviour {
                         current_shape = Roll_Shape_1x1();
                         current_shape.Set_Colour(Roll_Colour());
                         Save_Shape(current_place, current_shape, width_12, height_12);
-                        Debug.Log("place " + current_place + " shape " + current_shape + "colour" + current_shape.Get_Colour() + "rotation " + current_shape.Get_Rotation()); 
+                        Debug.Log("place " + current_place + " shape " + current_shape + "colour" + current_shape.Get_Colour() + "rotation " + current_shape.Get_Rotation());
+                        shapeWithPlace = new Shape_With_Place
+                        {
+                            shape = current_shape,
+                            id_place = current_place
+                        };
+                        list_of_shapes.Add(shapeWithPlace);
                     }
 
                     break;
@@ -173,6 +198,12 @@ public class Card_Generator : MonoBehaviour {
                         current_shape.Set_Colour(Roll_Colour());
                         Save_Shape(current_place, current_shape, width_12, height_12);
                         Debug.Log("place " + current_place + " shape " + current_shape + "colour" + current_shape.Get_Colour() + "rotation " + current_shape.Get_Rotation());
+                        var shapeWithPlace = new Shape_With_Place
+                        {
+                            shape = current_shape,
+                            id_place = current_place
+                        };
+                        list_of_shapes.Add(shapeWithPlace);
                     }
                     break;
 
@@ -187,6 +218,12 @@ public class Card_Generator : MonoBehaviour {
                         current_shape.Set_Colour(Roll_Colour());
                         Save_Shape(current_place, current_shape, width_12, height_12);
                         Debug.Log("place " + current_place + " shape " + current_shape + "colour" + current_shape.Get_Colour() + "rotation " + current_shape.Get_Rotation());
+                        var shapeWithPlace = new Shape_With_Place
+                        {
+                            shape = current_shape,
+                            id_place = current_place
+                        };
+                        list_of_shapes.Add(shapeWithPlace);
                     }
                     else {
 
@@ -197,6 +234,12 @@ public class Card_Generator : MonoBehaviour {
                             current_shape.Set_Colour(Roll_Colour());
                             Save_Shape(current_place, current_shape, width_12, height_12);
                             Debug.Log("place " + current_place + " shape " + current_shape + "colour" + current_shape.Get_Colour() + "rotation " + current_shape.Get_Rotation());
+                            var shapeWithPlace = new Shape_With_Place
+                            {
+                                shape = current_shape,
+                                id_place = current_place
+                            };
+                            list_of_shapes.Add(shapeWithPlace);
                         }
                     }
 
@@ -1044,5 +1087,10 @@ public class Card_Generator : MonoBehaviour {
                 place--;
             }
         }   
+    }
+
+    public List<Shape_With_Place> Get_List_Of_Shape()
+    {
+        return list_of_shapes;
     }
 }
