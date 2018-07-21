@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Policy;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class QuestionGenerator : MonoBehaviour {
@@ -30,6 +31,7 @@ public class QuestionGenerator : MonoBehaviour {
     private Dictionary<string, int> shapesDictionary;
     private int numberOfFigures;
     private int questionType;
+    private int questionsAsked;
     private bool answeredQuestion = false;
     public InputField UserAnswer;
     public Button NextButton;
@@ -43,34 +45,35 @@ public class QuestionGenerator : MonoBehaviour {
         PopulateDictionaries();
         askedQuestions = new List<int>();
         FiguresList = CardDrawer.FiguresList;
-        foreach (var figure in FiguresList)
-	    {
-	        if (figure.shape is Rectangle) shapesDictionary["Rectangle"]++;
-	        if (figure.shape is Circle) shapesDictionary["Circle"]++;
-	        if (figure.shape is Square) shapesDictionary["Square"]++;
-	        if (figure.shape is Triangle) shapesDictionary["Traingle"]++;
+        if(FiguresList != null)
+            foreach (var figure in FiguresList)
+	        {
+	            if (figure.shape is Rectangle) shapesDictionary["Rectangle"]++;
+	            if (figure.shape is Circle) shapesDictionary["Circle"]++;
+	            if (figure.shape is Square) shapesDictionary["Square"]++;
+	            if (figure.shape is Triangle) shapesDictionary["Triangle"]++;
 
-	        if (figure.shape.Get_Colour() == Shape.Figures_Colours.Light_Blue)
-	            coloursDictionary[Shape.Figures_Colours.Light_Blue]++;
-	        if (figure.shape.Get_Colour() == Shape.Figures_Colours.Dark_Blue)
-	            coloursDictionary[Shape.Figures_Colours.Dark_Blue]++;
-	        if (figure.shape.Get_Colour() == Shape.Figures_Colours.Light_Green)
-	            coloursDictionary[Shape.Figures_Colours.Light_Green]++;
-	        if (figure.shape.Get_Colour() == Shape.Figures_Colours.Dark_Green)
-	            coloursDictionary[Shape.Figures_Colours.Dark_Green]++;
-	        if (figure.shape.Get_Colour() == Shape.Figures_Colours.Violet)
-	            coloursDictionary[Shape.Figures_Colours.Violet]++;
-	        if (figure.shape.Get_Colour() == Shape.Figures_Colours.Pink)
-	            coloursDictionary[Shape.Figures_Colours.Pink]++;
-	        if (figure.shape.Get_Colour() == Shape.Figures_Colours.Red)
-	            coloursDictionary[Shape.Figures_Colours.Red]++;
-	        if (figure.shape.Get_Colour() == Shape.Figures_Colours.Yellow)
-	            coloursDictionary[Shape.Figures_Colours.Yellow]++;
-	        if (figure.shape.Get_Colour() == Shape.Figures_Colours.Orange)
-	            coloursDictionary[Shape.Figures_Colours.Orange]++;
+	            if (figure.shape.Get_Colour() == Shape.Figures_Colours.Light_Blue)
+	                coloursDictionary[Shape.Figures_Colours.Light_Blue]++;
+	            if (figure.shape.Get_Colour() == Shape.Figures_Colours.Dark_Blue)
+	                coloursDictionary[Shape.Figures_Colours.Dark_Blue]++;
+	            if (figure.shape.Get_Colour() == Shape.Figures_Colours.Light_Green)
+	                coloursDictionary[Shape.Figures_Colours.Light_Green]++;
+	            if (figure.shape.Get_Colour() == Shape.Figures_Colours.Dark_Green)
+	                coloursDictionary[Shape.Figures_Colours.Dark_Green]++;
+	            if (figure.shape.Get_Colour() == Shape.Figures_Colours.Violet)
+	                coloursDictionary[Shape.Figures_Colours.Violet]++;
+	            if (figure.shape.Get_Colour() == Shape.Figures_Colours.Pink)
+	                coloursDictionary[Shape.Figures_Colours.Pink]++;
+	            if (figure.shape.Get_Colour() == Shape.Figures_Colours.Red)
+	                coloursDictionary[Shape.Figures_Colours.Red]++;
+	            if (figure.shape.Get_Colour() == Shape.Figures_Colours.Yellow)
+	                coloursDictionary[Shape.Figures_Colours.Yellow]++;
+	            if (figure.shape.Get_Colour() == Shape.Figures_Colours.Orange)
+	                coloursDictionary[Shape.Figures_Colours.Orange]++;
 
-	        numberOfFigures++;
-	    }
+	            numberOfFigures++;
+	        }
 
         QuestionField.text = CreateQuestion();
         NextButton.onClick.AddListener(ButtonClicked);
@@ -82,8 +85,19 @@ public class QuestionGenerator : MonoBehaviour {
         {
             QuestionField.text = CreateQuestion();
             answeredQuestion = false;
+            if(questionsAsked < 13)NextButton.GetComponentInChildren<Text>().text = "Odpowiedz";
+            else
+            {
+                NextButton.onClick.AddListener(NewCard);
+                NextButton.GetComponentInChildren<Text>().text = "Nowa karta";
+            }
         }
         else ValidatingAnswer();
+    }
+
+    public void NewCard()
+    {
+        SceneManager.LoadScene("Main_Menu");
     }
 
     private void ValidatingAnswer()
@@ -91,6 +105,7 @@ public class QuestionGenerator : MonoBehaviour {
         answeredQuestion = true;
         if (ValidateQuestion(UserAnswer.text)) QuestionField.text = "Poprawna odpowiedź";
         else QuestionField.text = "Błędna odpowiedź";
+        NextButton.GetComponentInChildren<Text>().text = "Następne pytanie";
     }
 
     public void PopulateDictionaries()
@@ -121,10 +136,14 @@ public class QuestionGenerator : MonoBehaviour {
     {
         string question;
         var rand = new System.Random();
-        if(askedQuestions.Count == 13) askedQuestions.Clear();
-        while (!askedQuestions.Contains(questionType))
+        questionsAsked++;
+        if (askedQuestions.Count == 13) askedQuestions.Clear();
+        while (true)
+        {
             questionType = rand.Next(14);
-        
+            if (!askedQuestions.Contains(questionType)) break;
+        }
+
         switch (questionType)
         {
             case 0:
