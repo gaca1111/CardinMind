@@ -62,16 +62,9 @@ public class Custom_Mode_Script : MonoBehaviour
 
     void ColourButtonClicked(Shape.Figures_Colours colour)
     {
-        if (ColourIsOnList(colour)) coloursList.Remove(colour);
+        if (coloursList.Contains(colour)) coloursList.Remove(colour);
         else coloursList.Add(colour); 
         ButtonDrawBorder();
-    }
-
-    bool ColourIsOnList(Shape.Figures_Colours colour)
-    {
-        foreach (var colourOnList in coloursList)
-            if (colour == colourOnList) return true;
-        return false;
     }
 
     void ClearColoursBorders()
@@ -258,12 +251,12 @@ public class Custom_Mode_Script : MonoBehaviour
     {
         PlayerPrefs.SetInt("Light_Blue", coloursList.Contains(Shape.Figures_Colours.Light_Blue) ? 1 : 0);
         PlayerPrefs.SetInt("Dark_Blue", coloursList.Contains(Shape.Figures_Colours.Dark_Blue) ? 1 : 0);
-        PlayerPrefs.SetInt("Light_Green", coloursList.Contains(Shape.Figures_Colours.Light_Blue) ? 1 : 0);
-        PlayerPrefs.SetInt("Dark_Green", coloursList.Contains(Shape.Figures_Colours.Light_Blue) ? 1 : 0);
-        PlayerPrefs.SetInt("Violet", coloursList.Contains(Shape.Figures_Colours.Light_Blue) ? 1 : 0);
-        PlayerPrefs.SetInt("Pink", coloursList.Contains(Shape.Figures_Colours.Light_Blue) ? 1 : 0);
-        PlayerPrefs.SetInt("Red", coloursList.Contains(Shape.Figures_Colours.Light_Blue) ? 1 : 0);
-        PlayerPrefs.SetInt("Yellow", coloursList.Contains(Shape.Figures_Colours.Light_Blue) ? 1 : 0);
-        PlayerPrefs.SetInt("Orange", coloursList.Contains(Shape.Figures_Colours.Light_Blue) ? 1 : 0);
+        PlayerPrefs.SetInt("Light_Green", coloursList.Contains(Shape.Figures_Colours.Light_Green) ? 1 : 0);
+        PlayerPrefs.SetInt("Dark_Green", coloursList.Contains(Shape.Figures_Colours.Dark_Green) ? 1 : 0);
+        PlayerPrefs.SetInt("Violet", coloursList.Contains(Shape.Figures_Colours.Violet) ? 1 : 0);
+        PlayerPrefs.SetInt("Pink", coloursList.Contains(Shape.Figures_Colours.Pink) ? 1 : 0);
+        PlayerPrefs.SetInt("Red", coloursList.Contains(Shape.Figures_Colours.Red) ? 1 : 0);
+        PlayerPrefs.SetInt("Yellow", coloursList.Contains(Shape.Figures_Colours.Yellow) ? 1 : 0);
+        PlayerPrefs.SetInt("Orange", coloursList.Contains(Shape.Figures_Colours.Orange) ? 1 : 0);
     }
 }
