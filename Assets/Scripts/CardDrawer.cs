@@ -24,6 +24,9 @@ public class CardDrawer : MonoBehaviour
     private bool colours_only_mechanic;
     private bool card_pick_mechanic;
 
+    public static Boo.Lang.List<Shape_With_Place> FiguresList;
+
+
     Card_Generator _cardGenerator = new Card_Generator();
     Difficulty_Modifiers _difficultyModifiers;
     // Use this for initialization
@@ -48,8 +51,7 @@ public class CardDrawer : MonoBehaviour
 
         _cardGenerator.Generate_Card(_difficultyModifiers);
         var listOfShapes = _cardGenerator.Get_List_Of_Shape();
-
-
+        FiguresList = listOfShapes;
 
         card = GameObject.Find("CardToRemember");
         _spriteRenderers = card.GetComponentsInChildren<SpriteRenderer>();
