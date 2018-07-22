@@ -11,67 +11,67 @@ public class QuestionGenerator : MonoBehaviour
 
     private enum ColoursInAbcQuestions
     {
-        niebieskich,
-        ciemnoniebieskich,
-        zielonych,
-        ciemnozielonych,
-        fioletowych,
-        różowych,
-        czerwony,
-        żółtych,
-        pomarańczowych
+        niebieskich = 0,
+        ciemnoniebieskich = 1,
+        zielonych = 2,
+        ciemnozielonych = 3,
+        fioletowych = 4,
+        różowych = 5,
+        czerwonych = 6,
+        żółtych = 7,
+        pomarańczowych = 8
     }
 
     private enum ShapesInAbcQuestions
     {
-        prostokątów,
-        kół,
-        kwadratów,
-        trójkątów, 
-        figur
+        prostokątów = 0,
+        kół = 1,
+        kwadratów = 2,
+        trójkątów = 3,
+        figur = 4
     }
 
     private enum ColoursInYesNoQuestions
     {
-        niebieskie,
-        ciemnoniebieskie,
-        zielone,
-        ciemnozielone,
-        fioletowe,
-        różowe,
-        czerwone,
-        żółte,
-        pomarańczowe
+        niebieskie = 0,
+        ciemnoniebieskie = 1,
+        zielone = 2,
+        ciemnozielone = 3,
+        fioletowe = 4,
+        różowe = 5,
+        czerwone = 6,
+        żółte = 7,
+        pomarańczowe = 8
     }
 
     private enum ShapesInYesNoQuestions
     {
-        prostokąty,
-        koła,
-        kwadraty,
-        trójkąty,
-        figury
+        prostokąty = 0,
+        koła = 1,
+        kwadraty = 2,
+        trójkąty = 3,
+        figury = 4
     }
 
     private enum ColoursInValidation
     {
-        LightBlue,
-        DarkBlue,
-        LightGreen,
-        DarkGreen,
-        Violet,
-        Pink,
-        Red,
-        Yellow,
-        Orange
+        Light_Blue = 0,
+        Dark_Blue = 1,
+        Light_Green = 2,
+        Dark_Green = 3,
+        Violet = 4,
+        Pink = 5,
+        Red = 6,
+        Yellow = 7,
+        Orange = 8
     }
 
     private enum ShapesInValidation
     {
-        Rectangle,
-        Circle,
-        Square,
-        Triangle
+        Rectangle = 1,
+        Circle = 2,
+        Square = 3,
+        Triangle = 4
     }
 
     #endregion
@@ -143,9 +143,12 @@ public class QuestionGenerator : MonoBehaviour
         if(Input.anyKey)
         if (answeredQuestion)
         {
-            if (questionsAsked > 5) NewCard();
-            QuestionField.text = CreateQuestion();
-            answeredQuestion = false;
+            if (questionsAsked > 4) NewCard();
+            else
+            {
+                QuestionField.text = CreateQuestion();
+                answeredQuestion = false;
+            }
         }
     }
 
