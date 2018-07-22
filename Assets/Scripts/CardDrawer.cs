@@ -32,7 +32,7 @@ public class CardDrawer : MonoBehaviour
     // Use this for initialization
     void Start () {
 	    _cardGenerator = gameObject.AddComponent<Card_Generator>() as Card_Generator;
-        _difficultyModifiers = gameObject.AddComponent<Difficulty_Modifiers>() as Difficulty_Modifiers;
+        _difficultyModifiers = new Difficulty_Modifiers();
 
         var colourses = new List<Shape.Figures_Colours>
         {
@@ -44,10 +44,10 @@ public class CardDrawer : MonoBehaviour
 
 
 
-        Difficulty_Modifiers.Set_Figures_Colours(colourses);
+        _difficultyModifiers.Set_Figures_Colours(colourses);
 
-        Difficulty_Modifiers.cardType = Difficulty_Modifiers.CardType.Cart_Type12;
-        Difficulty_Modifiers.Number_of_figures = 5;
+        _difficultyModifiers.cardType = Difficulty_Modifiers.CardType.Cart_Type12;
+        _difficultyModifiers.Number_of_figures = 5;
 
         _cardGenerator.Generate_Card(_difficultyModifiers);
         var listOfShapes = _cardGenerator.Get_List_Of_Shape();

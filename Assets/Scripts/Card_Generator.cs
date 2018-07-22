@@ -51,7 +51,7 @@ public class Card_Generator : MonoBehaviour {
         difficulty_modifires = incoming_difficulty_modifires;
 
 
-        switch (Difficulty_Modifiers.cardType) {
+        switch (difficulty_modifires.cardType) {
 
             case Difficulty_Modifiers.CardType.Cart_Type12:
 
@@ -66,7 +66,7 @@ public class Card_Generator : MonoBehaviour {
             default:
 
                 Debug.Log("Error missing card type ");
-                Debug.Log(Difficulty_Modifiers.cardType);
+                Debug.Log(difficulty_modifires.cardType);
                 break;
         }
         
@@ -78,7 +78,7 @@ public class Card_Generator : MonoBehaviour {
         empty_space = new ArrayList();
         Setup_Generation(width_12, height_12);
 
-        for (int i = 0; i < Difficulty_Modifiers.Number_of_figures; i++) {
+        for (int i = 0; i < difficulty_modifires.Number_of_figures; i++) {
 
             if (empty_space.Count == 0) {
 
@@ -164,7 +164,7 @@ public class Card_Generator : MonoBehaviour {
         empty_space = new ArrayList();
         Setup_Generation(width_70, height_70);
 
-        for (int i = 0; i < Difficulty_Modifiers.Number_of_figures; i++) {
+        for (int i = 0; i < difficulty_modifires.Number_of_figures; i++) {
 
             if (empty_space.Count == 0) {
 
@@ -264,7 +264,7 @@ public class Card_Generator : MonoBehaviour {
             empty_space.Add(i);
         }
 
-        colours_array = Difficulty_Modifiers.Get_Figures_Colours();
+        colours_array = difficulty_modifires.Get_Figures_Colours();
     }
 
     private Shape_Sizes Roll_Shape_Sizes() {
@@ -314,7 +314,7 @@ public class Card_Generator : MonoBehaviour {
 
                 current_rotation_array.Add(Shape.Rotation.Left);
             }
-            if (Check_Up(Difficulty_Modifiers.cardType, y, place, 1)) {
+            if (Check_Up(difficulty_modifires.cardType, y, place, 1)) {
 
                 current_rotation_array.Add(Shape.Rotation.Up);
             }
@@ -322,7 +322,7 @@ public class Card_Generator : MonoBehaviour {
 
                 current_rotation_array.Add(Shape.Rotation.Right);
             }
-            if (Check_Down(Difficulty_Modifiers.cardType, y, height_12, place, 1)) {
+            if (Check_Down(difficulty_modifires.cardType, y, height_12, place, 1)) {
 
                 current_rotation_array.Add(Shape.Rotation.Down);
             }
@@ -426,19 +426,19 @@ public class Card_Generator : MonoBehaviour {
 
             current_place_status_array.Add(Check_Left(x, place, 1));
            
-            current_place_status_array.Add(Check_Up(Difficulty_Modifiers.cardType, y, place, 1));
+            current_place_status_array.Add(Check_Up(difficulty_modifires.cardType, y, place, 1));
           
             current_place_status_array.Add(Check_Right(x, width_70, place, 1));
           
-            current_place_status_array.Add(Check_Down(Difficulty_Modifiers.cardType, y, height_70, place, 1));
+            current_place_status_array.Add(Check_Down(difficulty_modifires.cardType, y, height_70, place, 1));
         
-            current_place_status_array.Add(Check_Diagonal_Up_Left(Difficulty_Modifiers.cardType, x, y, place, 1, 1));
+            current_place_status_array.Add(Check_Diagonal_Up_Left(difficulty_modifires.cardType, x, y, place, 1, 1));
        
-            current_place_status_array.Add(Check_Diagonal_Up_Right(Difficulty_Modifiers.cardType, x, y, width_70, place, 1, 1));
+            current_place_status_array.Add(Check_Diagonal_Up_Right(difficulty_modifires.cardType, x, y, width_70, place, 1, 1));
         
-            current_place_status_array.Add(Check_Diagonal_Down_Left(Difficulty_Modifiers.cardType, x, y, height_70, place, 1, 1));
+            current_place_status_array.Add(Check_Diagonal_Down_Left(difficulty_modifires.cardType, x, y, height_70, place, 1, 1));
           
-            current_place_status_array.Add(Check_Diagonal_Down_Right(Difficulty_Modifiers.cardType, x, y, width_70, height_70, place, 1, 1));
+            current_place_status_array.Add(Check_Diagonal_Down_Right(difficulty_modifires.cardType, x, y, width_70, height_70, place, 1, 1));
 
             if (current_place_status_array.Contains(false)) {
 
@@ -534,29 +534,29 @@ public class Card_Generator : MonoBehaviour {
 
             current_place_status_array.Add(Check_Left(x, place, 1));
 
-            current_place_status_array.Add(Check_Up(Difficulty_Modifiers.cardType, y, place, 1));
+            current_place_status_array.Add(Check_Up(difficulty_modifires.cardType, y, place, 1));
 
             current_place_status_array.Add(Check_Right(x, width_70, place, 1));
 
-            current_place_status_array.Add(Check_Down(Difficulty_Modifiers.cardType, y, height_70, place, 1));
+            current_place_status_array.Add(Check_Down(difficulty_modifires.cardType, y, height_70, place, 1));
 
-            current_place_status_array.Add(Check_Diagonal_Up_Left(Difficulty_Modifiers.cardType, x, y, place, 1, 1));
+            current_place_status_array.Add(Check_Diagonal_Up_Left(difficulty_modifires.cardType, x, y, place, 1, 1));
 
-            current_place_status_array.Add(Check_Diagonal_Up_Right(Difficulty_Modifiers.cardType, x, y, width_70, place, 1, 1));
+            current_place_status_array.Add(Check_Diagonal_Up_Right(difficulty_modifires.cardType, x, y, width_70, place, 1, 1));
 
-            current_place_status_array.Add(Check_Diagonal_Down_Left(Difficulty_Modifiers.cardType, x, y, height_70, place, 1, 1));
+            current_place_status_array.Add(Check_Diagonal_Down_Left(difficulty_modifires.cardType, x, y, height_70, place, 1, 1));
 
-            current_place_status_array.Add(Check_Diagonal_Down_Right(Difficulty_Modifiers.cardType, x, y, width_70, height_70, place, 1, 1));
+            current_place_status_array.Add(Check_Diagonal_Down_Right(difficulty_modifires.cardType, x, y, width_70, height_70, place, 1, 1));
 
             if (!current_place_status_array.Contains(false)) {
 
                 current_place_status_array = new ArrayList();
           
-                current_place_status_array.Add(Check_Diagonal_Up_Right(Difficulty_Modifiers.cardType, x, y, width_70, place, 2, 1));
+                current_place_status_array.Add(Check_Diagonal_Up_Right(difficulty_modifires.cardType, x, y, width_70, place, 2, 1));
 
-                current_place_status_array.Add(Check_Diagonal_Up_Right(Difficulty_Modifiers.cardType, x, y, width_70, place, 3, 1));
+                current_place_status_array.Add(Check_Diagonal_Up_Right(difficulty_modifires.cardType, x, y, width_70, place, 3, 1));
 
-                current_place_status_array.Add(Check_Diagonal_Up_Right(Difficulty_Modifiers.cardType, x, y, width_70, place, 4, 1));
+                current_place_status_array.Add(Check_Diagonal_Up_Right(difficulty_modifires.cardType, x, y, width_70, place, 4, 1));
 
                 current_place_status_array.Add(Check_Right(x, width_70, place, 2));
 
@@ -564,11 +564,11 @@ public class Card_Generator : MonoBehaviour {
 
                 current_place_status_array.Add(Check_Right(x, width_70, place, 4));
 
-                current_place_status_array.Add(Check_Diagonal_Down_Right(Difficulty_Modifiers.cardType, x, y, width_70, height_70, place, 2, 1));
+                current_place_status_array.Add(Check_Diagonal_Down_Right(difficulty_modifires.cardType, x, y, width_70, height_70, place, 2, 1));
 
-                current_place_status_array.Add(Check_Diagonal_Down_Right(Difficulty_Modifiers.cardType, x, y, width_70, height_70, place, 3, 1));
+                current_place_status_array.Add(Check_Diagonal_Down_Right(difficulty_modifires.cardType, x, y, width_70, height_70, place, 3, 1));
 
-                current_place_status_array.Add(Check_Diagonal_Down_Right(Difficulty_Modifiers.cardType, x, y, width_70, height_70, place, 4, 1));
+                current_place_status_array.Add(Check_Diagonal_Down_Right(difficulty_modifires.cardType, x, y, width_70, height_70, place, 4, 1));
 
                 if (current_place_status_array.Contains(false)) {
 
@@ -580,11 +580,11 @@ public class Card_Generator : MonoBehaviour {
                     current_rotation_array.Add(Shape.Rotation.Right);
                 }
 
-                current_place_status_array.Add(Check_Diagonal_Up_Left(Difficulty_Modifiers.cardType, x, y, place, 2, 1));
+                current_place_status_array.Add(Check_Diagonal_Up_Left(difficulty_modifires.cardType, x, y, place, 2, 1));
 
-                current_place_status_array.Add(Check_Diagonal_Up_Left(Difficulty_Modifiers.cardType, x, y, place, 3, 1));
+                current_place_status_array.Add(Check_Diagonal_Up_Left(difficulty_modifires.cardType, x, y, place, 3, 1));
 
-                current_place_status_array.Add(Check_Diagonal_Up_Left(Difficulty_Modifiers.cardType, x, y, place, 4, 1));
+                current_place_status_array.Add(Check_Diagonal_Up_Left(difficulty_modifires.cardType, x, y, place, 4, 1));
 
                 current_place_status_array.Add(Check_Left(x, place, 2));
 
@@ -592,11 +592,11 @@ public class Card_Generator : MonoBehaviour {
 
                 current_place_status_array.Add(Check_Left(x, place, 4));
 
-                current_place_status_array.Add(Check_Diagonal_Down_Left(Difficulty_Modifiers.cardType, x, y, height_70, place, 2, 1));
+                current_place_status_array.Add(Check_Diagonal_Down_Left(difficulty_modifires.cardType, x, y, height_70, place, 2, 1));
 
-                current_place_status_array.Add(Check_Diagonal_Down_Left(Difficulty_Modifiers.cardType, x, y, height_70, place, 3, 1));
+                current_place_status_array.Add(Check_Diagonal_Down_Left(difficulty_modifires.cardType, x, y, height_70, place, 3, 1));
 
-                current_place_status_array.Add(Check_Diagonal_Down_Left(Difficulty_Modifiers.cardType, x, y, height_70, place, 4, 1));
+                current_place_status_array.Add(Check_Diagonal_Down_Left(difficulty_modifires.cardType, x, y, height_70, place, 4, 1));
 
                 if (current_place_status_array.Contains(false)) {
 
@@ -608,23 +608,23 @@ public class Card_Generator : MonoBehaviour {
                     current_rotation_array.Add(Shape.Rotation.Left);
                 }
 
-                current_place_status_array.Add(Check_Diagonal_Down_Left(Difficulty_Modifiers.cardType, x, y, height_70, place, 1, 2));
+                current_place_status_array.Add(Check_Diagonal_Down_Left(difficulty_modifires.cardType, x, y, height_70, place, 1, 2));
 
-                current_place_status_array.Add(Check_Diagonal_Down_Left(Difficulty_Modifiers.cardType, x, y, height_70, place, 1, 3));
+                current_place_status_array.Add(Check_Diagonal_Down_Left(difficulty_modifires.cardType, x, y, height_70, place, 1, 3));
 
-                current_place_status_array.Add(Check_Diagonal_Down_Left(Difficulty_Modifiers.cardType, x, y, height_70, place, 1, 4));
+                current_place_status_array.Add(Check_Diagonal_Down_Left(difficulty_modifires.cardType, x, y, height_70, place, 1, 4));
 
-                current_place_status_array.Add(Check_Down(Difficulty_Modifiers.cardType, y, height_70, place, 2));
+                current_place_status_array.Add(Check_Down(difficulty_modifires.cardType, y, height_70, place, 2));
 
-                current_place_status_array.Add(Check_Down(Difficulty_Modifiers.cardType, y, height_70, place, 3));
+                current_place_status_array.Add(Check_Down(difficulty_modifires.cardType, y, height_70, place, 3));
 
-                current_place_status_array.Add(Check_Down(Difficulty_Modifiers.cardType, y, height_70, place, 4));
+                current_place_status_array.Add(Check_Down(difficulty_modifires.cardType, y, height_70, place, 4));
 
-                current_place_status_array.Add(Check_Diagonal_Down_Right(Difficulty_Modifiers.cardType, x, y, width_70, height_70, place, 1, 2));
+                current_place_status_array.Add(Check_Diagonal_Down_Right(difficulty_modifires.cardType, x, y, width_70, height_70, place, 1, 2));
 
-                current_place_status_array.Add(Check_Diagonal_Down_Right(Difficulty_Modifiers.cardType, x, y, width_70, height_70, place, 1, 3));
+                current_place_status_array.Add(Check_Diagonal_Down_Right(difficulty_modifires.cardType, x, y, width_70, height_70, place, 1, 3));
 
-                current_place_status_array.Add(Check_Diagonal_Down_Right(Difficulty_Modifiers.cardType, x, y, width_70, height_70, place, 1, 4));
+                current_place_status_array.Add(Check_Diagonal_Down_Right(difficulty_modifires.cardType, x, y, width_70, height_70, place, 1, 4));
 
                 if (current_place_status_array.Contains(false)) {
 
@@ -636,23 +636,23 @@ public class Card_Generator : MonoBehaviour {
                     current_rotation_array.Add(Shape.Rotation.Down);
                 }
            
-                current_place_status_array.Add(Check_Diagonal_Up_Left(Difficulty_Modifiers.cardType, x, y, place, 1, 2));
+                current_place_status_array.Add(Check_Diagonal_Up_Left(difficulty_modifires.cardType, x, y, place, 1, 2));
 
-                current_place_status_array.Add(Check_Diagonal_Up_Left(Difficulty_Modifiers.cardType, x, y, place, 1, 3));
+                current_place_status_array.Add(Check_Diagonal_Up_Left(difficulty_modifires.cardType, x, y, place, 1, 3));
 
-                current_place_status_array.Add(Check_Diagonal_Up_Left(Difficulty_Modifiers.cardType, x, y, place, 1, 4));
+                current_place_status_array.Add(Check_Diagonal_Up_Left(difficulty_modifires.cardType, x, y, place, 1, 4));
 
-                current_place_status_array.Add(Check_Up(Difficulty_Modifiers.cardType, y, place, 2));
+                current_place_status_array.Add(Check_Up(difficulty_modifires.cardType, y, place, 2));
 
-                current_place_status_array.Add(Check_Up(Difficulty_Modifiers.cardType, y, place, 3));
+                current_place_status_array.Add(Check_Up(difficulty_modifires.cardType, y, place, 3));
 
-                current_place_status_array.Add(Check_Up(Difficulty_Modifiers.cardType, y, place, 4));
+                current_place_status_array.Add(Check_Up(difficulty_modifires.cardType, y, place, 4));
 
-                current_place_status_array.Add(Check_Diagonal_Up_Right(Difficulty_Modifiers.cardType, x, y, width_70, place, 1, 2));
+                current_place_status_array.Add(Check_Diagonal_Up_Right(difficulty_modifires.cardType, x, y, width_70, place, 1, 2));
 
-                current_place_status_array.Add(Check_Diagonal_Up_Right(Difficulty_Modifiers.cardType, x, y, width_70, place, 1, 3));
+                current_place_status_array.Add(Check_Diagonal_Up_Right(difficulty_modifires.cardType, x, y, width_70, place, 1, 3));
 
-                current_place_status_array.Add(Check_Diagonal_Up_Right(Difficulty_Modifiers.cardType, x, y, width_70, place, 1, 4));
+                current_place_status_array.Add(Check_Diagonal_Up_Right(difficulty_modifires.cardType, x, y, width_70, place, 1, 4));
 
                 if (current_place_status_array.Contains(false)) {
 
