@@ -144,14 +144,19 @@ public class QuestionGenerator : MonoBehaviour
         {
             QuestionField.text = CreateQuestion();
             answeredQuestion = false;
-            if (abcQuestionsAsked < 100) NextButton.GetComponentInChildren<Text>().text = "Odpowiedz";
+            if (abcQuestionsAsked < 99) NextButton.GetComponentInChildren<Text>().text = "Odpowiedz";
             else
             {
                 NextButton.GetComponentInChildren<Text>().text = "Nowa karta";
                 NextButton.onClick.AddListener(NewCardButton);
             }
         }
-        else ValidateAnswer();
+        else
+        {
+            ValidateAnswer();
+            ClearClickedButton();
+            HideButtons();
+        }
     }
 
     public void NewCardButton()
@@ -161,9 +166,54 @@ public class QuestionGenerator : MonoBehaviour
 
     public void AnswerOptionButton()
     {
-        SetUserAnswerFromButton(EventSystem.current.currentSelectedGameObject.name);
+        var buttonClicked = EventSystem.current.currentSelectedGameObject.name;
+        SetUserAnswerFromButton(buttonClicked);
+        ClearClickedButton();
+        MarkClickedButton(buttonClicked);
     }
-    
+
+    private void ClearClickedButton()
+    {
+        AnswerOptionA.GetComponentInChildren<Text>().color = Color.black;
+        AnswerOptionB.GetComponentInChildren<Text>().color = Color.black;
+        AnswerOptionC.GetComponentInChildren<Text>().color = Color.black;
+        AnswerOptionD.GetComponentInChildren<Text>().color = Color.black;
+    }
+
+    private void MarkClickedButton(string buttonClicked)
+    {
+        var visibleLayer = 0;
+        if (buttonClicked.Contains("First"))
+        {
+            AnswerOptionA.GetComponentInChildren<Text>().color = Color.blue;
+        }
+
+        if (buttonClicked.Contains("Second"))
+        {
+            AnswerOptionB.GetComponentInChildren<Text>().color = Color.blue;
+        }
+
+        if (buttonClicked.Contains("Third"))
+        {
+            AnswerOptionC.GetComponentInChildren<Text>().color = Color.blue;
+        }
+
+        if (buttonClicked.Contains("Fourth"))
+        {
+            AnswerOptionD.GetComponentInChildren<Text>().color = Color.blue;
+        }
+
+
+    }
+
+    private void HideButtons()
+    {
+        AnswerOptionA.GetComponentInChildren<Text>().text = "";
+        AnswerOptionB.GetComponentInChildren<Text>().text = "";
+        AnswerOptionC.GetComponentInChildren<Text>().text = "";
+        AnswerOptionD.GetComponentInChildren<Text>().text = "";
+    }
+
     #endregion
     
     #region PopulateInstances
@@ -264,7 +314,7 @@ public class QuestionGenerator : MonoBehaviour
 
         isYesNoQuestion = questionType >= 50;
         askedQuestions.Add(questionType);
-        if(!isYesNoQuestion)PopulateButtons(GetRightAbcAnswer());
+        PopulateButtons(GetRightAbcAnswer());
         return !isYesNoQuestion ? CreateAbcQuestion() : CreateYesNoQuestion();
     }
     
