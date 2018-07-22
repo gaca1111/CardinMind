@@ -50,18 +50,16 @@ public class Card_Generator : MonoBehaviour {
 
         difficulty_modifires = incoming_difficulty_modifires;
 
-        Debug.Log("Tworze karte");
+
         switch (difficulty_modifires.cardType) {
 
             case Difficulty_Modifiers.CardType.Cart_Type12:
 
-                Debug.Log("Tworze kartę 12");
                 Generate_Card12();
                 break;
 
             case Difficulty_Modifiers.CardType.Cart_Type70:
 
-                Debug.Log("Tworze kartę 70");
                 Generate_Card70();
                 break;
 
