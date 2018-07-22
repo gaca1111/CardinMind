@@ -24,7 +24,7 @@ public class CardDrawer : MonoBehaviour
     private bool colours_only_mechanic;
     private bool card_pick_mechanic;
 
-    public static Boo.Lang.List<Shape_With_Place> FiguresList;
+    public static List<Shape_With_Place> FiguresList;
 
 
     Card_Generator _cardGenerator = new Card_Generator();
@@ -44,10 +44,10 @@ public class CardDrawer : MonoBehaviour
 
 
 
-        _difficultyModifiers.Set_Figures_Colours(colourses);
+        Difficulty_Modifiers.Set_Figures_Colours(colourses);
 
-        _difficultyModifiers.cardType = Difficulty_Modifiers.CardType.Cart_Type12;
-        _difficultyModifiers.Number_of_figures = 5;
+        Difficulty_Modifiers.cardType = Difficulty_Modifiers.CardType.Cart_Type12;
+        Difficulty_Modifiers.Number_of_figures = 5;
 
         _cardGenerator.Generate_Card(_difficultyModifiers);
         var listOfShapes = _cardGenerator.Get_List_Of_Shape();

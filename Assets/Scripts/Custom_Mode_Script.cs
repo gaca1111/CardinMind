@@ -212,38 +212,38 @@ public class Custom_Mode_Script : MonoBehaviour
         int maxNumberOfFigures = Int32.Parse(NumberOfFiguresInputField.text);
         var difficultyModifiers = gameObject.AddComponent<Difficulty_Modifiers>() as Difficulty_Modifiers;
 
-        difficultyModifiers.cardType = CardSizeDropdown.value == 0
+        Difficulty_Modifiers.cardType = CardSizeDropdown.value == 0
             ? Difficulty_Modifiers.CardType.Cart_Type12
             : Difficulty_Modifiers.CardType.Cart_Type70;
-        if (difficultyModifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type12 &&
+        if (Difficulty_Modifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type12 &&
             int.Parse(NumberOfFiguresInputField.text) > 11) maxNumberOfFigures = 11;
-        if (difficultyModifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type70 &&
+        if (Difficulty_Modifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type70 &&
             int.Parse(NumberOfFiguresInputField.text) > 69) maxNumberOfFigures = 69;
-        difficultyModifiers.Number_of_figures = NumberOfFiguresInputField.text != "" ? maxNumberOfFigures : 4;
-        difficultyModifiers.Number_of_mistakes = int.Parse(AllowedMistakesSlider.value.ToString());
-        difficultyModifiers.Colours_only_mechanic = ColorFilingDropdown;
-        difficultyModifiers.Set_Figures_Colours(coloursList);
+        Difficulty_Modifiers.Number_of_figures = NumberOfFiguresInputField.text != "" ? maxNumberOfFigures : 4;
+        Difficulty_Modifiers.Number_of_mistakes = int.Parse(AllowedMistakesSlider.value.ToString());
+        Difficulty_Modifiers.Colours_only_mechanic = ColorFilingDropdown;
+        Difficulty_Modifiers.Set_Figures_Colours(coloursList);
         ColourListToPlayerPrefs();
 
         switch (GameModeDropdown.value)
         {
             case 0:
-                difficultyModifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Random;
+                Difficulty_Modifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Random;
                 PlayerPrefs.SetInt("GameMode", 0);
                 break;
             case 1:
-                difficultyModifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Both;
+                Difficulty_Modifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Both;
                 PlayerPrefs.SetInt("GameMode", 1);
                 break;
             default:
-                difficultyModifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Questions;
+                Difficulty_Modifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Questions;
                 PlayerPrefs.SetInt("GameMode", 2);
                 break;
         }
-        PlayerPrefs.SetString("CardType", difficultyModifiers.cardType.ToString());
-        PlayerPrefs.SetInt("NumberOfFigures", difficultyModifiers.Number_of_figures);
-        PlayerPrefs.SetInt("NumberOfMistakes", difficultyModifiers.Number_of_mistakes);
-        PlayerPrefs.SetInt("ColoursOnlyMechanic", difficultyModifiers.Colours_only_mechanic.ToString() == "TRUE" ? 1 : 0);
+        PlayerPrefs.SetString("CardType", Difficulty_Modifiers.cardType.ToString());
+        PlayerPrefs.SetInt("NumberOfFigures", Difficulty_Modifiers.Number_of_figures);
+        PlayerPrefs.SetInt("NumberOfMistakes", Difficulty_Modifiers.Number_of_mistakes);
+        PlayerPrefs.SetInt("ColoursOnlyMechanic", Difficulty_Modifiers.Colours_only_mechanic.ToString() == "TRUE" ? 1 : 0);
         return difficultyModifiers;
     }
 

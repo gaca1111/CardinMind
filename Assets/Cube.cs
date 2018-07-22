@@ -34,10 +34,10 @@ public class Cube : MonoBehaviour, IPointerClickHandler
 
     void SetSpriteByRandom()
     {
-        Debug.Log("Setting sprite y random number: " + _randomNumber);
+        Debug.Log("Setting sprite y random number: " + GameChooseSceneControllerScript.RandomNumber);
         Destroy(_animator);
-        _image.sprite = Sprites[_randomNumber];
-        CreateArrow(_randomSide);
+        _image.sprite = Sprites[GameChooseSceneControllerScript.RandomNumber];
+        CreateArrow(GameChooseSceneControllerScript.RandomSide);
     }
 
     void CreateArrow(int side)

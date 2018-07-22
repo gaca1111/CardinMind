@@ -38,7 +38,7 @@ public class QuestionGenerator : MonoBehaviour {
     public Text QuestionField;
 
 
-    private Boo.Lang.List<Shape_With_Place> FiguresList;
+    private List<Shape_With_Place> FiguresList;
     
     void Start ()
     {
