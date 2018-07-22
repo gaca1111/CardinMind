@@ -15,11 +15,8 @@ public class MenuChange : MonoBehaviour {
     {
         var difficultyModifiers = SettingDificulty();
         var cardGenerator = gameObject.AddComponent<Card_Generator>();
-<<<<<<< HEAD
+
         cardGenerator.Generate_Card(difficultyModifiers);
-=======
-        //var card = cardGenerator.Generate_Card(difficultyModifiers);
->>>>>>> e4b35dd18e8ef6d91ebec14fd02f71792e4ec21d
         
         SceneManager.LoadScene(sceneName);
     }
