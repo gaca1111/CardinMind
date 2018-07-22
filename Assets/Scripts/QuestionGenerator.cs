@@ -4,73 +4,117 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Policy;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class QuestionGenerator : MonoBehaviour
 {
+    #region Enums
 
-    private enum Possibilities
+    private enum ColoursInAbcQuestions
     {
-        ShapeRectangle,
-        ShapeCircle,
-        ShapeSquare,
-        ShapeTriangle,
-        ColourLightBlue,
-        ColourDarkBlue,
-        ColourLightGreen,
-        ColourDarkGreen,
-        ColourViolet,
-        ColourPink,
-        ColourRed,
-        ColourYellow,
-        ColourOrange,
-        NumberOfFigures
+        niebieskich,
+        ciemnoniebieskich,
+        zielonych,
+        ciemnozielonych,
+        fioletowych,
+        różowych,
+        czerwony,
+        żółtych,
+        pomarańczowych
     }
 
+    private enum ShapesInAbcQuestions
+    {
+        prostokątów,
+        kół,
+        kwadratów,
+        trójkątów, 
+        figur
+    }
+
+    private enum ColoursInYesNoQuestions
+    {
+        niebieskie,
+        ciemnoniebieskie,
+        zielone,
+        ciemnozielone,
+        fioletowe,
+        różowe,
+        czerwone,
+        żółte,
+        pomarańczowe
+    }
+
+    private enum ShapesInYesNoQuestions
+    {
+        prostokąty,
+        koła,
+        kwadraty,
+        trójkąty,
+        figury
+    }
+
+    private enum ColoursInValidation
+    {
+        LightBlue,
+        DarkBlue,
+        LightGreen,
+        DarkGreen,
+        Violet,
+        Pink,
+        Red,
+        Yellow,
+        Orange
+    }
+
+    private enum ShapesInValidation
+    {
+        Rectangle,
+        Circle,
+        Square,
+        Triangle
+    }
+
+    #endregion
+
+    #region ClassFields
+
+    private Boo.Lang.List<Shape_With_Place> figuresList;
     private List<int> askedQuestions;
     private Dictionary<Shape.Figures_Colours, int> coloursDictionary;
     private Dictionary<string, int> shapesDictionary;
     private int numberOfFigures;
     private int questionType;
+    private int questionsAsked;
     private int abcQuestionsAsked;
     private int yesNoQuestionsAsked;
+<<<<<<< HEAD
     private int questionsAsked;
+=======
+    private int userAnswer;
+>>>>>>> QuestionsBranch
     private bool answeredQuestion = false;
     private bool isYesNoQuestion = false;
-    public InputField UserAnswer;
     public Button NextButton, AnswerOptionA, AnswerOptionB, AnswerOptionC, AnswerOptionD;
     public Text QuestionField;
+
+    #endregion
 
     void Start()
     {
         CreateDictionaries();
         askedQuestions = new List<int>();
-        if (CardDrawer.FiguresList != null) PopulateDictionaries();
+        figuresList = CardDrawer.FiguresList;
+        if (figuresList != null) PopulateDictionaries();
 
         QuestionField.text = CreateQuestion();
-        NextButton.onClick.AddListener(ButtonClicked);
-    }
-
-    private void ButtonClicked()
-    {
-        if (answeredQuestion)
-        {
-            QuestionField.text = CreateQuestion();
-            answeredQuestion = false;
-            if (abcQuestionsAsked < 13) NextButton.GetComponentInChildren<Text>().text = "Odpowiedz";
-            else
-            {
-                NextButton.GetComponentInChildren<Text>().text = "Nowa karta";
-                NextButton.onClick.AddListener(NewCard);
-            }
-        }
-        else ValidateAnswer();
-    }
-
-    public void NewCard()
-    {
-        SceneManager.LoadScene("Main_Menu");
+        NextButton.onClick.AddListener(AnswerButton);
+        AnswerOptionA.onClick.AddListener(AnswerOptionButton);
+        AnswerOptionB.onClick.AddListener(AnswerOptionButton);
+        AnswerOptionC.onClick.AddListener(AnswerOptionButton);
+        AnswerOptionD.onClick.AddListener(AnswerOptionButton);
     }
 
     public void CreateDictionaries()
@@ -96,6 +140,38 @@ public class QuestionGenerator : MonoBehaviour
         };
     }
 
+    #region ButtonActions
+
+    private void AnswerButton()
+    {
+        if (answeredQuestion)
+        {
+            QuestionField.text = CreateQuestion();
+            answeredQuestion = false;
+            if (abcQuestionsAsked < 100) NextButton.GetComponentInChildren<Text>().text = "Odpowiedz";
+            else
+            {
+                NextButton.GetComponentInChildren<Text>().text = "Nowa karta";
+                NextButton.onClick.AddListener(NewCardButton);
+            }
+        }
+        else ValidateAnswer();
+    }
+
+    public void NewCardButton()
+    {
+        SceneManager.LoadScene("Main_Menu");
+    }
+
+    public void AnswerOptionButton()
+    {
+        SetUserAnswerFromButton(EventSystem.current.currentSelectedGameObject.name);
+    }
+    
+    #endregion
+    
+    #region PopulateInstances
+    
     public void PopulateDictionaries()
     {
         foreach (var figure in CardDrawer.FiguresList)
@@ -128,7 +204,7 @@ public class QuestionGenerator : MonoBehaviour
         }
     }
 
-    private void ButtonsPopulate(int rightAnswer)
+    private void PopulateButtons(int rightAnswer)
     {
         if (isYesNoQuestion)
         {
@@ -142,12 +218,19 @@ public class QuestionGenerator : MonoBehaviour
             var rand = new System.Random();
             var wrongAnswers = new List<int>
             {
-                rand.Next(10),
-                rand.Next(10),
-                rand.Next(10),
-                rand.Next(10)
+                rand.Next(12),
+                rand.Next(12),
+                rand.Next(12),
+                rand.Next(12),
+                rand.Next(12),
+                rand.Next(12),
+                rand.Next(12),
+                rand.Next(12),
+                rand.Next(12),
+                rand.Next(12)
             };
             var intHelper = rand.Next(4);
+            wrongAnswers.RemoveAll(x => x == rightAnswer);
             var list = wrongAnswers.Distinct().ToList();
 
             AnswerOptionA.GetComponentInChildren<Text>().text =
@@ -161,148 +244,152 @@ public class QuestionGenerator : MonoBehaviour
         }
     }
 
+    private void SetUserAnswerFromButton(string buttonName)
+    {
+        if (isYesNoQuestion)
+            userAnswer = GameObject.Find(buttonName).GetComponentInChildren<Text>().text == "TAK" ? 1 : 0;
+        else userAnswer = int.Parse(GameObject.Find(buttonName).GetComponentInChildren<Text>().text);
+    }
+
+    #endregion
+
+    #region CreateQuestion
+
     private string CreateQuestion()
     {
-        string question;
         var rand = new System.Random();
         questionsAsked++;
-        if (askedQuestions.Count == 13) askedQuestions.Clear();
+        if (askedQuestions.Count == 98) askedQuestions.Clear();
         while (true)
         {
-            questionType = rand.Next(14);
+            questionType = rand.Next(99);
             if (!askedQuestions.Contains(questionType)) break;
         }
 
+<<<<<<< HEAD
         if (!isYesNoQuestion)
             question = CreateAbcQuestion();
         else
             question = CreateYesNoQuestion();
 
+=======
+        isYesNoQuestion = questionType >= 50;
+>>>>>>> QuestionsBranch
         askedQuestions.Add(questionType);
-        return question;
+        if(!isYesNoQuestion)PopulateButtons(GetRightAbcAnswer());
+        return !isYesNoQuestion ? CreateAbcQuestion() : CreateYesNoQuestion();
     }
-
-
+    
     private string CreateAbcQuestion()
     {
-        var rand = new System.Random();
-        while (true)
-        {
-            questionType = rand.Next(14);
-            if (!askedQuestions.Contains(questionType)) break;
-        }
-
-        switch (questionType)
-        {
-            case 0:
-                ButtonsPopulate(shapesDictionary["Rectangles"]);
-                return "Ile prostokątów znajduje się na karcie?";
-            case 1:
-                ButtonsPopulate(shapesDictionary["Circle"]);
-                return "Ile kół znajduje się na karcie?";
-            case 2:
-                ButtonsPopulate(shapesDictionary["Square"]);
-                return "Ile kwadratów znajduje się na karcie?";
-            case 3:
-                ButtonsPopulate(shapesDictionary["Traingle"]);
-                return "Ile trójkątów znajduje się na karcie?";
-            case 4:
-                ButtonsPopulate(coloursDictionary[Shape.Figures_Colours.Light_Blue]);
-                return "Ile jasno niebieskich figur znajduje się na karcie?";
-            case 5:
-                ButtonsPopulate(coloursDictionary[Shape.Figures_Colours.Dark_Blue]);
-                return "Ile ciemno niebieskich figur znajduje się na karcie?";
-            case 6:
-                ButtonsPopulate(coloursDictionary[Shape.Figures_Colours.Light_Green]);
-                return "Ile jasno zielonych figur znajduje się na karcie?";
-            case 7:
-                ButtonsPopulate(coloursDictionary[Shape.Figures_Colours.Dark_Green]);
-                return "Ile ciemno zielonych figur znajduje się na karcie?";
-            case 8:
-                ButtonsPopulate(coloursDictionary[Shape.Figures_Colours.Violet]);
-                return "Ile fioletowych figur znajduje się na karcie?";
-            case 9:
-                ButtonsPopulate(coloursDictionary[Shape.Figures_Colours.Pink]);
-                return "Ile różowych figur znajduje się na karcie?";
-            case 10:
-                ButtonsPopulate(coloursDictionary[Shape.Figures_Colours.Red]);
-                return "Ile czerwonych figur znajduje się na karcie?";
-            case 11:
-                ButtonsPopulate(coloursDictionary[Shape.Figures_Colours.Yellow]);
-                return "Ile żółtych figur znajduje się na karcie?";
-            case 12:
-                ButtonsPopulate(coloursDictionary[Shape.Figures_Colours.Orange]);
-                return "Ile pomarańczowych figur znajduje się na karcie?";
-            default:
-                ButtonsPopulate(numberOfFigures);
-                return "Ile figur znajduje się na karcie";
-        }
+        var shapeType = questionType / 10;
+        var colourType = questionType % 10;
+        if (colourType == 9)
+            return "Ile " + ((ShapesInAbcQuestions) shapeType).ToString() + " znajduje się na karcie?";
+        return "Ile " + ((ColoursInAbcQuestions) colourType).ToString() + " " +
+               ((ShapesInAbcQuestions) shapeType).ToString() + " znajduje się na karcie?";
     }
 
     private string CreateYesNoQuestion()
     {
+<<<<<<< HEAD
         string question = null;
 
         return question;
+=======
+        var shapeType = (questionType / 10) - 5;
+        var colourType = questionType % 10;
+        if (colourType == 9)
+            return "Czy na karcie znajdują się " + ((ShapesInYesNoQuestions)shapeType).ToString() + "?";
+        return "Czy na karcie znajdują się " + ((ColoursInYesNoQuestions)colourType).ToString() + " " +
+               ((ShapesInYesNoQuestions)shapeType).ToString() + "?";
+>>>>>>> QuestionsBranch
     }
+
+    #endregion
+
+    #region VaildateAnswer
 
     private void ValidateAnswer()
     {
         answeredQuestion = true;
-        if (ValidateAbcAnswer(UserAnswer.text)) QuestionField.text = "Poprawna odpowiedź";
-        else QuestionField.text = "Błędna odpowiedź";
+        var answerValidation = !isYesNoQuestion ? ValidateAbcAnswer(userAnswer) : ValidateYesNoAnswer(userAnswer);
+        QuestionField.text = answerValidation ? "Poprawna odpowiedź" : "Błędna odpowiedź";
         NextButton.GetComponentInChildren<Text>().text = "Następne pytanie";
     }
 
-    public bool ValidateAbcAnswer(string userResponse)
+    public bool ValidateAbcAnswer(int userResponse)
     {
-        var userResponseInt = Int32.Parse(userResponse);
-        switch (questionType)
+        var shapeType = questionType / 10;
+        var colourType = questionType % 10;
+
+        if (colourType == 9)
         {
-            case 0:
-                if (shapesDictionary["Rectangle"] == userResponseInt) return true;
-                break;
-            case 1:
-                if (shapesDictionary["Circle"] == userResponseInt) return true;
-                break;
-            case 2:
-                if (shapesDictionary["Square"] == userResponseInt) return true;
-                break;
-            case 3:
-                if (shapesDictionary["Triangle"] == userResponseInt) return true;
-                break;
-            case 4:
-                if (coloursDictionary[Shape.Figures_Colours.Light_Blue] == userResponseInt) return true;
-                break;
-            case 5:
-                if (coloursDictionary[Shape.Figures_Colours.Dark_Blue] == userResponseInt) return true;
-                break;
-            case 6:
-                if (coloursDictionary[Shape.Figures_Colours.Light_Green] == userResponseInt) return true;
-                break;
-            case 7:
-                if (coloursDictionary[Shape.Figures_Colours.Dark_Green] == userResponseInt) return true;
-                break;
-            case 8:
-                if (coloursDictionary[Shape.Figures_Colours.Violet] == userResponseInt) return true;
-                break;
-            case 9:
-                if (coloursDictionary[Shape.Figures_Colours.Pink] == userResponseInt) return true;
-                break;
-            case 10:
-                if (coloursDictionary[Shape.Figures_Colours.Red] == userResponseInt) return true;
-                break;
-            case 11:
-                if (coloursDictionary[Shape.Figures_Colours.Yellow] == userResponseInt) return true;
-                break;
-            case 12:
-                if (coloursDictionary[Shape.Figures_Colours.Orange] == userResponseInt) return true;
-                break;
-            default:
-                if (numberOfFigures == userResponseInt) return true;
-                break;
+            return shapesDictionary[((ShapesInValidation) shapeType).ToString()] == userResponse;
         }
 
-        return false;
+        var counter = 0;
+        if (figuresList == null) return userResponse == counter;
+        foreach (var figure in figuresList)
+        {
+            if (figure.shape.ToString() == ((ShapesInValidation) shapeType).ToString() &&
+                figure.shape.Get_Colour().ToString() == ((ColoursInValidation) colourType).ToString())
+                counter++;
+        }
+
+
+        return userResponse == counter;
+    }
+
+    public bool ValidateYesNoAnswer(int userResponse)
+    {
+        var shapeType = (questionType / 10) - 5;
+        var colourType = questionType % 10;
+        bool rightAnswer;
+
+        if (colourType == 9)
+        {
+            rightAnswer =  shapesDictionary[((ShapesInValidation)shapeType).ToString()] > 0;
+        }
+        else
+        {
+            
+            var counter = 0;
+            if (figuresList == null) return userResponse == counter;
+            foreach (var figure in figuresList)
+            {
+                if (figure.shape.ToString() == ((ShapesInValidation) shapeType).ToString() &&
+                    figure.shape.Get_Colour().ToString() == ((ColoursInValidation) colourType).ToString())
+                    counter++;
+            }
+            rightAnswer = counter > 0;
+        }
+
+        if (userResponse == 0) return rightAnswer == false;
+        return rightAnswer;
+    }
+
+    #endregion
+
+    private int GetRightAbcAnswer()
+    {
+            var shapeType = questionType / 10;
+            var colourType = questionType % 10;
+
+            if (colourType == 9)
+            {
+                return shapesDictionary[((ShapesInValidation)shapeType).ToString()];
+            }
+
+            var counter = 0;
+            if (figuresList == null) return counter;
+            foreach (var figure in figuresList)
+            {
+                if (figure.shape.ToString() == ((ShapesInValidation)shapeType).ToString() &&
+                    figure.shape.Get_Colour().ToString() == ((ColoursInValidation)colourType).ToString())
+                    counter++;
+            }
+            return  counter;
+       
     }
 }
