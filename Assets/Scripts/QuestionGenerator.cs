@@ -81,7 +81,7 @@ public class QuestionGenerator : MonoBehaviour
 
     #region ClassFields
 
-    private Boo.Lang.List<Shape_With_Place> figuresList;
+    private List<Shape_With_Place> figuresList;
     private List<int> askedQuestions;
     private Dictionary<Shape.Figures_Colours, int> coloursDictionary;
     private Dictionary<string, int> shapesDictionary;
@@ -90,11 +90,7 @@ public class QuestionGenerator : MonoBehaviour
     private int questionsAsked;
     private int abcQuestionsAsked;
     private int yesNoQuestionsAsked;
-<<<<<<< HEAD
-    private int questionsAsked;
-=======
     private int userAnswer;
->>>>>>> QuestionsBranch
     private bool answeredQuestion = false;
     private bool isYesNoQuestion = false;
     public Button NextButton, AnswerOptionA, AnswerOptionB, AnswerOptionC, AnswerOptionD;
@@ -266,15 +262,7 @@ public class QuestionGenerator : MonoBehaviour
             if (!askedQuestions.Contains(questionType)) break;
         }
 
-<<<<<<< HEAD
-        if (!isYesNoQuestion)
-            question = CreateAbcQuestion();
-        else
-            question = CreateYesNoQuestion();
-
-=======
         isYesNoQuestion = questionType >= 50;
->>>>>>> QuestionsBranch
         askedQuestions.Add(questionType);
         if(!isYesNoQuestion)PopulateButtons(GetRightAbcAnswer());
         return !isYesNoQuestion ? CreateAbcQuestion() : CreateYesNoQuestion();
@@ -292,18 +280,12 @@ public class QuestionGenerator : MonoBehaviour
 
     private string CreateYesNoQuestion()
     {
-<<<<<<< HEAD
-        string question = null;
-
-        return question;
-=======
         var shapeType = (questionType / 10) - 5;
         var colourType = questionType % 10;
         if (colourType == 9)
             return "Czy na karcie znajdują się " + ((ShapesInYesNoQuestions)shapeType).ToString() + "?";
         return "Czy na karcie znajdują się " + ((ColoursInYesNoQuestions)colourType).ToString() + " " +
                ((ShapesInYesNoQuestions)shapeType).ToString() + "?";
->>>>>>> QuestionsBranch
     }
 
     #endregion
