@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
-using Boo.Lang;
 
 public struct Shape_With_Place
 {
