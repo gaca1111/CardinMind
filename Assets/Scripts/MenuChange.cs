@@ -15,11 +15,8 @@ public class MenuChange : MonoBehaviour {
     {
         var difficultyModifiers = SettingDificulty();
         var cardGenerator = gameObject.AddComponent<Card_Generator>();
-<<<<<<< HEAD
         cardGenerator.Generate_Card(difficultyModifiers);
-=======
         //var card = cardGenerator.Generate_Card(difficultyModifiers);
->>>>>>> e4b35dd18e8ef6d91ebec14fd02f71792e4ec21d
         
         SceneManager.LoadScene(sceneName);
     }
@@ -34,12 +31,12 @@ public class MenuChange : MonoBehaviour {
             Shape.Figures_Colours.Light_Green
         };
 
-        difficultyModifiers.cardType = Difficulty_Modifiers.CardType.Cart_Type12;
-        difficultyModifiers.Number_of_figures = 4;
-        difficultyModifiers.Number_of_mistakes = 3;
-        difficultyModifiers.Colours_only_mechanic = true;
-        difficultyModifiers.Set_Figures_Colours(col);
-        difficultyModifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Random;
+        Difficulty_Modifiers.cardType = Difficulty_Modifiers.CardType.Cart_Type12;
+        Difficulty_Modifiers.Number_of_figures = 4;
+        Difficulty_Modifiers.Number_of_mistakes = 3;
+        Difficulty_Modifiers.Colours_only_mechanic = true;
+        Difficulty_Modifiers.Set_Figures_Colours(col);
+        Difficulty_Modifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Random;
                 
         return difficultyModifiers;
     }

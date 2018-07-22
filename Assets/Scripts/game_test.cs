@@ -19,10 +19,10 @@ public class game_test : MonoBehaviour {
 
 
 
-        mod.Set_Figures_Colours(col);
+        Difficulty_Modifiers.Set_Figures_Colours(col);
 
-        mod.cardType = Difficulty_Modifiers.CardType.Cart_Type12;
-        mod.Number_of_figures = 14;
+        Difficulty_Modifiers.cardType = Difficulty_Modifiers.CardType.Cart_Type12;
+        Difficulty_Modifiers.Number_of_figures = 14;
 
         gen.Generate_Card(mod);
        
