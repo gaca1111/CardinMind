@@ -35,6 +35,7 @@ public class QuestionGenerator : MonoBehaviour
     private int questionType;
     private int abcQuestionsAsked;
     private int yesNoQuestionsAsked;
+    private int questionsAsked;
     private bool answeredQuestion = false;
     private bool isYesNoQuestion = false;
     public InputField UserAnswer;
@@ -172,7 +173,7 @@ public class QuestionGenerator : MonoBehaviour
             if (!askedQuestions.Contains(questionType)) break;
         }
 
-        if (!isYesNoQuestion &&)
+        if (!isYesNoQuestion)
             question = CreateAbcQuestion();
         else
             question = CreateYesNoQuestion();
@@ -240,7 +241,7 @@ public class QuestionGenerator : MonoBehaviour
 
     private string CreateYesNoQuestion()
     {
-        string question;
+        string question = null;
 
         return question;
     }

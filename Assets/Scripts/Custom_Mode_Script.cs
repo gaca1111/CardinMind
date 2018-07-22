@@ -194,6 +194,7 @@ public class Custom_Mode_Script : MonoBehaviour
         AllowedMistakesSlider.value = PlayerPrefs.GetInt("NumberOfMistakes");
         ColorFilingDropdown.value = PlayerPrefs.GetInt("ColoursOnlyMechanic");
         GameModeDropdown.value = PlayerPrefs.GetInt("GameMode");
+        TimeRestrictionInputField.text = PlayerPrefs.GetInt("TimeRestriction").ToString();
         AllowedMistakesText.text = AllowedMistakesSlider.value.ToString();
 
         if (PlayerPrefs.GetInt("Light_Blue") == 1) coloursList.Add(Shape.Figures_Colours.Light_Blue);
@@ -209,7 +210,7 @@ public class Custom_Mode_Script : MonoBehaviour
 
     Difficulty_Modifiers SettingDificulty()
     {
-        int maxNumberOfFigures = Int32.Parse(NumberOfFiguresInputField.text);
+        var maxNumberOfFigures = int.Parse(NumberOfFiguresInputField.text);
         var difficultyModifiers = gameObject.AddComponent<Difficulty_Modifiers>() as Difficulty_Modifiers;
 
         Difficulty_Modifiers.cardType = CardSizeDropdown.value == 0
@@ -222,6 +223,7 @@ public class Custom_Mode_Script : MonoBehaviour
         Difficulty_Modifiers.Number_of_figures = NumberOfFiguresInputField.text != "" ? maxNumberOfFigures : 4;
         Difficulty_Modifiers.Number_of_mistakes = int.Parse(AllowedMistakesSlider.value.ToString());
         Difficulty_Modifiers.Colours_only_mechanic = ColorFilingDropdown;
+        Difficulty_Modifiers.TimeRestriction = int.Parse(TimeRestrictionInputField.text);
         Difficulty_Modifiers.Set_Figures_Colours(coloursList);
         ColourListToPlayerPrefs();
 

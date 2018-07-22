@@ -15,6 +15,7 @@ public class Difficulty_Modifiers: MonoBehaviour {
     private static Game_Mode game_mode;
     private static bool colours_only_mechanic;
     private static bool card_pick_mechanic;
+    private static int timeRestriction;
 
 
     public static CardType cardType {
@@ -74,6 +75,19 @@ public class Difficulty_Modifiers: MonoBehaviour {
 
         set {
             card_pick_mechanic = value;
+        }
+    }
+
+    public static int TimeRestriction
+    {
+        get
+        {
+            return timeRestriction;
+        }
+
+        set
+        {
+            timeRestriction = value;
         }
     }
 
