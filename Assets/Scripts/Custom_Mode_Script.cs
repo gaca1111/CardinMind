@@ -211,41 +211,43 @@ public class Custom_Mode_Script : MonoBehaviour
     Difficulty_Modifiers SettingDificulty()
     {
         var maxNumberOfFigures = int.Parse(NumberOfFiguresInputField.text);
-        var difficultyModifiers = gameObject.AddComponent<Difficulty_Modifiers>() as Difficulty_Modifiers;
+        var difficultyModifiers = new Difficulty_Modifiers
+        {
+            cardType = CardSizeDropdown.value == 0
+                ? Difficulty_Modifiers.CardType.Cart_Type12
+                : Difficulty_Modifiers.CardType.Cart_Type70
+        };
 
-        Difficulty_Modifiers.cardType = CardSizeDropdown.value == 0
-            ? Difficulty_Modifiers.CardType.Cart_Type12
-            : Difficulty_Modifiers.CardType.Cart_Type70;
-        if (Difficulty_Modifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type12 &&
+        if (difficultyModifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type12 &&
             int.Parse(NumberOfFiguresInputField.text) > 11) maxNumberOfFigures = 11;
-        if (Difficulty_Modifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type70 &&
+        if (difficultyModifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type70 &&
             int.Parse(NumberOfFiguresInputField.text) > 69) maxNumberOfFigures = 69;
-        Difficulty_Modifiers.Number_of_figures = NumberOfFiguresInputField.text != "" ? maxNumberOfFigures : 4;
-        Difficulty_Modifiers.Number_of_mistakes = int.Parse(AllowedMistakesSlider.value.ToString());
-        Difficulty_Modifiers.Colours_only_mechanic = ColorFilingDropdown;
-        Difficulty_Modifiers.TimeRestriction = int.Parse(TimeRestrictionInputField.text);
-        Difficulty_Modifiers.Set_Figures_Colours(coloursList);
+        difficultyModifiers.Number_of_figures = NumberOfFiguresInputField.text != "" ? maxNumberOfFigures : 4;
+        difficultyModifiers.Number_of_mistakes = int.Parse(AllowedMistakesSlider.value.ToString());
+        difficultyModifiers.Colours_only_mechanic = ColorFilingDropdown;
+        difficultyModifiers.TimeRestriction = int.Parse(TimeRestrictionInputField.text);
+        difficultyModifiers.Set_Figures_Colours(coloursList);
         ColourListToPlayerPrefs();
 
         switch (GameModeDropdown.value)
         {
             case 0:
-                Difficulty_Modifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Random;
+                difficultyModifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Random;
                 PlayerPrefs.SetInt("GameMode", 0);
                 break;
             case 1:
-                Difficulty_Modifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Both;
+                difficultyModifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Both;
                 PlayerPrefs.SetInt("GameMode", 1);
                 break;
             default:
-                Difficulty_Modifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Questions;
+                difficultyModifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Questions;
                 PlayerPrefs.SetInt("GameMode", 2);
                 break;
         }
-        PlayerPrefs.SetString("CardType", Difficulty_Modifiers.cardType.ToString());
-        PlayerPrefs.SetInt("NumberOfFigures", Difficulty_Modifiers.Number_of_figures);
-        PlayerPrefs.SetInt("NumberOfMistakes", Difficulty_Modifiers.Number_of_mistakes);
-        PlayerPrefs.SetInt("ColoursOnlyMechanic", Difficulty_Modifiers.Colours_only_mechanic.ToString() == "TRUE" ? 1 : 0);
+        PlayerPrefs.SetString("CardType", difficultyModifiers.cardType.ToString());
+        PlayerPrefs.SetInt("NumberOfFigures", difficultyModifiers.Number_of_figures);
+        PlayerPrefs.SetInt("NumberOfMistakes", difficultyModifiers.Number_of_mistakes);
+        PlayerPrefs.SetInt("ColoursOnlyMechanic", difficultyModifiers.Colours_only_mechanic.ToString() == "TRUE" ? 1 : 0);
         return difficultyModifiers;
     }
 
