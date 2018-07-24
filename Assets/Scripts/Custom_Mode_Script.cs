@@ -8,10 +8,10 @@ using UnityEngine.UI;
 public class Custom_Mode_Script : MonoBehaviour
 {
     public Button PlayButton, ColorChoosingButton, DarkBlueButton, LightBlueButton, DarkGreenButton, LightGreenButton, VioletButton, PinkButton, RedButton, YellowButton, OrangeButton;
-    public Slider AllowedMistakesSlider;
-    public InputField NumberOfFiguresInputField, TimeRestrictionInputField;
+    public Slider AllowedMistakesSlider, NumberOfFiguresSlider;
+    public InputField TimeRestrictionInputField;
     public Dropdown CardSizeDropdown, CardChoosingDropdown, GameModeDropdown, ColorFilingDropdown;
-    public Text AllowedMistakesText;
+    public Text AllowedMistakesText, NumberOfFiguresText;
     private bool isColorChoosing;
     private List<Shape.Figures_Colours> coloursList;
 
@@ -29,6 +29,8 @@ public class Custom_Mode_Script : MonoBehaviour
         var playButton = PlayButton.GetComponent<Button>();
         var colorChoosingButton = ColorChoosingButton.GetComponent<Button>();
         AllowedMistakesSlider.onValueChanged.AddListener(AllowedMistakesSliderOnValueChange);
+        NumberOfFiguresSlider.onValueChanged.AddListener(NumberOfFiguresSliderOnValueChange);
+        CardSizeDropdown.onValueChanged.AddListener(CardSizeDropdownOnValueChange);
         playButton.onClick.AddListener(PlayOnClick);
         colorChoosingButton.onClick.AddListener(ShowColourChoosing);
         DarkBlueButton.onClick.AddListener(delegate { ColourButtonClicked(Shape.Figures_Colours.Dark_Blue); });
@@ -42,7 +44,6 @@ public class Custom_Mode_Script : MonoBehaviour
         OrangeButton.onClick.AddListener(delegate { ColourButtonClicked(Shape.Figures_Colours.Orange); });
     }
 
-    //ColorChoosingButton.transform.position.y
     private Rect buttonRect;
     void ShowColourChoosing()
     {
@@ -178,7 +179,7 @@ public class Custom_Mode_Script : MonoBehaviour
 
     void PlayOnClick()
     {
-        Static.DifficultyModifiers = SettingDificulty();
+        Static.DifficultyModifiers = DifficultyToPlayarPref();
     }
 
     void AllowedMistakesSliderOnValueChange(float arg)
@@ -186,15 +187,27 @@ public class Custom_Mode_Script : MonoBehaviour
         AllowedMistakesText.text = AllowedMistakesSlider.value.ToString();
     }
 
+    void NumberOfFiguresSliderOnValueChange(float arg)
+    {
+        NumberOfFiguresText.text = NumberOfFiguresSlider.value.ToString();
+    }
+
+    void CardSizeDropdownOnValueChange(int arg)
+    {
+        if (CardSizeDropdown.value == 0) NumberOfFiguresSlider.maxValue = 12;
+        else NumberOfFiguresSlider.maxValue = 70;
+    }
+
     void SetInitialValue()
     {
-        NumberOfFiguresInputField.text = PlayerPrefs.GetInt("NumberOfFigures").ToString();
+        NumberOfFiguresSlider.value = PlayerPrefs.GetInt("NumberOfFigures");
         CardSizeDropdown.value = PlayerPrefs.GetString("CardType") != Difficulty_Modifiers.CardType.Cart_Type70.ToString() ? 0 : 1;
         AllowedMistakesSlider.value = PlayerPrefs.GetInt("NumberOfMistakes");
         ColorFilingDropdown.value = PlayerPrefs.GetInt("ColoursOnlyMechanic");
         GameModeDropdown.value = PlayerPrefs.GetInt("GameMode");
         TimeRestrictionInputField.text = PlayerPrefs.GetInt("TimeRestriction").ToString();
         AllowedMistakesText.text = AllowedMistakesSlider.value.ToString();
+        NumberOfFiguresText.text = NumberOfFiguresSlider.value.ToString();
 
         if (PlayerPrefs.GetInt("Light_Blue") == 1) coloursList.Add(Shape.Figures_Colours.Light_Blue);
         if (PlayerPrefs.GetInt("Dark_Blue") == 1) coloursList.Add(Shape.Figures_Colours.Dark_Blue);
@@ -207,9 +220,9 @@ public class Custom_Mode_Script : MonoBehaviour
         if (PlayerPrefs.GetInt("Orange") == 1) coloursList.Add(Shape.Figures_Colours.Orange);
     }
 
-    Difficulty_Modifiers SettingDificulty()
+    Difficulty_Modifiers DifficultyToPlayarPref()
     {
-        var maxNumberOfFigures = int.Parse(NumberOfFiguresInputField.text);
+        var maxNumberOfFigures = NumberOfFiguresSlider.value;
         var difficultyModifiers = new Difficulty_Modifiers
         {
             cardType = CardSizeDropdown.value == 0
@@ -218,10 +231,10 @@ public class Custom_Mode_Script : MonoBehaviour
         };
 
         if (difficultyModifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type12 &&
-            int.Parse(NumberOfFiguresInputField.text) > 11) maxNumberOfFigures = 11;
+            NumberOfFiguresSlider.value  > 11) maxNumberOfFigures = 11;
         if (difficultyModifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type70 &&
-            int.Parse(NumberOfFiguresInputField.text) > 69) maxNumberOfFigures = 69;
-        difficultyModifiers.Number_of_figures = NumberOfFiguresInputField.text != "" ? maxNumberOfFigures : 4;
+            NumberOfFiguresSlider.value > 69) maxNumberOfFigures = 69;
+        difficultyModifiers.Number_of_figures = int.Parse(maxNumberOfFigures.ToString());
         difficultyModifiers.Number_of_mistakes = int.Parse(AllowedMistakesSlider.value.ToString());
         difficultyModifiers.Colours_only_mechanic = ColorFilingDropdown;
         difficultyModifiers.TimeRestriction = int.Parse(TimeRestrictionInputField.text);
