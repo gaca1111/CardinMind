@@ -96,7 +96,7 @@ public class Custom_Mode_Script : MonoBehaviour
                     DarkBlueImage.gameObject.SetActive(true);
                     break;
                 case Shape.Figures_Colours.Light_Green:
-                    LightGreenButton.gameObject.SetActive(true);
+                    LightGreenImage.gameObject.SetActive(true);
                     break;
                 case Shape.Figures_Colours.Dark_Green:
                     DarkGreenImage.gameObject.SetActive(true);
@@ -122,7 +122,7 @@ public class Custom_Mode_Script : MonoBehaviour
 
     void PlayOnClick()
     {
-        Static.DifficultyModifiers = DifficultyToPlayarPref();
+        Static.DifficultyModifiers = DifficultyToPlayerPref();
     }
 
     void AllowedMistakesSliderOnValueChange(float arg)
@@ -163,7 +163,7 @@ public class Custom_Mode_Script : MonoBehaviour
         if (PlayerPrefs.GetInt("Orange") == 1) coloursList.Add(Shape.Figures_Colours.Orange);
     }
 
-    Difficulty_Modifiers DifficultyToPlayarPref()
+    Difficulty_Modifiers DifficultyToPlayerPref()
     {
         var maxNumberOfFigures = NumberOfFiguresSlider.value;
         var difficultyModifiers = new Difficulty_Modifiers
