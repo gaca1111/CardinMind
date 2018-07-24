@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class Custom_Mode_Script : MonoBehaviour
 {
     public Button PlayButton, ColorChoosingButton, DarkBlueButton, LightBlueButton, DarkGreenButton, LightGreenButton, VioletButton, PinkButton, RedButton, YellowButton, OrangeButton;
+    public Image LightBlueImage, DarkBlueImage, LightGreenImage, DarkGreenImage, VioletImage, PinkImage, RedImage, YellowImage, OrangeImage;
     public Slider AllowedMistakesSlider, NumberOfFiguresSlider;
     public InputField TimeRestrictionInputField;
     public Dropdown CardSizeDropdown, CardChoosingDropdown, GameModeDropdown, ColorFilingDropdown;
@@ -70,108 +71,50 @@ public class Custom_Mode_Script : MonoBehaviour
 
     void ClearColoursBorders()
     {
-        GameObject sprite;
-        Vector3 position;
-        sprite = GameObject.Find("LightBlueSprite");
-        position = sprite.transform.position;
-        position.z = -10;
-        sprite.transform.position = position;
-        sprite = GameObject.Find("DarkBlueSprite");
-        position = sprite.transform.position;
-        position.z = -10;
-        sprite.transform.position = position;
-        sprite = GameObject.Find("LightGreenSprite");
-        position = sprite.transform.position;
-        position.z = -10;
-        sprite.transform.position = position;
-        sprite = GameObject.Find("DarkGreenSprite");
-        position = sprite.transform.position;
-        position.z = -10;
-        sprite.transform.position = position;
-        sprite = GameObject.Find("VioletSprite");
-        position = sprite.transform.position;
-        position.z = -10;
-        sprite.transform.position = position;
-        sprite = GameObject.Find("PinkSprite");
-        position = sprite.transform.position;
-        position.z = -10;
-        sprite.transform.position = position;
-        sprite = GameObject.Find("RedSprite");
-        position = sprite.transform.position;
-        position.z = -10;
-        sprite.transform.position = position;
-        sprite = GameObject.Find("YellowSprite");
-        position = sprite.transform.position;
-        position.z = -10;
-        sprite.transform.position = position;
-        sprite = GameObject.Find("OrangeSprite");
-        position = sprite.transform.position;
-        position.z = -10;
-        sprite.transform.position = position;
+        LightBlueImage.gameObject.SetActive(false);
+        DarkBlueImage.gameObject.SetActive(false);
+        LightGreenImage.gameObject.SetActive(false);
+        DarkGreenImage.gameObject.SetActive(false);
+        VioletImage.gameObject.SetActive(false);
+        PinkImage.gameObject.SetActive(false);
+        RedImage.gameObject.SetActive(false);
+        YellowImage.gameObject.SetActive(false);
+        OrangeImage.gameObject.SetActive(false);
     }
 
     void ButtonDrawBorder()
     {
         ClearColoursBorders();
-        Vector3 position;
-        GameObject sprite;
         foreach (var colour in coloursList)
         {
             switch (colour)
             {
                 case Shape.Figures_Colours.Light_Blue:
-                    sprite = GameObject.Find("LightBlueSprite");
-                    position = sprite.transform.position;
-                    position.z = 0;
-                    sprite.transform.position = position;
+                    LightBlueImage.gameObject.SetActive(true);
                 break;
                 case Shape.Figures_Colours.Dark_Blue:
-                    sprite = GameObject.Find("DarkBlueSprite");
-                    position = sprite.transform.position;
-                    position.z = 0;
-                    sprite.transform.position = position;
+                    DarkBlueImage.gameObject.SetActive(true);
                     break;
                 case Shape.Figures_Colours.Light_Green:
-                    sprite = GameObject.Find("LightGreenSprite");
-                    position = sprite.transform.position;
-                    position.z = 0;
-                    sprite.transform.position = position;
+                    LightGreenButton.gameObject.SetActive(true);
                     break;
                 case Shape.Figures_Colours.Dark_Green:
-                    sprite = GameObject.Find("DarkGreenSprite");
-                    position = sprite.transform.position;
-                    position.z = 0;
-                    sprite.transform.position = position;
+                    DarkGreenImage.gameObject.SetActive(true);
                     break;
                 case Shape.Figures_Colours.Violet:
-                    sprite = GameObject.Find("VioletSprite");
-                    position = sprite.transform.position;
-                    position.z = 0;
-                    sprite.transform.position = position;
+                    VioletImage.gameObject.SetActive(true);
                     break;
                 case Shape.Figures_Colours.Pink:
-                    sprite = GameObject.Find("PinkSprite");
-                    position = sprite.transform.position;
-                    position.z = 0;
-                    sprite.transform.position = position;
+                    PinkImage.gameObject.SetActive(true);
                     break;
                 case Shape.Figures_Colours.Red:
-                    sprite = GameObject.Find("RedSprite");
-                    position = sprite.transform.position;
-                    position.z = 0;
-                    sprite.transform.position = position;
+                    RedImage.gameObject.SetActive(true);
                     break;
                 case Shape.Figures_Colours.Yellow:
-                    sprite = GameObject.Find("YellowSprite");
-                    position = sprite.transform.position;
-                    position.z = 0;
-                    sprite.transform.position = position;
+                    YellowImage.gameObject.SetActive(true);
                     break;
                 case Shape.Figures_Colours.Orange:
-                    sprite = GameObject.Find("OrangeSprite");
-                    position = sprite.transform.position;
-                    position.z = 0;
-                    sprite.transform.position = position;
+                    OrangeImage.gameObject.SetActive(true);
                     break;
             }
         }
