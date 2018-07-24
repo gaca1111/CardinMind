@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Difficulty_Modifiers{
 
     public enum CardType {Cart_Type70, Cart_Type12};
-    public enum Game_Mode {Both, Assembling, Questions, Random, Alternately};
+    public enum Game_Mode {Assembling, Questions, Random, Alternately};
 
     private CardType _cardType;
     private int number_of_figures;

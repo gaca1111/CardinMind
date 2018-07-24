@@ -90,6 +90,7 @@ public class QuestionGenerator : MonoBehaviour
     private bool isYesNoQuestion = false;
     public Button AnswerOptionA, AnswerOptionB, AnswerOptionC, AnswerOptionD;
     public Text QuestionField;
+    public SceneChangerScript SceneChanger;
 
     #endregion
 
@@ -99,7 +100,7 @@ public class QuestionGenerator : MonoBehaviour
     {
         CreateDictionaries();
         askedQuestions = new List<int>();
-        figuresList = CardDrawer.FiguresList;
+        figuresList = Static.ShapeWithPlaces;
         if (figuresList != null) PopulateDictionaries();
         questionsAsked = 0;
 
@@ -154,7 +155,7 @@ public class QuestionGenerator : MonoBehaviour
 
     public void NewCard()
     {
-        SceneManager.LoadScene("PlayAgainScene");
+        SceneChanger.EndGame();
     }
 
     public void AnswerOptionButton()
@@ -179,7 +180,7 @@ public class QuestionGenerator : MonoBehaviour
     
     public void PopulateDictionaries()
     {
-        foreach (var figure in CardDrawer.FiguresList)
+        foreach (var figure in Static.ShapeWithPlaces)
         {
             if (figure.shape is Rectangle) shapesDictionary["Rectangle"]++;
             if (figure.shape is Circle) shapesDictionary["Circle"]++;

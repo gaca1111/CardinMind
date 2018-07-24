@@ -178,8 +178,7 @@ public class Custom_Mode_Script : MonoBehaviour
 
     void PlayOnClick()
     {
-        var difficultyModifiers = SettingDificulty();
-        var cardGenerator = gameObject.AddComponent<Card_Generator>();
+        Static.DifficultyModifiers = SettingDificulty();
     }
 
     void AllowedMistakesSliderOnValueChange(float arg)
@@ -236,7 +235,7 @@ public class Custom_Mode_Script : MonoBehaviour
                 PlayerPrefs.SetInt("GameMode", 0);
                 break;
             case 1:
-                difficultyModifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Both;
+                difficultyModifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Assembling;
                 PlayerPrefs.SetInt("GameMode", 1);
                 break;
             default:

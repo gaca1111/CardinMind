@@ -9,35 +9,21 @@ using UnityEngine.UI;
 public class GameRememberSceneControllerScript : MonoBehaviour
 {
     private Card_Generator _cardGenerator;
+    public SceneChangerScript SceneChanger;
     public GameObject CircleGameObject;
     public GameObject RectangleGameObject;
     public GameObject SquareGameObject;
     public GameObject TriangleGameObject;
     public Transform Card;
-    public float TimeOnRemember = 10;
+    private float _timeOnRemember;
     public Text TimerText;
 
 	// Use this for initialization
 	void Start ()
 	{
-	    Static.DifficultyModifiers.cardType = Difficulty_Modifiers.CardType.Cart_Type70;
-	    Static.DifficultyModifiers.Number_of_figures = 5;
-	    Static.DifficultyModifiers.Set_Figures_Colours(new List<Shape.Figures_Colours>()
-	    {
-	        Shape.Figures_Colours.Orange,
-	        Shape.Figures_Colours.Dark_Blue,
-	        Shape.Figures_Colours.Pink,
-	        Shape.Figures_Colours.Dark_Green,
-	        Shape.Figures_Colours.Light_Blue,
-	        Shape.Figures_Colours.Red,
-	        Shape.Figures_Colours.Light_Green,
-	        Shape.Figures_Colours.Violet,
-	        Shape.Figures_Colours.Yellow
-
-        });
-
 	    _cardGenerator = gameObject.AddComponent<Card_Generator>();
         _cardGenerator.Generate_Card(Static.DifficultyModifiers);
+	    _timeOnRemember = Static.DifficultyModifiers.TimeRestriction;
         Debug.Log(Static.DifficultyModifiers.cardType);
 	    Static.ShapeWithPlaces = _cardGenerator.Get_List_Of_Shape();
         DrawCard();
@@ -46,12 +32,12 @@ public class GameRememberSceneControllerScript : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-	    TimeOnRemember -= Time.deltaTime;
-	    TimerText.text = TimeOnRemember.ToString("0.00");
-	    if (TimeOnRemember <= 0)
+	    _timeOnRemember -= Time.deltaTime;
+	    TimerText.text = _timeOnRemember.ToString("0.00");
+	    if (_timeOnRemember <= 1)
 	    {
             Debug.Log("TimerEnd");
-	        SceneManager.LoadScene("GameDrawScene");
+	        SceneChanger.CardRememberTimeOut();
         }
 	}
 

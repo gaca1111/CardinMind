@@ -8,6 +8,8 @@ public class CardToChooseScript : MonoBehaviour, IPointerClickHandler
 {
     private Animator _animator;
     public Sprite WrongCardSprite;
+    public Sprite CorrectCardSprite;
+    public SceneChangerScript SceneChanger;
     private Image _image;
     private Sprite _spriteToReturn;
     public bool CorrectCard { get; set; }
@@ -31,6 +33,11 @@ public class CardToChooseScript : MonoBehaviour, IPointerClickHandler
         if (!CorrectCard)
         {
             _image.sprite = WrongCardSprite;
+        }
+        else
+        {
+            _image.sprite = CorrectCardSprite;
+            SceneChanger.GoToRemember();
         }
     }
 
