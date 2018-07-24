@@ -103,7 +103,8 @@ public class Card_Generator : MonoBehaviour {
                     current_shape = Roll_Shape_1x1();
                     current_shape.Set_Colour(Roll_Colour());
                     Save_Shape(current_place, current_shape, width_12, height_12);
-                    Debug.Log("place " + current_place + " shape " + current_shape + "colour" + current_shape.Get_Colour() + "rotation " + current_shape.Get_Rotation());
+                    Debug.Log("place:  " + current_place + " shape: " + current_shape + " colour: " + current_shape.Get_Colour() + " rotation: " + current_shape.Get_Rotation());
+                    Debug.Log("Id place: " + current_place);
                     var shapeWithPlace = new Shape_With_Place
                     {
                         shape = current_shape,
@@ -122,7 +123,8 @@ public class Card_Generator : MonoBehaviour {
                         current_shape = Roll_Shape_2x1(roled_struct.rotation);
                         current_shape.Set_Colour(Roll_Colour());
                         Save_Shape(current_place, current_shape, width_12, height_12);
-                        Debug.Log("place " + current_place + " shape " + current_shape + "colour" + current_shape.Get_Colour() + "rotation " + current_shape.Get_Rotation());
+                        Debug.Log("place:  " + current_place + " shape: " + current_shape + " colour: " + current_shape.Get_Colour() + " rotation: " + current_shape.Get_Rotation());
+                        Debug.Log("Id place: " + current_place);
                         shapeWithPlace = new Shape_With_Place
                         {
                             shape = current_shape,
@@ -136,7 +138,8 @@ public class Card_Generator : MonoBehaviour {
                         current_shape = Roll_Shape_1x1();
                         current_shape.Set_Colour(Roll_Colour());
                         Save_Shape(current_place, current_shape, width_12, height_12);
-                        Debug.Log("place " + current_place + " shape " + current_shape + "colour" + current_shape.Get_Colour() + "rotation " + current_shape.Get_Rotation());
+                        Debug.Log("place:  " + current_place + " shape: " + current_shape + " colour: " + current_shape.Get_Colour() + " rotation: " + current_shape.Get_Rotation());
+                        Debug.Log("Id place: " + current_place);
                         shapeWithPlace = new Shape_With_Place
                         {
                             shape = current_shape,
@@ -508,7 +511,7 @@ public class Card_Generator : MonoBehaviour {
             int place = (int)empty_space[rnd];
             int counter = place;
 
-            Debug.Log(place);
+            //Debug.Log(place);
 
             int x = 0;
             int y = 0;

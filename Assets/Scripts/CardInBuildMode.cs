@@ -22,8 +22,10 @@ public class CardInBuildMode : MonoBehaviour, IDropHandler
     {
         Debug.Log(eventData.pointerDrag.name + " drooped on " + gameObject.name);
         eventData.pointerDrag.transform.SetParent(transform);
+        Vector2[] points;
+        points = Static.DifficultyModifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type12 ? Helpers.Card12Points : Helpers.Card70Points;
         var pointToSet =
-            Helpers.LocateNearestPoint(eventData.pointerDrag.transform.localPosition, Helpers.Card12Points);
+            Helpers.LocateNearestPoint(eventData.pointerDrag.transform.localPosition, points);
         Debug.Log("PointToSet = " + pointToSet.x + " " + pointToSet.y);
         eventData.pointerDrag.transform.localPosition = pointToSet;
     }
