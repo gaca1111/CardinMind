@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -14,67 +11,67 @@ public class QuestionGenerator : MonoBehaviour
 
     private enum ColoursInAbcQuestions
     {
-        niebieskich,
-        ciemnoniebieskich,
-        zielonych,
-        ciemnozielonych,
-        fioletowych,
-        różowych,
-        czerwony,
-        żółtych,
-        pomarańczowych
+        niebieskich = 0,
+        ciemnoniebieskich = 1,
+        zielonych = 2,
+        ciemnozielonych = 3,
+        fioletowych = 4,
+        różowych = 5,
+        czerwonych = 6,
+        żółtych = 7,
+        pomarańczowych = 8
     }
 
     private enum ShapesInAbcQuestions
     {
-        prostokątów,
-        kół,
-        kwadratów,
-        trójkątów, 
-        figur
+        prostokątów = 0,
+        kół = 1,
+        kwadratów = 2,
+        trójkątów = 3,
+        figur = 4
     }
 
     private enum ColoursInYesNoQuestions
     {
-        niebieskie,
-        ciemnoniebieskie,
-        zielone,
-        ciemnozielone,
-        fioletowe,
-        różowe,
-        czerwone,
-        żółte,
-        pomarańczowe
+        niebieskie = 0,
+        ciemnoniebieskie = 1,
+        zielone = 2,
+        ciemnozielone = 3,
+        fioletowe = 4,
+        różowe = 5,
+        czerwone = 6,
+        żółte = 7,
+        pomarańczowe = 8
     }
 
     private enum ShapesInYesNoQuestions
     {
-        prostokąty,
-        koła,
-        kwadraty,
-        trójkąty,
-        figury
+        prostokąty = 0,
+        koła = 1,
+        kwadraty = 2,
+        trójkąty = 3,
+        figury = 4
     }
 
     private enum ColoursInValidation
     {
-        LightBlue,
-        DarkBlue,
-        LightGreen,
-        DarkGreen,
-        Violet,
-        Pink,
-        Red,
-        Yellow,
-        Orange
+        Light_Blue = 0,
+        Dark_Blue = 1,
+        Light_Green = 2,
+        Dark_Green = 3,
+        Violet = 4,
+        Pink = 5,
+        Red = 6,
+        Yellow = 7,
+        Orange = 8
     }
 
     private enum ShapesInValidation
     {
-        Rectangle,
-        Circle,
-        Square,
-        Triangle
+        Rectangle = 1,
+        Circle = 2,
+        Square = 3,
+        Triangle = 4
     }
 
     #endregion
@@ -88,15 +85,15 @@ public class QuestionGenerator : MonoBehaviour
     private int numberOfFigures;
     private int questionType;
     private int questionsAsked;
-    private int abcQuestionsAsked;
-    private int yesNoQuestionsAsked;
     private int userAnswer;
     private bool answeredQuestion = false;
     private bool isYesNoQuestion = false;
-    public Button NextButton, AnswerOptionA, AnswerOptionB, AnswerOptionC, AnswerOptionD;
+    public Button AnswerOptionA, AnswerOptionB, AnswerOptionC, AnswerOptionD;
     public Text QuestionField;
 
     #endregion
+
+    #region Initilizers
 
     void Start()
     {
@@ -104,13 +101,14 @@ public class QuestionGenerator : MonoBehaviour
         askedQuestions = new List<int>();
         figuresList = CardDrawer.FiguresList;
         if (figuresList != null) PopulateDictionaries();
+        questionsAsked = 0;
 
         QuestionField.text = CreateQuestion();
-        NextButton.onClick.AddListener(AnswerButton);
         AnswerOptionA.onClick.AddListener(AnswerOptionButton);
         AnswerOptionB.onClick.AddListener(AnswerOptionButton);
         AnswerOptionC.onClick.AddListener(AnswerOptionButton);
         AnswerOptionD.onClick.AddListener(AnswerOptionButton);
+
     }
 
     public void CreateDictionaries()
@@ -136,82 +134,43 @@ public class QuestionGenerator : MonoBehaviour
         };
     }
 
-    #region ButtonActions
+    #endregion
 
-    private void AnswerButton()
+    #region ButtonAndClickActions
+    
+    void Update()
     {
+        if(Input.anyKey)
         if (answeredQuestion)
         {
-            QuestionField.text = CreateQuestion();
-            answeredQuestion = false;
-            if (abcQuestionsAsked < 99) NextButton.GetComponentInChildren<Text>().text = "Odpowiedz";
+            if (questionsAsked > 4) NewCard();
             else
             {
-                NextButton.GetComponentInChildren<Text>().text = "Nowa karta";
-                NextButton.onClick.AddListener(NewCardButton);
+                QuestionField.text = CreateQuestion();
+                answeredQuestion = false;
             }
-        }
-        else
-        {
-            ValidateAnswer();
-            ClearClickedButton();
-            HideButtons();
         }
     }
 
-    public void NewCardButton()
+    public void NewCard()
     {
-        SceneManager.LoadScene("Main_Menu");
+        SceneManager.LoadScene("PlayAgainScene");
     }
 
     public void AnswerOptionButton()
     {
         var buttonClicked = EventSystem.current.currentSelectedGameObject.name;
         SetUserAnswerFromButton(buttonClicked);
-        ClearClickedButton();
-        MarkClickedButton(buttonClicked);
-    }
-
-    private void ClearClickedButton()
-    {
-        AnswerOptionA.GetComponentInChildren<Text>().color = Color.black;
-        AnswerOptionB.GetComponentInChildren<Text>().color = Color.black;
-        AnswerOptionC.GetComponentInChildren<Text>().color = Color.black;
-        AnswerOptionD.GetComponentInChildren<Text>().color = Color.black;
-    }
-
-    private void MarkClickedButton(string buttonClicked)
-    {
-        var visibleLayer = 0;
-        if (buttonClicked.Contains("First"))
-        {
-            AnswerOptionA.GetComponentInChildren<Text>().color = Color.blue;
-        }
-
-        if (buttonClicked.Contains("Second"))
-        {
-            AnswerOptionB.GetComponentInChildren<Text>().color = Color.blue;
-        }
-
-        if (buttonClicked.Contains("Third"))
-        {
-            AnswerOptionC.GetComponentInChildren<Text>().color = Color.blue;
-        }
-
-        if (buttonClicked.Contains("Fourth"))
-        {
-            AnswerOptionD.GetComponentInChildren<Text>().color = Color.blue;
-        }
-
-
+        ValidateAnswer();
+        HideButtons();
     }
 
     private void HideButtons()
     {
-        AnswerOptionA.GetComponentInChildren<Text>().text = "";
-        AnswerOptionB.GetComponentInChildren<Text>().text = "";
-        AnswerOptionC.GetComponentInChildren<Text>().text = "";
-        AnswerOptionD.GetComponentInChildren<Text>().text = "";
+        AnswerOptionA.gameObject.SetActive(false);
+        AnswerOptionB.gameObject.SetActive(false);
+        AnswerOptionC.gameObject.SetActive(false);
+        AnswerOptionD.gameObject.SetActive(false);
     }
 
     #endregion
@@ -254,13 +213,19 @@ public class QuestionGenerator : MonoBehaviour
     {
         if (isYesNoQuestion)
         {
-            AnswerOptionA.GetComponentInChildren<Text>().text = "";
+            AnswerOptionA.gameObject.SetActive(false);
+            AnswerOptionB.gameObject.SetActive(true);
             AnswerOptionB.GetComponentInChildren<Text>().text = "TAK";
+            AnswerOptionC.gameObject.SetActive(true);
             AnswerOptionC.GetComponentInChildren<Text>().text = "NIE";
-            AnswerOptionD.GetComponentInChildren<Text>().text = "";
+            AnswerOptionD.gameObject.SetActive(false);
         }
         else
         {
+            AnswerOptionA.gameObject.SetActive(true);
+            AnswerOptionB.gameObject.SetActive(true);
+            AnswerOptionC.gameObject.SetActive(true);
+            AnswerOptionD.gameObject.SetActive(true);
             var rand = new System.Random();
             var wrongAnswers = new List<int>
             {
@@ -317,7 +282,29 @@ public class QuestionGenerator : MonoBehaviour
         PopulateButtons(GetRightAbcAnswer());
         return !isYesNoQuestion ? CreateAbcQuestion() : CreateYesNoQuestion();
     }
-    
+
+    private int GetRightAbcAnswer()
+    {
+        var shapeType = questionType / 10;
+        var colourType = questionType % 10;
+
+        if (colourType == 9)
+        {
+            return shapesDictionary[((ShapesInValidation)shapeType).ToString()];
+        }
+
+        var counter = 0;
+        if (figuresList == null) return counter;
+        foreach (var figure in figuresList)
+        {
+            if (figure.shape.ToString() == ((ShapesInValidation)shapeType).ToString() &&
+                figure.shape.Get_Colour().ToString() == ((ColoursInValidation)colourType).ToString())
+                counter++;
+        }
+        return counter;
+
+    }
+
     private string CreateAbcQuestion()
     {
         var shapeType = questionType / 10;
@@ -347,7 +334,6 @@ public class QuestionGenerator : MonoBehaviour
         answeredQuestion = true;
         var answerValidation = !isYesNoQuestion ? ValidateAbcAnswer(userAnswer) : ValidateYesNoAnswer(userAnswer);
         QuestionField.text = answerValidation ? "Poprawna odpowiedź" : "Błędna odpowiedź";
-        NextButton.GetComponentInChildren<Text>().text = "Następne pytanie";
     }
 
     public bool ValidateAbcAnswer(int userResponse)
@@ -402,26 +388,4 @@ public class QuestionGenerator : MonoBehaviour
     }
 
     #endregion
-
-    private int GetRightAbcAnswer()
-    {
-            var shapeType = questionType / 10;
-            var colourType = questionType % 10;
-
-            if (colourType == 9)
-            {
-                return shapesDictionary[((ShapesInValidation)shapeType).ToString()];
-            }
-
-            var counter = 0;
-            if (figuresList == null) return counter;
-            foreach (var figure in figuresList)
-            {
-                if (figure.shape.ToString() == ((ShapesInValidation)shapeType).ToString() &&
-                    figure.shape.Get_Colour().ToString() == ((ColoursInValidation)colourType).ToString())
-                    counter++;
-            }
-            return  counter;
-       
-    }
 }
