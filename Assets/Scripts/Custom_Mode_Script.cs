@@ -202,7 +202,7 @@ public class Custom_Mode_Script : MonoBehaviour
         PlayerPrefs.SetString("CardType", difficultyModifiers.cardType.ToString());
         PlayerPrefs.SetInt("NumberOfFigures", difficultyModifiers.Number_of_figures);
         PlayerPrefs.SetInt("NumberOfMistakes", difficultyModifiers.Number_of_mistakes);
-        PlayerPrefs.SetInt("ColoursOnlyMechanic", difficultyModifiers.Colours_only_mechanic.ToString() == "TRUE" ? 1 : 0);
+        PlayerPrefs.SetInt("ColoursOnlyMechanic", difficultyModifiers.Colours_only_mechanic ? 1 : 0);
         return difficultyModifiers;
     }
 

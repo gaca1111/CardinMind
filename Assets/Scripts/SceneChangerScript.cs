@@ -28,7 +28,7 @@ public class SceneChangerScript : MonoBehaviour
         Static.DifficultyModifiers.Card_pick_mechanic = true;
         Static.DifficultyModifiers.Number_of_mistakes = 5;
         Static.DifficultyModifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Assembling;
-        Static.DifficultyModifiers.TimeRestriction = 20;
+        Static.DifficultyModifiers.TimeRestriction = 10;
         Static.DifficultyModifiers.Colours_only_mechanic = false;
         StartGame();
     }
@@ -52,7 +52,7 @@ public class SceneChangerScript : MonoBehaviour
         Static.DifficultyModifiers.Card_pick_mechanic = false;
         Static.DifficultyModifiers.Number_of_mistakes = 5;
         Static.DifficultyModifiers.Game_mode = Difficulty_Modifiers.Game_Mode.Random;
-        Static.DifficultyModifiers.TimeRestriction = 20;
+        Static.DifficultyModifiers.TimeRestriction = 5;
         Static.DifficultyModifiers.Colours_only_mechanic = false;
         StartGame();
     }

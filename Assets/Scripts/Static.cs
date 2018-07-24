@@ -69,7 +69,7 @@ public static class Helpers
                 result = new Color(1, 0, 0);
                 break;
             case Shape.Figures_Colours.Yellow:
-                result = new Color(1, 0.9215686f, 0.01568628f);
+                result = new Color(1, 1, 0);
                 break;
             case Shape.Figures_Colours.Orange:
                 result = new Color(1, 0.5311697f, 0.05490196f);

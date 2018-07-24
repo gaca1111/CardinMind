@@ -1,53 +1,44 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameRememberSceneControllerScript : MonoBehaviour
+public class GameDrawSceneController : MonoBehaviour
 {
-    private Card_Generator _cardGenerator;
+
     public SceneChangerScript SceneChanger;
+    public GameObject Blob;
+    public GameObject ColorArea;
+
     public GameObject CircleGameObject;
     public GameObject RectangleGameObject;
     public GameObject SquareGameObject;
     public GameObject TriangleGameObject;
     public Transform Card;
-    private float _timeOnRemember;
-    public Text TimerText;
+    public GameObject ShapesPanel;
 
-	// Use this for initialization
-	void Start ()
-	{
-	    _cardGenerator = gameObject.AddComponent<Card_Generator>();
-        _cardGenerator.Generate_Card(Static.DifficultyModifiers);
-	    _timeOnRemember = Static.DifficultyModifiers.TimeRestriction;
-        Debug.Log(Static.DifficultyModifiers.cardType);
-	    Static.ShapeWithPlaces = _cardGenerator.Get_List_Of_Shape();
-        DrawCard();
-	    for (var i = 0; i < Card.childCount; i++)
-	    {
-	        var shape = Card.GetChild(i);
-	        shape.gameObject.GetComponent<DraggableShape>().enabled = false;
-	    }
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	    _timeOnRemember -= Time.deltaTime;
-	    if (_timeOnRemember <= 0.75f)
-	    {
-	        if (_timeOnRemember <= 0)
-	        {
-	            _timeOnRemember = 0;
-	        }
-            Debug.Log("TimerEnd");
-	        SceneChanger.CardRememberTimeOut();
+    // Use this for initialization
+    void Start()
+    {
+        foreach (var colour in Static.DifficultyModifiers.Get_Figures_Colours())
+        {
+            var colorBlob = Instantiate(Blob);
+            colorBlob.transform.SetParent(ColorArea.transform);
+            colorBlob.GetComponent<Image>().color = Helpers.ShapeColorToUnityColor(colour);
         }
-	    TimerText.text = _timeOnRemember.ToString("0.00");
+
+        if (Static.DifficultyModifiers.Colours_only_mechanic)
+        {
+            DrawCard();
+            Destroy(ShapesPanel);
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
     }
 
     void DrawCard()
@@ -72,8 +63,8 @@ public class GameRememberSceneControllerScript : MonoBehaviour
                 Debug.Log(shapePosition);
                 break;
             case Difficulty_Modifiers.CardType.Cart_Type70:
-                int positionToSet = position - 10 - (((position/9)-1)*2);
-                Debug.Log("Position to set in 70card: "+ positionToSet);
+                int positionToSet = position - 10 - (((position / 9) - 1) * 2);
+                Debug.Log("Position to set in 70card: " + positionToSet);
                 shapePosition = Helpers.Card70Points[positionToSet];
                 Debug.Log("Card70 position: " + position + " x: " + shapePosition.x + " y: " + shapePosition.y);
                 break;
@@ -104,15 +95,6 @@ public class GameRememberSceneControllerScript : MonoBehaviour
 
         var newObject = Instantiate(objectToSet);
 
-        if (newObject != null)
-        {
-            var image = newObject.GetComponent<Image>();
-            if (image != null)
-            {
-                Debug.Log("Color: "+shape.Get_Colour());
-                image.color = Helpers.ShapeColorToUnityColor(shape.Get_Colour());
-            }
-        }
         newObject.transform.parent = Card;
         newObject.transform.localPosition = shapePosition;
         newObject.transform.localScale = Vector3.one;
