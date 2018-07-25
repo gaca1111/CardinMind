@@ -11,6 +11,7 @@ public class DraggableShape : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     public bool Draggable = true;
     public GameObject DropZone;
     public int NumberOfPosition { get; set; } 
+    public int Rotation { get; set; }
 
     // Use this for initialization
 	void Start ()
@@ -34,6 +35,7 @@ public class DraggableShape : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             cloned.name = name;
         }
 
+        Rotation = 0;
         GetComponent<CanvasGroup>().blocksRaycasts = false;
         GetComponent<LayoutElement>().ignoreLayout = true;
         transform.SetParent(transform.parent.parent);
@@ -66,6 +68,8 @@ public class DraggableShape : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         if (!Draggable) return;
         Debug.Log("Clicked on " + this.name);
         transform.Rotate(0, 0, 90);
+        Rotation++;
+        Rotation = Rotation % 4;
     }
 
     public void OnDrop(PointerEventData eventData)
