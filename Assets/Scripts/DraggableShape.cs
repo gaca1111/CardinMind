@@ -68,8 +68,8 @@ public class DraggableShape : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         if (!Draggable) return;
         Debug.Log("Clicked on " + this.name);
         transform.Rotate(0, 0, 90);
-        Rotation++;
-        Rotation = Rotation % 4;
+        var rotation = transform.rotation;
+
     }
 
     public void OnDrop(PointerEventData eventData)
