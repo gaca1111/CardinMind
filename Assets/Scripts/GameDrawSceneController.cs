@@ -40,7 +40,7 @@ public class GameDrawSceneController : MonoBehaviour
         if (Static.DifficultyModifiers.Colours_only_mechanic)
         {
             DrawCard();
-            Debug.Log("Powinienem rysować i zniszczyć panle kształtów");
+            Debug.Log("Powinienem rysować i zniszczyć panee kształtów");
             Destroy(ShapesPanel.gameObject);
         }
     }
@@ -54,6 +54,7 @@ public class GameDrawSceneController : MonoBehaviour
             if (_timeToDisplay <= 0)
             {
                 _displayImage.GetComponent<Image>().enabled = false;
+                _timeToDisplay = 1;
             }
         }
     }
