@@ -106,57 +106,103 @@ public class GameDrawSceneController : MonoBehaviour
             bool position = false;
             bool rotation = false;
             bool color = false;
+            int shapePositionRotated = 0;
             var child = Card.GetChild(i);
             var shapeOnCard = child.gameObject.GetComponent<DraggableShape>();
             if (shapeOnCard == null) continue;
-            if (Static.DifficultyModifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type70)
-            {
-                int computedPosition = shapeOnCard.NumberOfPosition + 10 + ((shapeOnCard.NumberOfPosition / 7) * 2);
-                if (shape.id_place == computedPosition)
+
+            if (!Static.DifficultyModifiers.Colours_only_mechanic)
+                if (Static.DifficultyModifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type70)
                 {
-                    position = true;
+                    int computedPosition = shapeOnCard.NumberOfPosition + 10 + ((shapeOnCard.NumberOfPosition / 7) * 2);
+                    if (shape.id_place == computedPosition)
+                    {
+                        position = true;
+                    }
                 }
-            }
-            else
-            {
-                if (shape.id_place == shapeOnCard.NumberOfPosition)
+                else
                 {
-                    position = true;
+                    if (shape.shape is Rectangle)
+                    {
+                        var rotationOfShape = shape.shape.Get_Rotation();
+                        switch (rotationOfShape)
+                        {
+                            case Shape.Rotation.Up:
+                                shapePositionRotated = shape.id_place - 3;
+                                break;
+                            case Shape.Rotation.Left:
+                                shapePositionRotated = shape.id_place + 1;
+                                break;
+                            case Shape.Rotation.Down:
+                                shapePositionRotated = shape.id_place + 3;
+                                break;
+                            case Shape.Rotation.Right:
+                                shapePositionRotated = shape.id_place - 1;
+                                break;
+                        }
+
+                        if (shapeOnCard.NumberOfPosition == shapePositionRotated)
+                            position = true;
+                    }
+
+                    if (shape.id_place == shapeOnCard.NumberOfPosition)
+                    {
+                        position = true;
+                    }
                 }
-            }
-            rotation = IsGoodRotation(shape, child);
+            else position = true;
+            rotation = IsGoodRotation(shape, position, shapeOnCard);
             color = IsGoodColor(shape, child);
             if (position && rotation && color)
             {
                 return true;
             }
         }
+
         return false;
     }
 
-    private bool IsGoodRotation(Shape_With_Place shape, Transform shapeOncard)
+    private bool IsGoodRotation(Shape_With_Place shape, bool position, DraggableShape shapeOnCard)
     {
-        var rotation = shapeOncard.localRotation;
+        var figureRotation = shapeOnCard.Rotation;
         if (!shape.shape.Get_Is_Rotative())
         {
             return true;
         }
-        if (rotation.z < 45 && rotation.z > 315 && shape.shape.Get_Rotation() == Shape.Rotation.Up)
+        if (figureRotation == 0 && shape.shape.Get_Rotation() == Shape.Rotation.Up)
         {
             return true;
         }
-        if (rotation.z < 135 && rotation.z > 45 && shape.shape.Get_Rotation() == Shape.Rotation.Left)
+        if (figureRotation == 1 && shape.shape.Get_Rotation() == Shape.Rotation.Left)
         {
             return true;
         }
-        if (rotation.z < 225 && rotation.z > 135 && shape.shape.Get_Rotation() == Shape.Rotation.Down)
+        if (figureRotation == 2 && shape.shape.Get_Rotation() == Shape.Rotation.Down)
         {
             return true;
         }
-
-        if (rotation.z < 315 && rotation.z > 225 && shape.shape.Get_Rotation() == Shape.Rotation.Right)
+        if (figureRotation == 3 && shape.shape.Get_Rotation() == Shape.Rotation.Right)
         {
             return true;
+        }
+        if (position)
+        {
+            if (figureRotation == 2 && shape.shape.Get_Rotation() == Shape.Rotation.Up)
+            {
+                return true;
+            }
+            if (figureRotation == 3 && shape.shape.Get_Rotation() == Shape.Rotation.Left)
+            {
+                return true;
+            }
+            if (figureRotation == 0 && shape.shape.Get_Rotation() == Shape.Rotation.Down)
+            {
+                return true;
+            }
+            if (figureRotation == 1 && shape.shape.Get_Rotation() == Shape.Rotation.Right)
+            {
+                return true;
+            }
         }
         return false;
     }
