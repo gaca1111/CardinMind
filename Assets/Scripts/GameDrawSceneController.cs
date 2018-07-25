@@ -30,8 +30,10 @@ public class GameDrawSceneController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        var iterator = 0;
         foreach (var colour in Static.DifficultyModifiers.Get_Figures_Colours())
         {
+            Debug.Log("Jestem w pętli pobierającej kolory iteracja numer: " + iterator++);
             var colorBlob = Instantiate(Blob);
             colorBlob.transform.SetParent(ColorArea.transform);
             colorBlob.GetComponent<Image>().color = Helpers.ShapeColorToUnityColor(colour);
@@ -40,7 +42,7 @@ public class GameDrawSceneController : MonoBehaviour
         if (Static.DifficultyModifiers.Colours_only_mechanic)
         {
             DrawCard();
-            Debug.Log("Powinienem rysować i zniszczyć panee kształtów");
+            Debug.Log("Powinienem rysować i zniszczyć panele kształtów");
             Destroy(ShapesPanel.gameObject);
         }
     }
@@ -105,7 +107,7 @@ public class GameDrawSceneController : MonoBehaviour
             bool rotation = false;
             bool color = false;
             var child = Card.GetChild(i);
-            var shapeOnCard = child.GetComponent<DraggableShape>();
+            var shapeOnCard = child.gameObject.GetComponent<DraggableShape>();
             if (shapeOnCard == null) continue;
             if (Static.DifficultyModifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type70)
             {
@@ -168,9 +170,11 @@ public class GameDrawSceneController : MonoBehaviour
     void DrawCard()
     {
         var shapes = Static.ShapeWithPlaces;
+        Debug.Log(Static.ShapeWithPlaces);
+        Debug.Break();
         foreach (var shape in shapes)
         {
-            Debug.Log("Shape: " + shape.shape.name + " rotation: " + shape.shape.Get_Rotation());
+            Debug.Log("Shape: " + shape.shape + " rotation: " + shape.shape.Get_Rotation());
             CloneObjectToCard(shape.shape, shape.id_place);
         }
     }

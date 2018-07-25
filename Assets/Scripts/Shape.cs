@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Shape : MonoBehaviour {
+public class Shape {
 
     public enum Rotation { Up, Down, Right, Left };
     public enum Figures_Colours { Light_Blue, Dark_Blue, Light_Green, Dark_Green, Violet, Pink, Red, Yellow, Orange };

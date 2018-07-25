@@ -88,8 +88,8 @@ public static class Helpers
     }
 }
 
-public static class Static
+public class Static : MonoBehaviour
 {
-    public static Difficulty_Modifiers DifficultyModifiers;
+    public static Difficulty_Modifiers DifficultyModifiers = new Difficulty_Modifiers();
     public static List<Shape_With_Place> ShapeWithPlaces;
 }

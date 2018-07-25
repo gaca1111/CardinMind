@@ -55,7 +55,7 @@ public class GameRememberSceneControllerScript : MonoBehaviour
         var shapes = Static.ShapeWithPlaces;
         foreach (var shape in shapes)
         {
-            Debug.Log("Shape: " + shape.shape.name + " rotation: " + shape.shape.Get_Rotation());
+            Debug.Log("Shape: " + shape.shape + " rotation: " + shape.shape.Get_Rotation());
             CloneObjectToCard(shape.shape, shape.id_place);
         }
     }

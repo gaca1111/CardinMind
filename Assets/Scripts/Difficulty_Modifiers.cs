@@ -7,15 +7,15 @@ public class Difficulty_Modifiers{
     public enum CardType {Cart_Type70, Cart_Type12};
     public enum Game_Mode {Assembling, Questions, Random, Alternately};
 
-    private CardType _cardType;
-    private int number_of_figures;
+    private CardType _cardType = CardType.Cart_Type12;
+    private int number_of_figures = 3;
     private Shape.Figures_Colours[] figures_colours;
     private int number_of_figures_colours;
-    private int number_of_mistakes;
-    private Game_Mode game_mode;
-    private bool colours_only_mechanic;
-    private bool card_pick_mechanic;
-    private int timeRestriction;
+    private int number_of_mistakes =2;
+    private Game_Mode game_mode = Game_Mode.Assembling;
+    private bool colours_only_mechanic = false;
+    private bool card_pick_mechanic = true;
+    private int timeRestriction = 5;
 
 
     public CardType cardType {

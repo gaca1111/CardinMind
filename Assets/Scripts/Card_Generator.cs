@@ -352,25 +352,25 @@ public class Card_Generator : MonoBehaviour {
 
                     case Shape.Rotation.Up:
 
-                        card_pattern[x, y - 1] = gameObject.AddComponent<Empty>() as Empty;
+                        card_pattern[x, y - 1] = new Empty();
                         empty_space.Remove(place - 3);
                         break;
 
                     case Shape.Rotation.Down:
 
-                        card_pattern[x, y + 1] = gameObject.AddComponent<Empty>() as Empty;
+                        card_pattern[x, y + 1] = new Empty();
                         empty_space.Remove(place + 3);
                         break;
 
                     case Shape.Rotation.Right:
 
-                        card_pattern[x + 1, y] = gameObject.AddComponent<Empty>() as Empty;
+                        card_pattern[x + 1, y] = new Empty();
                         empty_space.Remove(place + 1);
                         break;
 
                     case Shape.Rotation.Left:
 
-                        card_pattern[x - 1, y] = gameObject.AddComponent<Empty>() as Empty;
+                        card_pattern[x - 1, y] = new Empty();
                         empty_space.Remove(place - 1);
                         break;
 
@@ -457,28 +457,28 @@ public class Card_Generator : MonoBehaviour {
                     empty_space.Add(removed_place);
                 }
 
-                card_pattern[x, y - 1] = gameObject.AddComponent<Empty>() as Empty; //up
+                card_pattern[x, y - 1] = new Empty(); //up
                 empty_space.Remove(place - 9);
 
-                card_pattern[x, y + 1] = gameObject.AddComponent<Empty>() as Empty; // down
+                card_pattern[x, y + 1] = new Empty(); // down
                 empty_space.Remove(place + 9);
 
-                card_pattern[x + 1, y] = gameObject.AddComponent<Empty>() as Empty; // r
+                card_pattern[x + 1, y] = new Empty(); // r
                 empty_space.Remove(place + 1);
 
-                card_pattern[x - 1, y] = gameObject.AddComponent<Empty>() as Empty; // l
+                card_pattern[x - 1, y] = new Empty(); // l
                 empty_space.Remove(place - 1);
 
-                card_pattern[x - 1, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ul
+                card_pattern[x - 1, y - 1] = new Empty(); /// ul
                 empty_space.Remove(place - 10);
 
-                card_pattern[x + 1, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ur
+                card_pattern[x + 1, y - 1] = new Empty(); /// ur
                 empty_space.Remove(place - 8);
 
-                card_pattern[x - 1, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dl
+                card_pattern[x - 1, y + 1] = new Empty(); /// dl
                 empty_space.Remove(place + 8);
 
-                card_pattern[x + 1, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dr
+                card_pattern[x + 1, y + 1] = new Empty(); /// dr
                 empty_space.Remove(place + 10);
 
                 return place;
@@ -686,128 +686,128 @@ public class Card_Generator : MonoBehaviour {
                     empty_space.Add(removed_place);
                 }
 
-                card_pattern[x, y - 1] = gameObject.AddComponent<Empty>() as Empty; //up
+                card_pattern[x, y - 1] = new Empty(); //up
                 empty_space.Remove(place - 9);
 
-                card_pattern[x, y + 1] = gameObject.AddComponent<Empty>() as Empty; // down
+                card_pattern[x, y + 1] = new Empty(); // down
                 empty_space.Remove(place + 9);
 
-                card_pattern[x + 1, y] = gameObject.AddComponent<Empty>() as Empty; // r
+                card_pattern[x + 1, y] = new Empty(); // r
                 empty_space.Remove(place + 1);
 
-                card_pattern[x - 1, y] = gameObject.AddComponent<Empty>() as Empty; // l
+                card_pattern[x - 1, y] = new Empty(); // l
                 empty_space.Remove(place - 1);
 
-                card_pattern[x - 1, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ul
+                card_pattern[x - 1, y - 1] = new Empty(); /// ul
                 empty_space.Remove(place - 10);
 
-                card_pattern[x + 1, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ur
+                card_pattern[x + 1, y - 1] = new Empty(); /// ur
                 empty_space.Remove(place - 8);
 
-                card_pattern[x - 1, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dl
+                card_pattern[x - 1, y + 1] = new Empty(); /// dl
                 empty_space.Remove(place + 8);
 
-                card_pattern[x + 1, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dr
+                card_pattern[x + 1, y + 1] = new Empty(); /// dr
                 empty_space.Remove(place + 10);
 
                 switch (rolled_data.rotation) {
 
                     case Shape.Rotation.Up:
 
-                        card_pattern[x, y - 2] = gameObject.AddComponent<Empty>() as Empty; //up
+                        card_pattern[x, y - 2] = new Empty(); //up
                         empty_space.Remove(place - 18);
-                        card_pattern[x, y - 3] = gameObject.AddComponent<Empty>() as Empty; //up
+                        card_pattern[x, y - 3] = new Empty(); //up
                         empty_space.Remove(place - 27);
-                        card_pattern[x, y - 4] = gameObject.AddComponent<Empty>() as Empty; //up
+                        card_pattern[x, y - 4] = new Empty(); //up
                         empty_space.Remove(place - 36);
 
-                        card_pattern[x - 1, y - 2] = gameObject.AddComponent<Empty>() as Empty; /// ul
+                        card_pattern[x - 1, y - 2] = new Empty(); /// ul
                         empty_space.Remove(place - 19);
-                        card_pattern[x - 1, y - 3] = gameObject.AddComponent<Empty>() as Empty; /// ul
+                        card_pattern[x - 1, y - 3] = new Empty(); /// ul
                         empty_space.Remove(place - 28);
-                        card_pattern[x - 1, y - 4] = gameObject.AddComponent<Empty>() as Empty; /// ul
+                        card_pattern[x - 1, y - 4] = new Empty(); /// ul
                         empty_space.Remove(place - 37);
 
-                        card_pattern[x + 1, y - 2] = gameObject.AddComponent<Empty>() as Empty; /// ur
+                        card_pattern[x + 1, y - 2] = new Empty(); /// ur
                         empty_space.Remove(place - 17);
-                        card_pattern[x + 1, y - 3] = gameObject.AddComponent<Empty>() as Empty; /// ur
+                        card_pattern[x + 1, y - 3] = new Empty(); /// ur
                         empty_space.Remove(place - 26);
-                        card_pattern[x + 1, y - 4] = gameObject.AddComponent<Empty>() as Empty; /// ur
+                        card_pattern[x + 1, y - 4] = new Empty(); /// ur
                         empty_space.Remove(place - 35);
 
                         break;
 
                     case Shape.Rotation.Down:
 
-                        card_pattern[x, y + 2] = gameObject.AddComponent<Empty>() as Empty; // down
+                        card_pattern[x, y + 2] = new Empty(); // down
                         empty_space.Remove(place + 18);
-                        card_pattern[x, y + 3] = gameObject.AddComponent<Empty>() as Empty; // down
+                        card_pattern[x, y + 3] = new Empty(); // down
                         empty_space.Remove(place + 27);
-                        card_pattern[x, y + 4] = gameObject.AddComponent<Empty>() as Empty; // down
+                        card_pattern[x, y + 4] = new Empty(); // down
                         empty_space.Remove(place + 36);
 
-                        card_pattern[x - 1, y + 2] = gameObject.AddComponent<Empty>() as Empty; /// dl
+                        card_pattern[x - 1, y + 2] = new Empty(); /// dl
                         empty_space.Remove(place + 17);
-                        card_pattern[x - 1, y + 3] = gameObject.AddComponent<Empty>() as Empty; /// dl
+                        card_pattern[x - 1, y + 3] = new Empty(); /// dl
                         empty_space.Remove(place + 26);
-                        card_pattern[x - 1, y + 4] = gameObject.AddComponent<Empty>() as Empty; /// dl
+                        card_pattern[x - 1, y + 4] = new Empty(); /// dl
                         empty_space.Remove(place + 35);
 
-                        card_pattern[x + 1, y + 2] = gameObject.AddComponent<Empty>() as Empty; /// dr
+                        card_pattern[x + 1, y + 2] = new Empty(); /// dr
                         empty_space.Remove(place + 19);
-                        card_pattern[x + 1, y + 3] = gameObject.AddComponent<Empty>() as Empty; /// dr
+                        card_pattern[x + 1, y + 3] = new Empty(); /// dr
                         empty_space.Remove(place + 28);
-                        card_pattern[x + 1, y + 4] = gameObject.AddComponent<Empty>() as Empty; /// dr
+                        card_pattern[x + 1, y + 4] = new Empty(); /// dr
                         empty_space.Remove(place + 37);
 
                         break;
 
                     case Shape.Rotation.Right:
 
-                        card_pattern[x + 2, y] = gameObject.AddComponent<Empty>() as Empty; // r
+                        card_pattern[x + 2, y] = new Empty(); // r
                         empty_space.Remove(place + 2);
-                        card_pattern[x + 3, y] = gameObject.AddComponent<Empty>() as Empty; // r
+                        card_pattern[x + 3, y] = new Empty(); // r
                         empty_space.Remove(place + 3);
-                        card_pattern[x + 4, y] = gameObject.AddComponent<Empty>() as Empty; // r
+                        card_pattern[x + 4, y] = new Empty(); // r
                         empty_space.Remove(place + 4);
 
-                        card_pattern[x + 2, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ur
+                        card_pattern[x + 2, y - 1] = new Empty(); /// ur
                         empty_space.Remove(place - 8);
-                        card_pattern[x + 3, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ur
+                        card_pattern[x + 3, y - 1] = new Empty(); /// ur
                         empty_space.Remove(place - 7);
-                        card_pattern[x + 4, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ur
+                        card_pattern[x + 4, y - 1] = new Empty(); /// ur
                         empty_space.Remove(place - 6);
 
-                        card_pattern[x + 2, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dr
+                        card_pattern[x + 2, y + 1] = new Empty(); /// dr
                         empty_space.Remove(place + 11);
-                        card_pattern[x + 3, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dr
+                        card_pattern[x + 3, y + 1] = new Empty(); /// dr
                         empty_space.Remove(place + 12);
-                        card_pattern[x + 4, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dr
+                        card_pattern[x + 4, y + 1] = new Empty(); /// dr
                         empty_space.Remove(place + 13);
 
                         break;
 
                     case Shape.Rotation.Left:
 
-                        card_pattern[x - 2, y] = gameObject.AddComponent<Empty>() as Empty; // l
+                        card_pattern[x - 2, y] = new Empty(); // l
                         empty_space.Remove(place - 2);
-                        card_pattern[x - 3, y] = gameObject.AddComponent<Empty>() as Empty; // l
+                        card_pattern[x - 3, y] = new Empty(); // l
                         empty_space.Remove(place - 3);
-                        card_pattern[x - 4, y] = gameObject.AddComponent<Empty>() as Empty; // l
+                        card_pattern[x - 4, y] = new Empty(); // l
                         empty_space.Remove(place - 4);
 
-                        card_pattern[x - 2, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ul
+                        card_pattern[x - 2, y - 1] = new Empty(); /// ul
                         empty_space.Remove(place - 11);
-                        card_pattern[x - 3, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ul
+                        card_pattern[x - 3, y - 1] = new Empty(); /// ul
                         empty_space.Remove(place - 12);
-                        card_pattern[x - 4, y - 1] = gameObject.AddComponent<Empty>() as Empty; /// ul
+                        card_pattern[x - 4, y - 1] = new Empty(); /// ul
                         empty_space.Remove(place - 13);
 
-                        card_pattern[x - 2, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dl
+                        card_pattern[x - 2, y + 1] = new Empty(); /// dl
                         empty_space.Remove(place + 7);
-                        card_pattern[x - 3, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dl
+                        card_pattern[x - 3, y + 1] = new Empty(); /// dl
                         empty_space.Remove(place + 6);
-                        card_pattern[x - 4, y + 1] = gameObject.AddComponent<Empty>() as Empty; /// dl
+                        card_pattern[x - 4, y + 1] = new Empty(); /// dl
                         empty_space.Remove(place + 5);
 
                         break;
@@ -1009,13 +1009,13 @@ public class Card_Generator : MonoBehaviour {
     private Shape Roll_Shape_2x1(Shape.Rotation rotation) {
 
         Shapes_2x1 rolled_shape = shapes_2x1_array[Random.Range(0, shapes_2x1_array.Length)];
-        Shape shape = gameObject.AddComponent<Shape>() as Shape;
+        Shape shape = new Shape();
 
         switch (rolled_shape) {
 
             case Shapes_2x1.Rectangle:
 
-                shape = gameObject.AddComponent<Rectangle>() as Rectangle;
+                shape = new Rectangle();
                 break;
 
             default:
@@ -1036,23 +1036,23 @@ public class Card_Generator : MonoBehaviour {
     private Shape Roll_Shape_1x1() {
 
         Shapes_1x1 rolled_shape = shapes_1x1_array[Random.Range(0, shapes_1x1_array.Length)];
-        Shape shape = gameObject.AddComponent<Shape>() as Shape;
+        Shape shape = new Shape();
 
         switch (rolled_shape) {
 
             case Shapes_1x1.Square:
 
-                shape = gameObject.AddComponent<Square>() as Square;
+                shape = new Square();
                 break;
 
             case Shapes_1x1.Circle:
 
-                shape = gameObject.AddComponent<Circle>() as Circle;
+                shape = new Circle();
                 break;
 
             case Shapes_1x1.Triangle:
 
-                shape = gameObject.AddComponent<Triangle>() as Triangle;
+                shape = new Triangle();
                 break;
 
             default:

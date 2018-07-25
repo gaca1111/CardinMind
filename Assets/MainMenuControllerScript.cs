@@ -5,10 +5,10 @@ using UnityEngine;
 public class MainMenuControllerScript : MonoBehaviour {
 
 	// Use this for initialization
-	void Start ()
-	{
-		Static.DifficultyModifiers = new Difficulty_Modifiers();
-	}
+    void Start()
+    {
+
+    }
 	
 	// Update is called once per frame
 	void Update ()
