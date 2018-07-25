@@ -12,9 +12,9 @@ public class QuestionGenerator : MonoBehaviour
 
     private enum ColoursInAbcQuestions
     {
-        niebieskich = 0,
+        jasnoniebieskich = 0,
         ciemnoniebieskich = 1,
-        zielonych = 2,
+        jasnozielonych = 2,
         ciemnozielonych = 3,
         fioletowych = 4,
         różowych = 5,
@@ -34,9 +34,9 @@ public class QuestionGenerator : MonoBehaviour
 
     private enum ColoursInYesNoQuestions
     {
-        niebieskie = 0,
+        jasnoniebieskie = 0,
         ciemnoniebieskie = 1,
-        zielone = 2,
+        jasnozielone = 2,
         ciemnozielone = 3,
         fioletowe = 4,
         różowe = 5,
@@ -69,10 +69,11 @@ public class QuestionGenerator : MonoBehaviour
 
     private enum ShapesInValidation
     {
-        Rectangle = 1,
-        Circle = 2,
-        Square = 3,
-        Triangle = 4
+        Rectangle = 0,
+        Circle = 1,
+        Square = 2,
+        Triangle = 3,
+        Null = 4
     }
 
     #endregion
@@ -352,6 +353,8 @@ public class QuestionGenerator : MonoBehaviour
         if (figuresList == null) return userResponse == counter;
         foreach (var figure in figuresList)
         {
+            if (shapeType == 4 &&
+                figure.shape.Get_Colour().ToString() == ((ColoursInValidation) colourType).ToString()) counter++;
             if (figure.shape.ToString() == ((ShapesInValidation) shapeType).ToString() &&
                 figure.shape.Get_Colour().ToString() == ((ColoursInValidation) colourType).ToString())
                 counter++;
@@ -378,6 +381,8 @@ public class QuestionGenerator : MonoBehaviour
             if (figuresList == null) return userResponse == counter;
             foreach (var figure in figuresList)
             {
+                if (shapeType == 4 &&
+                    figure.shape.Get_Colour().ToString() == ((ColoursInValidation)colourType).ToString()) counter++;
                 if (figure.shape.ToString() == ((ShapesInValidation) shapeType).ToString() &&
                     figure.shape.Get_Colour().ToString() == ((ColoursInValidation) colourType).ToString())
                     counter++;
