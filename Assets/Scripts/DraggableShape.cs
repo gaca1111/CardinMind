@@ -8,9 +8,11 @@ using UnityEngine.UI;
 public class DraggableShape : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHandler
 {
     private bool _setToCard = false;
+    public bool Draggable = true;
     public GameObject DropZone;
+    public int NumberOfPosition { get; set; } 
 
-	// Use this for initialization
+    // Use this for initialization
 	void Start ()
 	{
 	}
@@ -23,6 +25,7 @@ public class DraggableShape : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (!Draggable) return;
         Debug.Log("OnBeginDrag");
         if (!_setToCard)
         {
@@ -38,11 +41,13 @@ public class DraggableShape : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (!Draggable) return;
         transform.position = eventData.position;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!Draggable) return;
         Debug.Log("OnEndDrag");
         GetComponent<CanvasGroup>().blocksRaycasts = true;
         if (transform.parent == DropZone.transform)
@@ -58,6 +63,7 @@ public class DraggableShape : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (!Draggable) return;
         Debug.Log("Clicked on " + this.name);
         transform.Rotate(0, 0, 90);
     }

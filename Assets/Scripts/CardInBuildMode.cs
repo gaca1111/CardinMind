@@ -20,13 +20,29 @@ public class CardInBuildMode : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        Debug.Log(eventData.pointerDrag.name + " drooped on " + gameObject.name);
-        eventData.pointerDrag.transform.SetParent(transform);
-        Vector2[] points;
-        points = Static.DifficultyModifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type12 ? Helpers.Card12Points : Helpers.Card70Points;
-        var pointToSet =
-            Helpers.LocateNearestPoint(eventData.pointerDrag.transform.localPosition, points);
-        Debug.Log("PointToSet = " + pointToSet.x + " " + pointToSet.y);
-        eventData.pointerDrag.transform.localPosition = pointToSet;
+        if (eventData.pointerDrag.GetComponent<DraggableShape>() != null)
+        {
+            Debug.Log(eventData.pointerDrag.name + " drooped on " + gameObject.name);
+            eventData.pointerDrag.transform.SetParent(transform);
+            Vector2 pointToSet;
+            int positionIndex;
+            if (Static.DifficultyModifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type12)
+            {
+                positionIndex =
+                    Helpers.LocateNearestPoint(eventData.pointerDrag.transform.localPosition, Helpers.Card12Points);
+                pointToSet = Helpers.Card12Points[positionIndex];
+            }
+            else
+            {
+                positionIndex =
+                    Helpers.LocateNearestPoint(eventData.pointerDrag.transform.localPosition, Helpers.Card70Points);
+                pointToSet = Helpers.Card70Points[positionIndex];
+
+            }
+
+            eventData.pointerDrag.GetComponent<DraggableShape>().NumberOfPosition = positionIndex;
+            Debug.Log("PointToSet = " + pointToSet.x + " " + pointToSet.y);
+            eventData.pointerDrag.transform.localPosition = pointToSet;
+        }
     }
 }

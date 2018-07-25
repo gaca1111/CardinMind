@@ -113,7 +113,7 @@ public class GameRememberSceneControllerScript : MonoBehaviour
                 image.color = Helpers.ShapeColorToUnityColor(shape.Get_Colour());
             }
         }
-        newObject.transform.parent = Card;
+        newObject.transform.SetParent(Card);
         newObject.transform.localPosition = shapePosition;
         newObject.transform.localScale = Vector3.one;
 
