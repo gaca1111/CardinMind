@@ -1094,6 +1094,6 @@ public class Card_Generator : MonoBehaviour {
 
     public List<Shape_With_Place> Get_List_Of_Shape()
     {
-        return list_of_shapes;
+        return new List<Shape_With_Place>(list_of_shapes);
     }
 }

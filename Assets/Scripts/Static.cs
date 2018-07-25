@@ -26,20 +26,20 @@ public static class Helpers
         new Vector2(-60, -90), new Vector2(-40, -90), new Vector2(-20, -90), new Vector2(0, -90),new Vector2(20, -90),new Vector2(40, -90),new Vector2(60, -90),
     };
 
-    public static Vector2 LocateNearestPoint(Vector2 position, Vector2[] avaliblePoints)
+    public static int LocateNearestPoint(Vector2 position, Vector2[] avaliblePoints)
     {
-        Vector2 result = avaliblePoints[0];
-        float distance = ComputeDistance(position, avaliblePoints[0]);
-        foreach (var point in avaliblePoints)
+        var resultIndex = 0;
+        var distance = ComputeDistance(position, avaliblePoints[0]);
+        for (var i = 0; i < avaliblePoints.Length; i++)
         {
-            var tempDistance = ComputeDistance(position, point);
+            var tempDistance = ComputeDistance(position, avaliblePoints[i]);
             if (tempDistance < distance)
             {
                 distance = tempDistance;
-                result = point;
+                resultIndex = i;
             }
         }
-        return result;
+        return resultIndex;
     }
 
     public static Color ShapeColorToUnityColor(Shape.Figures_Colours shapeColor)
@@ -90,6 +90,6 @@ public static class Helpers
 
 public static class Static
 {
-    public static Difficulty_Modifiers DifficultyModifiers = new Difficulty_Modifiers();
+    public static Difficulty_Modifiers DifficultyModifiers;
     public static List<Shape_With_Place> ShapeWithPlaces;
 }

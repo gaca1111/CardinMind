@@ -16,7 +16,16 @@ public class GameDrawSceneController : MonoBehaviour
     public GameObject SquareGameObject;
     public GameObject TriangleGameObject;
     public Transform Card;
-    public GameObject ShapesPanel;
+    public Transform ShapesPanel;
+    public Transform CardPanel;
+
+    public GameObject CorrectImage;
+    public GameObject WrongImage;
+
+    private int _mistakes = 0;
+
+    private GameObject _displayImage = null;
+    private float _timeToDisplay = 1;
 
     // Use this for initialization
     void Start()
@@ -31,14 +40,128 @@ public class GameDrawSceneController : MonoBehaviour
         if (Static.DifficultyModifiers.Colours_only_mechanic)
         {
             DrawCard();
-            Destroy(ShapesPanel);
+            Debug.Log("Powinienem rysować i zniszczyć panle kształtów");
+            Destroy(ShapesPanel.gameObject);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (_displayImage != null)
+        {
+            _timeToDisplay -= Time.deltaTime;
+            if (_timeToDisplay <= 0)
+            {
+                _displayImage.GetComponent<Image>().enabled = false;
+            }
+        }
+    }
 
+    public void OnCheckButton()
+    {
+        var result = ValidateCard();
+        if (!result)
+        {
+            _displayImage = WrongImage;
+            _displayImage.GetComponent<Image>().enabled = true;
+            _mistakes++;
+        }
+        else
+        {
+            _displayImage = CorrectImage;
+            _displayImage.GetComponent<Image>().enabled = true;
+            SceneChanger.EndGame();
+        }
+
+        if (_mistakes > Static.DifficultyModifiers.Number_of_mistakes)
+        {
+            SceneChanger.EndGame();
+        }
+    }
+
+    public bool ValidateCard()
+    {
+        var counter = 0;
+        foreach (var shape in Static.ShapeWithPlaces)
+        {
+            if (!IsOnCard(shape))
+            {
+                return false;
+            }
+
+            counter++;
+        }
+
+        return counter == Card.childCount;
+    }
+
+    public bool IsOnCard(Shape_With_Place shape)
+    {
+        for (int i = 0; i < Card.childCount; i++)
+        {
+            bool position = false;
+            bool rotation = false;
+            bool color = false;
+            var child = Card.GetChild(i);
+            var shapeOnCard = child.GetComponent<DraggableShape>();
+            if (shapeOnCard == null) continue;
+            if (Static.DifficultyModifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type70)
+            {
+                int computedPosition = shapeOnCard.NumberOfPosition + 10 + ((shapeOnCard.NumberOfPosition / 7) * 2);
+                if (shape.id_place == computedPosition)
+                {
+                    position = true;
+                }
+            }
+            else
+            {
+                if (shape.id_place == shapeOnCard.NumberOfPosition)
+                {
+                    position = true;
+                }
+            }
+            rotation = IsGoodRotation(shape, child);
+            color = IsGoodColor(shape, child);
+            if (position && rotation && color)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private bool IsGoodRotation(Shape_With_Place shape, Transform shapeOncard)
+    {
+        var rotation = shapeOncard.localRotation;
+        if (!shape.shape.Get_Is_Rotative())
+        {
+            return true;
+        }
+        if (rotation.z < 45 && rotation.z > 315 && shape.shape.Get_Rotation() == Shape.Rotation.Up)
+        {
+            return true;
+        }
+        if (rotation.z < 135 && rotation.z > 45 && shape.shape.Get_Rotation() == Shape.Rotation.Left)
+        {
+            return true;
+        }
+        if (rotation.z < 225 && rotation.z > 135 && shape.shape.Get_Rotation() == Shape.Rotation.Down)
+        {
+            return true;
+        }
+
+        if (rotation.z < 315 && rotation.z > 225 && shape.shape.Get_Rotation() == Shape.Rotation.Right)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private bool IsGoodColor(Shape_With_Place shape, Component shapeOncard)
+    {
+        var shapeOnCardColor = shapeOncard.gameObject.GetComponent<Image>().color;
+        return shapeOnCardColor == Helpers.ShapeColorToUnityColor(shape.shape.Get_Colour());
     }
 
     void DrawCard()
@@ -55,18 +178,19 @@ public class GameDrawSceneController : MonoBehaviour
     {
         Vector2 shapePosition;
         GameObject objectToSet = null;
+        int positionToSet;
         switch (Static.DifficultyModifiers.cardType)
         {
             case Difficulty_Modifiers.CardType.Cart_Type12:
-                shapePosition = Helpers.Card12Points[position];
-                Debug.Log("Card12 position: " + position + " x: " + shapePosition.x + " y: " + shapePosition.y);
-                Debug.Log(shapePosition);
+                positionToSet = position;
+                shapePosition = Helpers.Card12Points[positionToSet];
+                Debug.Log("Card12 position: " + positionToSet + " x: " + shapePosition.x + " y: " + shapePosition.y);
                 break;
             case Difficulty_Modifiers.CardType.Cart_Type70:
-                int positionToSet = position - 10 - (((position / 9) - 1) * 2);
-                Debug.Log("Position to set in 70card: " + positionToSet);
+                positionToSet = position - 10 - (((position / 9) - 1) * 2);
                 shapePosition = Helpers.Card70Points[positionToSet];
-                Debug.Log("Card70 position: " + position + " x: " + shapePosition.x + " y: " + shapePosition.y);
+                Debug.Log("Card70 position from generator: " + position + "position on card:" + positionToSet + " x: " +
+                          shapePosition.x + " y: " + shapePosition.y);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -98,7 +222,7 @@ public class GameDrawSceneController : MonoBehaviour
         newObject.transform.parent = Card;
         newObject.transform.localPosition = shapePosition;
         newObject.transform.localScale = Vector3.one;
-
+        newObject.GetComponent<DraggableShape>().Draggable = false;
         if (shape.Get_Is_Rotative())
         {
             Debug.Log("Is rotative");
