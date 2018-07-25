@@ -179,7 +179,7 @@ public class Custom_Mode_Script : MonoBehaviour
             NumberOfFiguresSlider.value > 69) maxNumberOfFigures = 69;
         difficultyModifiers.Number_of_figures = int.Parse(maxNumberOfFigures.ToString());
         difficultyModifiers.Number_of_mistakes = int.Parse(AllowedMistakesSlider.value.ToString());
-        difficultyModifiers.Colours_only_mechanic = ColorFilingDropdown;
+        difficultyModifiers.Colours_only_mechanic = ColorFilingDropdown.value == 0 ? true : false;
         difficultyModifiers.TimeRestriction = int.Parse(TimeRestrictionInputField.text);
         difficultyModifiers.Set_Figures_Colours(coloursList);
         ColourListToPlayerPrefs();
@@ -202,7 +202,8 @@ public class Custom_Mode_Script : MonoBehaviour
         PlayerPrefs.SetString("CardType", difficultyModifiers.cardType.ToString());
         PlayerPrefs.SetInt("NumberOfFigures", difficultyModifiers.Number_of_figures);
         PlayerPrefs.SetInt("NumberOfMistakes", difficultyModifiers.Number_of_mistakes);
-        PlayerPrefs.SetInt("ColoursOnlyMechanic", difficultyModifiers.Colours_only_mechanic ? 1 : 0);
+        PlayerPrefs.SetInt("ColoursOnlyMechanic", difficultyModifiers.Colours_only_mechanic ? 0 : 1);
+        PlayerPrefs.SetInt("TimeRestriction", int.Parse(TimeRestrictionInputField.text));
         return difficultyModifiers;
     }
 
