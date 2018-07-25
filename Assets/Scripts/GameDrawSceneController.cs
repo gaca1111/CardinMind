@@ -228,6 +228,7 @@ public class GameDrawSceneController : MonoBehaviour
         newObject.transform.localPosition = shapePosition;
         newObject.transform.localScale = Vector3.one;
         newObject.GetComponent<DraggableShape>().Draggable = false;
+        newObject.GetComponent<DraggableShape>().NumberOfPosition = positionToSet;
         if (shape.Get_Is_Rotative())
         {
             Debug.Log("Is rotative");
