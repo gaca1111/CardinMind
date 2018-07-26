@@ -103,6 +103,7 @@ public class GameDrawSceneController : MonoBehaviour
     {
         for (int i = 0; i < Card.childCount; i++)
         {
+            bool rectangle = false;
             bool position = false;
             bool rotation = false;
             bool color = false;
@@ -115,6 +116,30 @@ public class GameDrawSceneController : MonoBehaviour
                 if (Static.DifficultyModifiers.cardType == Difficulty_Modifiers.CardType.Cart_Type70)
                 {
                     int computedPosition = shapeOnCard.NumberOfPosition + 10 + ((shapeOnCard.NumberOfPosition / 7) * 2);
+                    if (shape.shape is Rectangle)
+                    {
+                        rectangle = true;
+                        var rotationOfShape = shape.shape.Get_Rotation();
+                        switch (rotationOfShape)
+                        {
+                            case Shape.Rotation.Up:
+
+                                shapePositionRotated = shape.id_place >=21 ? shape.id_place - 21 : -1;
+                                break;
+                            case Shape.Rotation.Left:
+                                shapePositionRotated = shape.id_place % 7 >= 3 ? shape.id_place - 3 : -1;
+                                break;
+                            case Shape.Rotation.Down:
+                                shapePositionRotated = shape.id_place <= 48 ? shape.id_place + 27 : -1;
+                                break;
+                            case Shape.Rotation.Right:
+                                shapePositionRotated = shape.id_place % 7 >= 3 ? shape.id_place + 3 : -1;
+                                break;
+                        }
+
+                        if (computedPosition == shapePositionRotated)
+                            position = true;
+                    }
                     if (shape.id_place == computedPosition)
                     {
                         position = true;
@@ -124,6 +149,7 @@ public class GameDrawSceneController : MonoBehaviour
                 {
                     if (shape.shape is Rectangle)
                     {
+                        rectangle = true;
                         var rotationOfShape = shape.shape.Get_Rotation();
                         switch (rotationOfShape)
                         {
@@ -131,13 +157,13 @@ public class GameDrawSceneController : MonoBehaviour
                                 shapePositionRotated = shape.id_place - 3;
                                 break;
                             case Shape.Rotation.Left:
-                                shapePositionRotated = shape.id_place + 1;
+                                shapePositionRotated = shape.id_place - 1;
                                 break;
                             case Shape.Rotation.Down:
                                 shapePositionRotated = shape.id_place + 3;
                                 break;
                             case Shape.Rotation.Right:
-                                shapePositionRotated = shape.id_place - 1;
+                                shapePositionRotated = shape.id_place + 1;
                                 break;
                         }
 
@@ -151,7 +177,8 @@ public class GameDrawSceneController : MonoBehaviour
                     }
                 }
             else position = true;
-            rotation = IsGoodRotation(shape, position, shapeOnCard);
+            if (shape.shape.Get_Is_Rotative()) rotation = IsGoodRotation(shape, position && rectangle, shapeOnCard);
+            else rotation = true;
             color = IsGoodColor(shape, child);
             if (position && rotation && color)
             {
@@ -162,9 +189,15 @@ public class GameDrawSceneController : MonoBehaviour
         return false;
     }
 
-    private bool IsGoodRotation(Shape_With_Place shape, bool position, DraggableShape shapeOnCard)
+    private bool IsGoodRotation(Shape_With_Place shape, bool positionAndRectangle, DraggableShape shapeOnCard)
     {
-        var figureRotation = shapeOnCard.Rotation;
+        var figureRotation = 0;
+        var rotLeft = new Quaternion(0, 0, (float) 0.7, (float) 0.7).eulerAngles.magnitude;
+        var rotDown = new Quaternion(0, 0, 1, 0).eulerAngles.magnitude;
+        var rotRight = new Quaternion(0, 0, (float) 0.7, (float) -0.7).eulerAngles.magnitude;
+        if (shapeOnCard.transform.rotation.eulerAngles.magnitude.Equals(rotLeft)) figureRotation = 1;
+        if (shapeOnCard.transform.rotation.eulerAngles.magnitude.Equals(rotDown)) figureRotation = 2;
+        if (shapeOnCard.transform.rotation.eulerAngles.magnitude.Equals(rotRight)) figureRotation = 3;
         if (!shape.shape.Get_Is_Rotative())
         {
             return true;
@@ -185,7 +218,7 @@ public class GameDrawSceneController : MonoBehaviour
         {
             return true;
         }
-        if (position)
+        if (positionAndRectangle)
         {
             if (figureRotation == 2 && shape.shape.Get_Rotation() == Shape.Rotation.Up)
             {
