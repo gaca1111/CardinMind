@@ -84,7 +84,6 @@ public class QuestionGenerator : MonoBehaviour
     private List<int> askedQuestions;
     private Dictionary<Shape.Figures_Colours, int> coloursDictionary;
     private Dictionary<string, int> shapesDictionary;
-    private int numberOfFigures;
     private int questionType;
     private int questionsAsked;
     private int userAnswer;
@@ -133,7 +132,8 @@ public class QuestionGenerator : MonoBehaviour
             {"Rectangle", 0},
             {"Circle", 0},
             {"Square", 0},
-            {"Triangle", 0}
+            {"Triangle", 0},
+            {"Null", 0 }
         };
     }
 
@@ -208,7 +208,7 @@ public class QuestionGenerator : MonoBehaviour
             if (figure.shape.Get_Colour() == Shape.Figures_Colours.Orange)
                 coloursDictionary[Shape.Figures_Colours.Orange]++;
 
-            numberOfFigures++;
+            shapesDictionary["Null"]++;
         }
     }
 
@@ -280,6 +280,7 @@ public class QuestionGenerator : MonoBehaviour
             if (!askedQuestions.Contains(questionType)) break;
         }
 
+        questionType = 49;
         isYesNoQuestion = questionType >= 50;
         askedQuestions.Add(questionType);
         PopulateButtons(GetRightAbcAnswer());
