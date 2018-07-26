@@ -280,7 +280,6 @@ public class QuestionGenerator : MonoBehaviour
             if (!askedQuestions.Contains(questionType)) break;
         }
 
-        questionType = 49;
         isYesNoQuestion = questionType >= 50;
         askedQuestions.Add(questionType);
         PopulateButtons(GetRightAbcAnswer());
