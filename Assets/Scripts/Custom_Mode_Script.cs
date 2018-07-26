@@ -15,6 +15,7 @@ public class Custom_Mode_Script : MonoBehaviour
     public Text AllowedMistakesText, NumberOfFiguresText;
     private bool isColorChoosing;
     private List<Shape.Figures_Colours> coloursList;
+    public SceneChangerScript SceneChanger;
 
 	// Use this for initialization
 	void Start ()
@@ -123,6 +124,7 @@ public class Custom_Mode_Script : MonoBehaviour
     void PlayOnClick()
     {
         Static.DifficultyModifiers = DifficultyToPlayerPref();
+        SceneChanger.StartGame();
     }
 
     void AllowedMistakesSliderOnValueChange(float arg)
@@ -148,6 +150,8 @@ public class Custom_Mode_Script : MonoBehaviour
         AllowedMistakesSlider.value = PlayerPrefs.GetInt("NumberOfMistakes");
         ColorFilingDropdown.value = PlayerPrefs.GetInt("ColoursOnlyMechanic");
         GameModeDropdown.value = PlayerPrefs.GetInt("GameMode");
+        CardChoosingDropdown.value = PlayerPrefs.GetInt("CardChoosing");
+
         TimeRestrictionInputField.text = PlayerPrefs.GetInt("TimeRestriction").ToString();
         AllowedMistakesText.text = AllowedMistakesSlider.value.ToString();
         NumberOfFiguresText.text = NumberOfFiguresSlider.value.ToString();
@@ -179,9 +183,10 @@ public class Custom_Mode_Script : MonoBehaviour
             NumberOfFiguresSlider.value > 69) maxNumberOfFigures = 69;
         difficultyModifiers.Number_of_figures = int.Parse(maxNumberOfFigures.ToString());
         difficultyModifiers.Number_of_mistakes = int.Parse(AllowedMistakesSlider.value.ToString());
-        difficultyModifiers.Colours_only_mechanic = ColorFilingDropdown.value == 0 ? true : false;
+        difficultyModifiers.Colours_only_mechanic = ColorFilingDropdown.value == 0;
         difficultyModifiers.TimeRestriction = int.Parse(TimeRestrictionInputField.text);
         difficultyModifiers.Set_Figures_Colours(coloursList);
+        difficultyModifiers.Card_pick_mechanic = CardChoosingDropdown.value == 0;
         ColourListToPlayerPrefs();
 
         switch (GameModeDropdown.value)
@@ -204,6 +209,7 @@ public class Custom_Mode_Script : MonoBehaviour
         PlayerPrefs.SetInt("NumberOfMistakes", difficultyModifiers.Number_of_mistakes);
         PlayerPrefs.SetInt("ColoursOnlyMechanic", difficultyModifiers.Colours_only_mechanic ? 0 : 1);
         PlayerPrefs.SetInt("TimeRestriction", int.Parse(TimeRestrictionInputField.text));
+        PlayerPrefs.SetInt("CardChoosing", difficultyModifiers.Card_pick_mechanic ? 0 : 1);
         return difficultyModifiers;
     }
 

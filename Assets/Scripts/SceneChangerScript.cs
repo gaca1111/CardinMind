@@ -64,7 +64,14 @@ public class SceneChangerScript : MonoBehaviour
 
     public void StartGame()
     {
-        ChangeScene(Static.DifficultyModifiers.Card_pick_mechanic ? "GameChooseScene" : "GameRememberScene");
+        if (Static.DifficultyModifiers.Card_pick_mechanic)
+        {
+            ChangeScene("GameChooseScene");
+        }
+        else
+        {
+            ChangeScene("GameRememberScene");
+        }
     }
 
     public void GoToRemember()
